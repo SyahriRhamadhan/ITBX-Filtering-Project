@@ -1,6 +1,6 @@
 import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate, useSearchParams } from "@remix-run/react";
 import { useState, useMemo } from "react";
 import fs from "fs";
 import path from "path";
@@ -40,15 +40,28 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
-    const dataPath = path.join(process.cwd(), "app", "data", "rdtr-data.json");
-    const data: RDTRData = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
-
     const url = new URL(request.url);
+    const dataSource = url.searchParams.get("dataSource") || "trikora";
     const selectedZone = url.searchParams.get("zone") || "";
     const selectedRegulation = url.searchParams.get("regulation") || "";
 
+    // Load data based on selected source
+    const dataFileName = dataSource === "bsb" ? "bsb-data.json" : "rdtr-data.json";
+    const dataPath = path.join(process.cwd(), "app", "data", dataFileName);
+    
+    let data: RDTRData;
+    try {
+      data = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
+    } catch (fileError) {
+      console.error(`Error loading ${dataFileName}:`, fileError);
+      // Fallback to default data
+      const fallbackPath = path.join(process.cwd(), "app", "data", "rdtr-data.json");
+      data = JSON.parse(fs.readFileSync(fallbackPath, "utf-8"));
+    }
+
     return json({
       data,
+      dataSource: dataSource as 'trikora' | 'bsb',
       selectedZone,
       selectedRegulation,
     });
@@ -56,6 +69,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     console.error("Error loading RDTR data:", error);
     return json({
       data: { activities: [], zones: [], regulations: {} } as RDTRData,
+      dataSource: "trikora" as const,
       selectedZone: "",
       selectedRegulation: "",
     });
@@ -63,11 +77,23 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function RDTRFilter() {
-  const { data, selectedZone, selectedRegulation } =
+  const { data, dataSource, selectedZone, selectedRegulation } =
     useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Handle data source change
+  const handleDataSourceChange = (newDataSource: 'trikora' | 'bsb') => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('dataSource', newDataSource);
+    // Clear zone and regulation when switching data sources
+    newSearchParams.delete('zone');
+    newSearchParams.delete('regulation');
+    navigate(`?${newSearchParams.toString()}`);
+  };
 
   // Filter and sort activities based on selected zone, regulation, and search term
   const filteredAndSortedActivities = useMemo(() => {
@@ -170,6 +196,33 @@ export default function RDTRFilter() {
               </p>
             </div>
             
+            {/* Data Source Switch */}
+            <div className="hidden sm:flex items-center gap-2 mx-4">
+              <span className="text-sm text-gray-600">Data:</span>
+              <div className="flex bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={() => handleDataSourceChange('trikora')}
+                  className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 ${
+                    dataSource === 'trikora'
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Trikora
+                </button>
+                <button
+                  onClick={() => handleDataSourceChange('bsb')}
+                  className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 ${
+                    dataSource === 'bsb'
+                      ? 'bg-green-600 text-white shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  BSB
+                </button>
+              </div>
+            </div>
+            
             {/* Mobile Filter Toggle */}
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -180,6 +233,35 @@ export default function RDTRFilter() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
               </svg>
             </button>
+          </div>
+          
+          {/* Mobile Data Source Switch */}
+          <div className="sm:hidden mt-4 pt-4 border-t border-gray-200">
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-sm text-gray-600">Sumber Data:</span>
+              <div className="flex bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={() => handleDataSourceChange('trikora')}
+                  className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 ${
+                    dataSource === 'trikora'
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Trikora
+                </button>
+                <button
+                  onClick={() => handleDataSourceChange('bsb')}
+                  className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 ${
+                    dataSource === 'bsb'
+                      ? 'bg-green-600 text-white shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  BSB
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -282,7 +364,11 @@ export default function RDTRFilter() {
                 />
               </>
             ) : (
-              <WelcomeScreen data={data} />
+              <WelcomeScreen 
+                data={data} 
+                currentDataSource={dataSource}
+                onDataSourceChange={handleDataSourceChange}
+              />
             )}
           </div>
         </div>

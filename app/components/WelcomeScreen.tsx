@@ -11,9 +11,11 @@ interface RDTRData {
 
 interface WelcomeScreenProps {
   data: RDTRData;
+  currentDataSource: 'trikora' | 'bsb';
+  onDataSourceChange: (source: 'trikora' | 'bsb') => void;
 }
 
-export default function WelcomeScreen({ data }: WelcomeScreenProps) {
+export default function WelcomeScreen({ data, currentDataSource, onDataSourceChange }: WelcomeScreenProps) {
   return (
     <div className="bg-white rounded-lg shadow-sm border p-6 sm:p-8 lg:p-12">
       <div className="text-center max-w-4xl mx-auto">
@@ -25,6 +27,53 @@ export default function WelcomeScreen({ data }: WelcomeScreenProps) {
           <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed">
             Aplikasi untuk memfilter dan mencari kegiatan berdasarkan zona dan regulasi RDTR
           </p>
+        </div>
+
+        {/* Data Source Selection */}
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+            Pilih Sumber Data
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => onDataSourceChange('trikora')}
+              className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                currentDataSource === 'trikora'
+                  ? 'bg-blue-600 text-white shadow-lg transform scale-105'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              <div className="text-center">
+                <div className="font-bold text-lg">Data Trikora</div>
+                <div className="text-sm opacity-90">RDTR Trikora</div>
+              </div>
+            </button>
+            
+            <button
+              onClick={() => onDataSourceChange('bsb')}
+              className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                currentDataSource === 'bsb'
+                  ? 'bg-green-600 text-white shadow-lg transform scale-105'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              <div className="text-center">
+                <div className="font-bold text-lg">Data BSB</div>
+                <div className="text-sm opacity-90">Ketentuan Kegiatan BSB</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Current Data Source Info */}
+        <div className="mb-6 sm:mb-8">
+          <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
+            currentDataSource === 'trikora' 
+              ? 'bg-blue-100 text-blue-800' 
+              : 'bg-green-100 text-green-800'
+          }`}>
+            Saat ini menggunakan: {currentDataSource === 'trikora' ? 'Data Trikora' : 'Data BSB'}
+          </div>
         </div>
 
         {/* Statistics Cards */}
