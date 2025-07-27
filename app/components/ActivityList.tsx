@@ -63,24 +63,40 @@ export default function ActivityList({
 
             {/* Regulation Codes */}
             <div className="flex flex-wrap gap-1.5 sm:gap-2">
-              {Object.entries(activity.zones).map(([zone, regulation]) => (
-                <span
-                  key={zone}
-                  className={`inline-flex items-center px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium ${
-                    zone === selectedZone
-                      ? regulation === "T1"
-                        ? "bg-yellow-100 text-yellow-800 border border-yellow-200"
-                        : regulation === "B1"
-                        ? "bg-blue-100 text-blue-800 border border-blue-200"
-                        : regulation === "B3"
-                        ? "bg-purple-100 text-purple-800 border border-purple-200"
-                        : "bg-green-100 text-green-800 border border-green-200"
-                      : "bg-gray-100 text-gray-600 border border-gray-200"
-                  }`}
-                >
-                  {regulation}
-                </span>
-              ))}
+              {selectedZone && activity.zones[selectedZone] ? (
+                // Show unique regulation codes for the selected zone
+                (() => {
+                  const regulation = activity.zones[selectedZone];
+                  const uniqueCodes = [...new Set(regulation.split(',').map(code => code.trim()).filter(code => code !== ''))];
+                  
+                  return uniqueCodes.map((code, codeIndex) => (
+                    <span
+                      key={`${selectedZone}-${code}-${codeIndex}`}
+                      className={`inline-flex items-center px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium ${
+                        code === "T1"
+                          ? "bg-yellow-100 text-yellow-800 border border-yellow-200"
+                          : code === "B1"
+                          ? "bg-blue-100 text-blue-800 border border-blue-200"
+                          : code === "B3"
+                          ? "bg-purple-100 text-purple-800 border border-purple-200"
+                          : "bg-green-100 text-green-800 border border-green-200"
+                      }`}
+                    >
+                      {code}
+                    </span>
+                  ));
+                })()
+              ) : (
+                // Show all zones when no zone is selected
+                Object.entries(activity.zones).map(([zone, regulation]) => (
+                  <span
+                    key={zone}
+                    className="bg-gray-100 text-gray-600 border border-gray-200 inline-flex items-center px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium"
+                  >
+                    {zone}: {regulation}
+                  </span>
+                ))
+              )}
             </div>
 
             {/* Zone Information (for mobile) */}
