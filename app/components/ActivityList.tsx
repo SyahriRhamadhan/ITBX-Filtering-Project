@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface Activity {
   activity: string;
   zones: Record<string, string>;
@@ -16,6 +18,18 @@ export default function ActivityList({
   selectedRegulation,
   searchTerm,
 }: ActivityListProps) {
+  const [copySuccess, setCopySuccess] = useState(false);
+
+  const handleCopyList = async () => {
+    try {
+      const activityList = activities.map(activity => activity.activity).join('\n');
+      await navigator.clipboard.writeText(activityList);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  };
   if (activities.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow-sm border p-6 sm:p-8 lg:p-12 text-center">
@@ -50,6 +64,45 @@ export default function ActivityList({
 
   return (
     <div className="space-y-3 sm:space-y-4">
+      {/* Header dengan tombol copy */}
+      <div className="bg-white rounded-lg shadow-sm border p-4 sm:p-5 lg:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+              Daftar Kegiatan
+            </h2>
+            <p className="text-sm text-gray-600 mt-1">
+              {activities.length} kegiatan ditemukan
+            </p>
+          </div>
+          <button
+            onClick={handleCopyList}
+            className={`inline-flex items-center px-3 sm:px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium transition-colors ${
+              copySuccess
+                ? 'bg-green-50 text-green-700 border-green-300'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            {copySuccess ? (
+              <>
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                Tersalin!
+              </>
+            ) : (
+              <>
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Copy Daftar
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Daftar aktivitas */}
       {activities.map((activity, index) => (
         <div
           key={index}

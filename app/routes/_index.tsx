@@ -1,6 +1,6 @@
 import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData, useNavigate, useSearchParams } from "@remix-run/react";
+import { useLoaderData, useNavigate, useSearchParams, Link } from "@remix-run/react";
 import { useState, useMemo } from "react";
 import fs from "fs";
 import path from "path";
@@ -214,6 +214,19 @@ export default function RDTRFilter() {
                 Sistem filtering untuk mengetahui ketentuan kegiatan berdasarkan
                 zona dan kode regulasi
               </p>
+            </div>
+            
+            {/* Navigation Links */}
+            <div className="hidden md:flex items-center gap-3 mx-4">
+              <Link
+                to="/html-parser"
+                className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+                HTML Parser
+              </Link>
             </div>
             
             {/* Data Source Switch */}
