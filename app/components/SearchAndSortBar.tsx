@@ -39,10 +39,28 @@ export default function SearchAndSortBar({
   data,
 }: SearchAndSortBarProps) {
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [showExcelPreview, setShowExcelPreview] = useState(false);
 
   const handleExport = (format: "text" | "csv" | "xlsx") => {
     onExport(format);
     setShowExportMenu(false);
+  };
+
+  const generateExcelPreview = () => {
+    const headers = ['No', 'Kegiatan', 'Zona', 'Kode Regulasi', 'Keterangan', 'Tanggal Export'];
+    const previewData = filteredActivities.slice(0, 5).map((activity, index) => {
+      const regulations = activity.zones[selectedZone]?.split(',').map(r => r.trim()) || [];
+      const descriptions = regulations.map(code => data.regulations[code] || code);
+      return [
+        index + 1,
+        activity.activity,
+        selectedZone,
+        regulations.join(', '),
+        descriptions.join(', '),
+        new Date().toLocaleDateString('id-ID')
+      ];
+    });
+    return { headers, data: previewData };
   };
 
   return (
@@ -183,6 +201,34 @@ export default function SearchAndSortBar({
                       </svg>
                       Download Excel
                     </button>
+                    <button
+                      onClick={() => {
+                        setShowExcelPreview(true);
+                        setShowExportMenu(false);
+                      }}
+                      className="w-full text-left px-3 sm:px-4 py-2 text-xs sm:text-sm text-blue-700 hover:bg-blue-50 flex items-center gap-2 border-t border-gray-100"
+                    >
+                      <svg
+                        className="w-3 h-3 sm:w-4 sm:h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
+                      </svg>
+                      Preview Excel
+                    </button>
                   </div>
                 </div>
               )}
@@ -197,6 +243,107 @@ export default function SearchAndSortBar({
           className="fixed inset-0 z-10"
           onClick={() => setShowExportMenu(false)}
         />
+      )}
+
+      {/* Excel Preview Modal */}
+      {showExcelPreview && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Preview Format Excel</h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  Menampilkan 5 data pertama dari {resultCount} total kegiatan
+                </p>
+              </div>
+              <button
+                onClick={() => setShowExcelPreview(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-4 overflow-auto max-h-[calc(90vh-140px)]">
+              {filteredActivities.length > 0 ? (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border border-gray-300">
+                    <thead>
+                      <tr className="bg-green-50">
+                        {generateExcelPreview().headers.map((header, index) => (
+                          <th
+                            key={index}
+                            className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold text-gray-900"
+                          >
+                            {header}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {generateExcelPreview().data.map((row, rowIndex) => (
+                        <tr key={rowIndex} className={rowIndex % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                          {row.map((cell, cellIndex) => (
+                            <td
+                              key={cellIndex}
+                              className="border border-gray-300 px-3 py-2 text-sm text-gray-900"
+                            >
+                              {cellIndex === 1 ? ( // Kegiatan column
+                                <div className="max-w-xs truncate" title={String(cell)}>
+                                  {cell}
+                                </div>
+                              ) : (
+                                cell
+                              )}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  
+                  {filteredActivities.length > 5 && (
+                    <div className="mt-3 text-sm text-gray-600 text-center">
+                      ... dan {filteredActivities.length - 5} data lainnya akan disertakan dalam file Excel
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  Tidak ada data untuk di-preview
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex items-center justify-between p-4 border-t border-gray-200 bg-gray-50">
+              <div className="text-sm text-gray-600">
+                File akan disimpan sebagai: rdtr-filter-{selectedZone}-{new Date().toISOString().split('T')[0]}.xls
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowExcelPreview(false)}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                >
+                  Tutup
+                </button>
+                <button
+                  onClick={() => {
+                    handleExport("xlsx");
+                    setShowExcelPreview(false);
+                  }}
+                  className="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 transition-colors"
+                >
+                  Download Excel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

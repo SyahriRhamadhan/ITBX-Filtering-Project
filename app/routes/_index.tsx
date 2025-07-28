@@ -44,6 +44,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const dataSource = url.searchParams.get("dataSource") || "trikora";
     const selectedZone = url.searchParams.get("zone") || "";
     const selectedRegulation = url.searchParams.get("regulation") || "";
+    
+    // Properly decode URL parameter for regulations
+    const regulationsParam = url.searchParams.get("regulations");
+    
+    // Decode URL-encoded parameter and split by semicolon (to avoid conflict with comma in combinations like "B1,B3")
+    const selectedRegulations = regulationsParam 
+      ? [...new Set(decodeURIComponent(regulationsParam).split(";").filter(Boolean))]
+      : [];
 
     // Load data based on selected source
     const dataFileName = dataSource === "bsb" ? "bsb-data.json" : "rdtr-data.json";
@@ -64,6 +72,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       dataSource: dataSource as 'trikora' | 'bsb',
       selectedZone,
       selectedRegulation,
+      selectedRegulations,
     });
   } catch (error) {
     console.error("Error loading RDTR data:", error);
@@ -72,12 +81,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
       dataSource: "trikora" as const,
       selectedZone: "",
       selectedRegulation: "",
+      selectedRegulations: [] as string[],
     });
   }
 }
 
 export default function RDTRFilter() {
-  const { data, dataSource, selectedZone, selectedRegulation } =
+  const { data, dataSource, selectedZone, selectedRegulation, selectedRegulations } =
     useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -92,6 +102,7 @@ export default function RDTRFilter() {
     // Clear zone and regulation when switching data sources
     newSearchParams.delete('zone');
     newSearchParams.delete('regulation');
+    newSearchParams.delete('regulations');
     navigate(`?${newSearchParams.toString()}`);
   };
 
@@ -105,11 +116,19 @@ export default function RDTRFilter() {
         const zoneData = activity.zones[selectedZone];
         if (!zoneData) return false;
 
-        // If no regulation filter, show all activities for this zone
-        if (!selectedRegulation) return true;
+        // If using combination filter (legacy)
+        if (selectedRegulation) {
+          return zoneData.trim() === selectedRegulation;
+        }
 
-        // Check if the zone data exactly matches the selected regulation combination
-        return zoneData.trim() === selectedRegulation;
+        // If using multi-select regulation combinations
+        if (selectedRegulations.length > 0) {
+          // Check if the activity's zone data matches ANY of the selected regulation combinations
+          return selectedRegulations.includes(zoneData.trim());
+        }
+
+        // If no regulation filter, show all activities for this zone
+        return true;
       })
       .filter((activity: Activity) => {
         // Apply search term filter
@@ -130,6 +149,7 @@ export default function RDTRFilter() {
     data.activities,
     selectedZone,
     selectedRegulation,
+    selectedRegulations,
     searchTerm,
     sortOrder,
   ]);
@@ -289,6 +309,7 @@ export default function RDTRFilter() {
                     data={data}
                     selectedZone={selectedZone}
                     selectedRegulation={selectedRegulation}
+                    selectedRegulations={selectedRegulations}
                     availableRegulationsForZone={availableRegulationsForZone}
                     onZoneChange={() => setIsSidebarOpen(false)}
                   />
@@ -303,6 +324,7 @@ export default function RDTRFilter() {
               data={data}
               selectedZone={selectedZone}
               selectedRegulation={selectedRegulation}
+              selectedRegulations={selectedRegulations}
               availableRegulationsForZone={availableRegulationsForZone}
             />
           </div>
@@ -330,26 +352,41 @@ export default function RDTRFilter() {
                   <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
                     Zona: {selectedZone}
                   </h2>
-                  {selectedRegulation && (
+                  {(selectedRegulation || selectedRegulations.length > 0) && (
                     <div className="mt-2 sm:mt-1">
                       <p className="text-sm sm:text-base text-gray-600 break-words">
                         Filter:{" "}
-                        <span className="inline-flex items-center px-2 py-1 rounded text-xs sm:text-sm font-medium bg-gray-100 text-gray-800">
-                          {selectedRegulation}
-                        </span>
-                        <span className="hidden sm:inline">
-                          {(() => {
-                            const codes = selectedRegulation
-                              .split(",")
-                              .map((c) => c.trim());
-                            const descriptions = codes.map(
-                              (code) => data.regulations[code] || code
-                            );
-                            return codes.length === 1
-                              ? ` - ${descriptions[0]}`
-                              : ` - ${descriptions.join(" + ")}`;
-                          })()}
-                        </span>
+                        {selectedRegulations.length > 0 ? (
+                          <span className="inline-flex flex-wrap gap-1">
+                            {selectedRegulations.map((code, index) => (
+                              <span key={code} className="inline-flex items-center px-2 py-1 rounded text-xs sm:text-sm font-medium bg-blue-100 text-blue-800">
+                                {code}
+                                <span className="hidden sm:inline ml-1">
+                                  - {data.regulations[code] || code}
+                                </span>
+                              </span>
+                            ))}
+                          </span>
+                        ) : selectedRegulation ? (
+                          <>
+                            <span className="inline-flex items-center px-2 py-1 rounded text-xs sm:text-sm font-medium bg-gray-100 text-gray-800">
+                              {selectedRegulation}
+                            </span>
+                            <span className="hidden sm:inline">
+                              {(() => {
+                                const codes = selectedRegulation
+                                  .split(",")
+                                  .map((c) => c.trim());
+                                const descriptions = codes.map(
+                                  (code) => data.regulations[code] || code
+                                );
+                                return codes.length === 1
+                                  ? ` - ${descriptions[0]}`
+                                  : ` - ${descriptions.join(" + ")}`;
+                              })()}
+                            </span>
+                          </>
+                        ) : null}
                       </p>
                     </div>
                   )}

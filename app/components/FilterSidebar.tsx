@@ -16,6 +16,7 @@ interface FilterSidebarProps {
   data: RDTRData;
   selectedZone: string;
   selectedRegulation: string;
+  selectedRegulations: string[]; // Array of selected regulation codes
   availableRegulationsForZone: string[];
   onZoneChange?: () => void; // Optional callback for mobile
 }
@@ -24,6 +25,7 @@ export default function FilterSidebar({
   data,
   selectedZone,
   selectedRegulation,
+  selectedRegulations,
   availableRegulationsForZone,
   onZoneChange,
 }: FilterSidebarProps) {
@@ -36,6 +38,9 @@ export default function FilterSidebar({
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const zoneInputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  
+  // State untuk modal regulation combinations
+  const [isRegulationModalOpen, setIsRegulationModalOpen] = useState(false);
 
   // Filter zones berdasarkan search term
   const filteredZones = data.zones.filter(zone =>
@@ -97,6 +102,13 @@ export default function FilterSidebar({
     handleZoneChange(zone);
   };
 
+  const handleClearZone = () => {
+    setZoneSearchTerm("");
+    setIsZoneDropdownOpen(false);
+    setHighlightedIndex(-1);
+    handleZoneChange("");
+  };
+
   const handleZoneInputKeyDown = (e: React.KeyboardEvent) => {
     if (!isZoneDropdownOpen) {
       if (e.key === 'ArrowDown' || e.key === 'Enter') {
@@ -146,6 +158,54 @@ export default function FilterSidebar({
     navigate(`?${newSearchParams.toString()}`);
   };
 
+  // Handle individual regulation code toggle for multi-select
+  const handleRegulationCodeToggle = (code: string) => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    let newSelectedRegulations = [...selectedRegulations];
+    
+    if (newSelectedRegulations.includes(code)) {
+      // Remove code if already selected
+      newSelectedRegulations = newSelectedRegulations.filter(r => r !== code);
+    } else {
+      // Add code if not selected
+      newSelectedRegulations.push(code);
+    }
+    
+    // Remove duplicates and ensure clean array
+    newSelectedRegulations = [...new Set(newSelectedRegulations)];
+    
+    // Update URL params
+    if (newSelectedRegulations.length > 0) {
+      newSearchParams.set("regulations", newSelectedRegulations.join(";"));
+    } else {
+      newSearchParams.delete("regulations");
+    }
+    
+    // Clear single regulation selection when using multi-select
+    newSearchParams.delete("regulation");
+    
+    navigate(`?${newSearchParams.toString()}`);
+  };
+
+  // Handle "Select All" / "Clear All" for regulation codes
+  const handleSelectAllRegulations = () => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    const allCombinations = getAvailableCombinations();
+    
+    if (selectedRegulations.length === allCombinations.length) {
+      // Clear all if all are selected
+      newSearchParams.delete("regulations");
+    } else {
+      // Select all if not all are selected
+      newSearchParams.set("regulations", allCombinations.join(";"));
+    }
+    
+    // Clear single regulation selection
+    newSearchParams.delete("regulation");
+    
+    navigate(`?${newSearchParams.toString()}`);
+  };
+
   // Get unique regulation codes that are actually used in the selected zone
   const getActiveRegulationCodes = () => {
     if (!selectedZone) return [];
@@ -176,7 +236,7 @@ export default function FilterSidebar({
 
     data.activities.forEach((activity) => {
       const zoneData = activity.zones[selectedZone];
-      if (zoneData) {
+      if (zoneData && zoneData.trim()) {
         combinationsSet.add(zoneData.trim());
       }
     });
@@ -186,6 +246,11 @@ export default function FilterSidebar({
 
   const activeRegulationCodes = getActiveRegulationCodes();
   const availableCombinations = getAvailableCombinations();
+  
+  // Filter selectedRegulations to only include valid combinations for current zone
+  const validSelectedRegulations = selectedRegulations.filter(reg => 
+    availableCombinations.includes(reg)
+  );
 
   return (
     <div className="bg-white rounded-lg shadow-sm border">
@@ -204,8 +269,22 @@ export default function FilterSidebar({
               onKeyDown={handleZoneInputKeyDown}
               onFocus={() => setIsZoneDropdownOpen(true)}
               placeholder="Ketik untuk mencari zona..."
-              className="w-full px-3 sm:px-3.5 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-3 lg:py-3 text-sm sm:text-base md:text-base lg:text-lg text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400 pr-10"
+              className="w-full px-3 sm:px-3.5 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-3 lg:py-3 text-sm sm:text-base md:text-base lg:text-lg text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400 pr-16"
             />
+            
+            {/* Clear Button */}
+            {selectedZone && (
+              <button
+                type="button"
+                onClick={handleClearZone}
+                className="absolute inset-y-0 right-8 flex items-center pr-1 text-gray-400 hover:text-red-500 transition-colors"
+                title="Hapus zona"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
             
             {/* Dropdown Arrow */}
             <button
@@ -272,16 +351,41 @@ export default function FilterSidebar({
         {/* Regulation Selection - Only show if zone is selected */}
         {selectedZone && (
           <div className="space-y-2 sm:space-y-2.5 md:space-y-3">
-            <label className="block text-sm sm:text-base md:text-base lg:text-lg font-medium text-gray-700">
-              Kode Regulasi
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="block text-sm sm:text-base md:text-base lg:text-lg font-medium text-gray-700">
+                Kode Regulasi
+              </label>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleSelectAllRegulations}
+                  className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  {validSelectedRegulations.length === availableCombinations.length ? 'Hapus Semua' : 'Pilih Semua'}
+                </button>
+                {validSelectedRegulations.length > 0 && (
+                  <button
+                    onClick={() => {
+                      const newSearchParams = new URLSearchParams(searchParams);
+                      newSearchParams.delete("regulations");
+                      newSearchParams.delete("regulation");
+                      navigate(`?${newSearchParams.toString()}`);
+                    }}
+                    className="text-xs sm:text-sm text-red-600 hover:text-red-800 font-medium"
+                  >
+                    Clear All
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Combination Filter (Legacy) */}
             <select
               value={selectedRegulation}
               onChange={(e) => handleRegulationChange(e.target.value)}
               className="w-full px-3 sm:px-3.5 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-3 lg:py-3 text-sm sm:text-base md:text-base lg:text-lg text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400"
             >
               <option value="" className="text-gray-500">
-                -- Semua Kode --
+                -- Filter Kombinasi --
               </option>
               {availableRegulationsForZone.map((regulation) => (
                 <option
@@ -293,6 +397,37 @@ export default function FilterSidebar({
                 </option>
               ))}
             </select>
+
+            {/* Multi-select All Combinations - Modal Trigger */}
+            <div className="space-y-2">
+              <div className="text-xs sm:text-sm text-gray-600 font-medium">
+                Pilih Kombinasi Kode:
+              </div>
+              <button
+                onClick={() => setIsRegulationModalOpen(true)}
+                className="w-full px-4 py-3 text-left border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-700">
+                    {validSelectedRegulations.length > 0 
+                      ? `${validSelectedRegulations.length} kombinasi terpilih`
+                      : 'Klik untuk memilih kombinasi kode'
+                    }
+                  </span>
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+            </div>
+
+            {/* Selected regulations summary */}
+            {validSelectedRegulations.length > 0 && (
+              <div className="text-xs sm:text-sm text-gray-600 bg-blue-50 p-2 rounded-md">
+                <span className="font-medium">Kode terpilih ({validSelectedRegulations.length}):</span>{" "}
+                {validSelectedRegulations.join(", ")}
+              </div>
+            )}
 
             {/* Show available combinations info */}
             {availableRegulationsForZone.length > 0 && (
@@ -381,6 +516,192 @@ export default function FilterSidebar({
           </div>
         )}
       </div>
+      
+      {/* Regulation Combinations Modal */}
+      {isRegulationModalOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            {/* Background overlay */}
+            <div 
+              className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
+              onClick={() => setIsRegulationModalOpen(false)}
+            ></div>
+
+            {/* Modal panel */}
+            <div className="inline-block w-full max-w-4xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
+              {/* Modal header */}
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900">
+                    Pilih Kombinasi Kode Regulasi
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Zona: {selectedZone} • {availableCombinations.length} kombinasi tersedia
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleSelectAllRegulations}
+                    className="px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 transition-colors"
+                  >
+                    {validSelectedRegulations.length === availableCombinations.length ? 'Hapus Semua' : 'Pilih Semua'}
+                  </button>
+                  {validSelectedRegulations.length > 0 && (
+                    <button
+                      onClick={() => {
+                        const newSearchParams = new URLSearchParams(searchParams);
+                        newSearchParams.delete("regulations");
+                        newSearchParams.delete("regulation");
+                        navigate(`?${newSearchParams.toString()}`);
+                      }}
+                      className="px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 transition-colors"
+                    >
+                      Clear All
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setIsRegulationModalOpen(false)}
+                    className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Selected regulations summary */}
+              {validSelectedRegulations.length > 0 && (
+                <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="text-sm font-semibold text-blue-900">
+                      Kombinasi Terpilih ({validSelectedRegulations.length})
+                    </div>
+                    <button
+                      onClick={() => {
+                        const newSearchParams = new URLSearchParams(searchParams);
+                        newSearchParams.delete("regulations");
+                        newSearchParams.delete("regulation");
+                        navigate(`?${newSearchParams.toString()}`);
+                      }}
+                      className="text-xs text-red-600 hover:text-red-800 font-medium"
+                    >
+                      Hapus Semua
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+                    {validSelectedRegulations.map((combination) => (
+                      <div
+                        key={combination}
+                        className="inline-flex items-center justify-between gap-1 px-2 py-1.5 text-xs font-medium text-blue-700 bg-blue-100 rounded-md border border-blue-200"
+                      >
+                        <span className="truncate">{combination}</span>
+                        <button
+                          onClick={() => handleRegulationCodeToggle(combination)}
+                          className="text-blue-500 hover:text-blue-700 flex-shrink-0 ml-1"
+                          title={`Hapus ${combination}`}
+                        >
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Combinations list */}
+              <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-md">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+                  {availableCombinations.map((combination, index) => {
+                    const isSelected = validSelectedRegulations.includes(combination);
+                    
+                    // Get descriptions for all codes in the combination
+                    const codes = combination.split(",").map(c => c.trim());
+                    const descriptions = codes.map(code => data.regulations[code]).filter(Boolean);
+                    
+                    return (
+                      <label
+                        key={combination}
+                        className={`flex items-start gap-3 p-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-gray-100 ${
+                          index % 2 === 0 ? 'md:border-r' : ''
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => handleRegulationCodeToggle(combination)}
+                          className="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-base font-semibold text-gray-900">{combination}</span>
+                            {isSelected && (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                                Terpilih
+                              </span>
+                            )}
+                          </div>
+                          {descriptions.length > 0 && (
+                            <div className="space-y-2">
+                              {descriptions.map((desc, descIndex) => (
+                                <div key={descIndex} className="flex items-start gap-2">
+                                  <span className={`inline-flex items-center justify-center w-6 h-6 rounded text-xs font-bold flex-shrink-0 ${
+                                    codes[descIndex] === "I"
+                                      ? "bg-green-100 text-green-800"
+                                      : codes[descIndex] === "T1"
+                                      ? "bg-yellow-100 text-yellow-800"
+                                      : codes[descIndex] === "T2"
+                                      ? "bg-yellow-100 text-yellow-800"
+                                      : codes[descIndex] === "T3"
+                                      ? "bg-yellow-100 text-yellow-800"
+                                      : codes[descIndex] === "B1"
+                                      ? "bg-blue-100 text-blue-800"
+                                      : codes[descIndex] === "B2"
+                                      ? "bg-blue-100 text-blue-800"
+                                      : codes[descIndex] === "B3"
+                                      ? "bg-purple-100 text-purple-800"
+                                      : "bg-gray-100 text-gray-800"
+                                  }`}>
+                                    {codes[descIndex]}
+                                  </span>
+                                  <span className="text-sm text-gray-600 leading-relaxed">{desc}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Modal footer */}
+              <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
+                <div className="text-sm text-gray-500">
+                  {validSelectedRegulations.length} dari {availableCombinations.length} kombinasi terpilih
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setIsRegulationModalOpen(false)}
+                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    onClick={() => setIsRegulationModalOpen(false)}
+                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    Selesai
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
