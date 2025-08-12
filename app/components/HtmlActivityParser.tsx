@@ -145,11 +145,16 @@ export default function HtmlActivityParser({ htmlContent }: HtmlActivityParserPr
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
-                Daftar Kegiatan dari HTML
-              </h2>
-              <p className="text-sm text-gray-600 mt-1">
-                {filteredAndSortedActivities.length} kegiatan ditemukan
+              <div className="flex items-center gap-3 mb-2">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+                  Daftar Kegiatan dari HTML
+                </h2>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                  Total: {filteredAndSortedActivities.length} kegiatan
+                </span>
+              </div>
+              <p className="text-sm text-gray-600">
+                {searchTerm ? `Hasil pencarian untuk "${searchTerm}"` : 'Semua kegiatan yang tersedia'}
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -242,9 +247,14 @@ export default function HtmlActivityParser({ htmlContent }: HtmlActivityParserPr
         return (
           <div key={category} className="bg-white rounded-lg shadow-sm border p-4 sm:p-5 lg:p-6">
             <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">
-                {category}
-              </h3>
+              <div className="flex items-center gap-3">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {category}
+                </h3>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  {activities.length} kegiatan
+                </span>
+              </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => toggleCategoryVisibility(category)}

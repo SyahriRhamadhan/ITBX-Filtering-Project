@@ -1,0 +1,158 @@
+3. Teknologi
+Untuk mendukung pengembangan aplikasi RDTR Filter - Sistem Filtering Ketentuan Kegiatan dan Penggunaan Lahan di Kabupaten Bintan, berikut adalah teknologi-teknologi yang digunakan dalam proses pengembangan aplikasi:
+
+________________________________________
+1. Front-End (Client-Side)
+• Remix Framework
+  o Deskripsi: Remix adalah framework React full-stack yang memungkinkan pengembangan aplikasi web dengan server-side rendering (SSR) dan client-side navigation yang optimal. Remix menyediakan fitur loader untuk data fetching dan routing yang efisien.
+  o Kegunaan: Digunakan sebagai framework utama untuk membangun aplikasi web dengan performa tinggi, SEO-friendly, dan pengalaman pengguna yang responsif.
+
+• ReactJS
+  o Deskripsi: ReactJS adalah pustaka JavaScript untuk membangun antarmuka pengguna (UI) yang dinamis dan interaktif. React memudahkan pengembangan komponen yang dapat digunakan kembali dengan state management yang efisien.
+  o Kegunaan: Digunakan untuk membangun komponen UI seperti filter sidebar, activity list, search bar, dan komponen interaktif lainnya dalam aplikasi RDTR Filter.
+
+• Tailwind CSS
+  o Deskripsi: Tailwind CSS adalah framework CSS utility-first yang memungkinkan pengembangan antarmuka dengan penulisan kelas CSS minimal dan fleksibel, serta mendukung responsive design.
+  o Kegunaan: Membantu mempercepat pengembangan antarmuka dengan kelas-kelas yang sudah tersedia, menciptakan desain yang konsisten dan responsif untuk berbagai ukuran layar.
+
+• TypeScript
+  o Deskripsi: TypeScript adalah superset dari JavaScript yang menambahkan static typing, memungkinkan deteksi error lebih awal dan pengembangan yang lebih aman.
+  o Kegunaan: Digunakan untuk memastikan type safety dalam pengembangan aplikasi, mendefinisikan interface untuk data struktur, dan meningkatkan maintainability kode.
+
+________________________________________
+2. Back-End (Server-Side)
+• Node.js
+  o Deskripsi: Node.js adalah runtime JavaScript yang memungkinkan eksekusi JavaScript di server-side, menyediakan environment untuk menjalankan aplikasi web.
+  o Kegunaan: Digunakan sebagai runtime environment untuk menjalankan aplikasi Remix dan menangani server-side operations.
+
+• Express.js
+  o Deskripsi: Express.js adalah framework web minimalis untuk Node.js yang menyediakan fitur routing, middleware, dan HTTP utilities.
+  o Kegunaan: Digunakan untuk menangani HTTP requests, routing, dan middleware dalam aplikasi server.
+
+• File System (JSON)
+  o Deskripsi: Sistem penyimpanan data menggunakan file JSON untuk menyimpan data RDTR (Rencana Detail Tata Ruang) dan BSB (Bagan Struktur Bangunan).
+  o Kegunaan: Menyimpan data aktivitas, zona, dan regulasi dalam format JSON yang mudah dibaca dan diproses oleh aplikasi.
+
+________________________________________
+3. Tools dan Utilities
+• Vite
+  o Deskripsi: Vite adalah build tool yang menyediakan development server yang cepat dan bundling yang efisien untuk aplikasi modern.
+  o Kegunaan: Digunakan untuk development server, hot module replacement, dan building aplikasi untuk production.
+
+• XLSX Library
+  o Deskripsi: Library JavaScript untuk membaca dan menulis file Excel (.xlsx) yang memungkinkan processing data spreadsheet.
+  o Kegunaan: Digunakan untuk memproses file Excel yang berisi data RDTR dan mengkonversinya ke format JSON.
+
+• ESLint & TypeScript Compiler
+  o Deskripsi: Tools untuk code linting dan type checking yang memastikan kualitas kode dan konsistensi coding standards.
+  o Kegunaan: Memastikan kode mengikuti best practices dan bebas dari error potensial.
+
+4. Substansi/Materi Perencanaan
+Materi Kegiatan Sistem RDTR Filter untuk Koordinasi Pelaksanaan Penataan Ruang Kabupaten Bintan yaitu pengembangan aplikasi web yang memungkinkan filtering dan pencarian ketentuan kegiatan berdasarkan zona dan kode regulasi. Sistem ini mendukung koordinasi pelaksanaan penataan ruang yang melibatkan Dinas Pekerjaan Umum Penataan Ruang dan Pertanahan Kabupaten Bintan serta berbagai bidang dan dinas terkait.
+
+Berikut adalah tugas-tugas yang telah dilaksanakan dalam pembuatan sistem RDTR Filter untuk mendukung kegiatan perencanaan dan pengendalian ruang di Kabupaten Bintan:
+
+1. Pengembangan Aplikasi RDTR Filter V.1.0.0
+   Aplikasi RDTR Filter dikembangkan menggunakan Remix framework dengan React dan TypeScript, menyediakan sistem filtering ketentuan kegiatan dan penggunaan lahan berdasarkan zona dan kode regulasi. Aplikasi ini memiliki fitur pencarian zona dengan dropdown searchable, filter regulasi dengan dukungan multi-select, pencarian aktivitas berdasarkan kata kunci, pengurutan data (ascending/descending), dan ekspor data ke format text, CSV, dan Excel. Interface dirancang responsif dengan Tailwind CSS untuk mendukung penggunaan di desktop dan mobile, serta menyediakan dua sumber data (Trikora dan BSB) yang dapat dipilih pengguna.
+
+2. Pengembangan Fitur HTML Parser
+   Fitur HTML Parser memungkinkan pengguna untuk mengurai konten HTML dan mengekstrak daftar aktivitas beserta kategorinya secara otomatis. Parser dapat mengenali struktur HTML dengan class 'itbxListTitle' untuk kategori dan 'itbxList-text' untuk aktivitas, mengkonversi teks ke format title case, dan mengelompokkan aktivitas berdasarkan kategori. Fitur ini dilengkapi dengan fungsi pencarian, pengurutan (ascending, descending, original), penyembunyian/penampilan kategori, dan kemampuan copy daftar aktivitas baik secara keseluruhan maupun per kategori.
+
+3. Pengembangan Sistem Filter dan Pencarian Lanjutan
+   Sistem filter dikembangkan dengan kemampuan filtering berdasarkan zona menggunakan dropdown searchable dengan keyboard navigation (arrow keys, enter, escape), filter regulasi dengan dukungan single selection dan multi-select menggunakan checkbox, serta pencarian real-time berdasarkan nama aktivitas. Sistem ini juga menyediakan informasi detail regulasi dengan deskripsi lengkap, penanganan URL parameters untuk bookmarking dan sharing, dan reset otomatis filter ketika mengubah sumber data.
+
+4. Pengembangan Fitur Export dan Utilitas
+   Fitur export memungkinkan pengguna untuk mengekspor hasil filter ke berbagai format: text (dengan header informasi zona dan regulasi), CSV (format tabular untuk spreadsheet), dan Excel (format .xls dengan tab separator). Setiap export dilengkapi dengan metadata seperti tanggal export, total kegiatan, dan informasi filter yang diterapkan. Aplikasi juga menyediakan utilitas copy to clipboard untuk daftar aktivitas dan dukungan fallback untuk browser yang tidak mendukung clipboard API.
+
+5. Pengembangan Interface Responsif dan User Experience
+   Interface aplikasi dirancang dengan pendekatan mobile-first menggunakan Tailwind CSS, menyediakan sidebar filter yang dapat ditampilkan/disembunyikan di mobile dengan overlay, navigation yang mudah digunakan dengan breadcrumb dan link antar halaman, serta feedback visual untuk aksi pengguna (copy success, loading states). Aplikasi juga dilengkapi dengan welcome screen yang informatif ketika belum ada filter yang dipilih dan error handling untuk kasus data tidak ditemukan atau gagal dimuat.
+
+5. Realisasi Kegiatan Bulan Ke-5
+
+Secara keseluruhan, pelaksanaan kegiatan pada bulan ke-5 berjalan dengan baik, dan seluruh rencana kerja telah terlaksana sesuai dengan target. Berdasarkan rencana kerja yang disepakati, secara garis besar, Tenaga Ahli Bidang Teknologi Informasi Komputer pada bulan ke-5 bertugas untuk mempersiapkan, merancang dan mengembangkan sistem GIS berbasis web custom yang disesuaikan dengan kebutuhan Dinas PUPRP Kabupaten Bintan, yang meliputi integrasi data geospasial, pembuatan tampilan peta interaktif, dan pengembangan fitur analisis spasial untuk mendukung proses perencanaan penataan ruang.
+
+Realisasi kegiatan Tenaga Ahli Web Developer dapat dilihat pada tabel berikut:
+
+1) Pengembangan Aplikasi RDTR Filter V.1.0.0
+Deskripsi:
+• Pengembangan aplikasi web filtering ketentuan kegiatan dan penggunaan lahan berbasis Remix Framework dengan React dan TypeScript, menyediakan sistem filtering berdasarkan zona dan kode regulasi untuk mendukung koordinasi penataan ruang Kabupaten Bintan.
+• Aplikasi terdiri dari beberapa komponen utama: FilterSidebar untuk kontrol filter, ActivityList untuk menampilkan hasil, WelcomeScreen untuk halaman awal, dan SearchAndSortBar untuk pencarian dan pengurutan data.
+• Setiap komponen dikembangkan secara modular untuk memudahkan pemeliharaan dan pengembangan lebih lanjut.
+• Langkah-langkah:
+• Penyusunan struktur aplikasi utama pada `_index.tsx` dengan mengimpor dan merangkai komponen:
+• FilterSidebar untuk filtering berdasarkan zona dan regulasi
+• ActivityList untuk menampilkan daftar kegiatan yang difilter
+• WelcomeScreen untuk tampilan awal ketika belum ada filter
+• SearchAndSortBar untuk pencarian dan pengurutan aktivitas
+• Implementasi desain responsif dengan Tailwind CSS agar tampilan optimal di desktop dan mobile.
+• Integrasi data JSON (rdtr-data.json dan bsb-data.json) untuk mendukung dua sumber data berbeda.
+• Implementasi URL parameters untuk bookmarking dan sharing filter yang diterapkan.
+• Hasil Kegiatan:
+• Aplikasi RDTR Filter versi 1.0.0 yang menampilkan sistem filtering lengkap dan responsif.
+• Pengguna dapat melakukan filtering berdasarkan zona dan regulasi, pencarian aktivitas, serta pengurutan data.
+• Struktur kode yang modular dan mudah dikembangkan untuk iterasi selanjutnya.
+
+2) Pengembangan Fitur HTML Parser
+Deskripsi:
+• Penambahan fitur HTML Parser yang memungkinkan pengguna mengurai konten HTML dan mengekstrak daftar aktivitas beserta kategorinya secara otomatis dari dokumen perencanaan.
+• Parser dapat mengenali struktur HTML dengan class 'itbxListTitle' untuk kategori dan 'itbxList-text' untuk aktivitas, sehingga memudahkan konversi dokumen HTML menjadi data terstruktur.
+• Integrasi dilakukan pada halaman terpisah `/html-parser` dengan tab untuk "Parser Kegiatan" dan "Parser Keterangan Tambahan".
+• Langkah-langkah:
+• Pengembangan komponen HtmlActivityParser pada `HtmlActivityParser.tsx` untuk parsing konten HTML.
+• Implementasi fungsi parseHtmlContent untuk mengekstrak aktivitas dari struktur HTML dengan regex pattern.
+• Penambahan fitur pencarian real-time dalam hasil parsing dengan highlight kata kunci.
+• Implementasi pengurutan data (ascending, descending, original order) untuk memudahkan navigasi.
+• Penambahan kontrol visibilitas kategori untuk menyembunyikan/menampilkan kategori tertentu.
+• Implementasi fungsi copy to clipboard untuk menyalin daftar aktivitas (keseluruhan atau per kategori).
+• Penggunaan format title case untuk konsistensi tampilan teks hasil parsing.
+• Hasil Kegiatan:
+• Pengguna dapat mengurai dokumen HTML dan mendapatkan daftar aktivitas terstruktur secara otomatis.
+• Proses ekstraksi data dari dokumen perencanaan menjadi lebih efisien dan akurat.
+• Meningkatkan produktivitas dalam pengolahan dokumen HTML menjadi data yang dapat digunakan dalam sistem.
+
+3) Pengembangan Sistem Filter dan Pencarian Lanjutan
+Deskripsi:
+• Sistem filter komprehensif yang memungkinkan filtering berdasarkan zona menggunakan dropdown searchable dengan keyboard navigation, filter regulasi dengan dukungan single dan multi-select, serta pencarian real-time berdasarkan nama aktivitas.
+• Langkah-langkah:
+o Dropdown Zona Searchable:
+• Implementasi dropdown dengan pencarian zona menggunakan keyboard navigation (arrow keys, enter, escape).
+• Penanganan state untuk membuka/menutup dropdown dan highlight opsi yang dipilih.
+o Filter Regulasi Multi-Select:
+• Menyediakan checkbox untuk setiap kode regulasi dengan dukungan single selection dan multi-select.
+• Implementasi toggle untuk mengaktifkan/menonaktifkan mode multi-select.
+o Pencarian Real-time:
+• Implementasi search bar untuk pencarian aktivitas berdasarkan kata kunci dengan debouncing.
+• Highlight hasil pencarian dalam daftar aktivitas.
+o Informasi Detail Regulasi:
+• Menampilkan deskripsi lengkap untuk setiap kode regulasi yang dipilih.
+• Informasi tambahan tentang ketentuan dan batasan untuk setiap regulasi.
+o URL Parameters & State Management:
+• Penanganan URL parameters untuk bookmarking dan sharing filter yang diterapkan.
+• Auto-reset filter ketika mengubah sumber data antara Trikora dan BSB.
+• Hasil Kegiatan:
+• Sistem filter yang responsif dan user-friendly dengan berbagai opsi filtering.
+• Pencarian dan navigasi data menjadi lebih mudah dan efisien.
+• Pengguna dapat dengan mudah menemukan aktivitas spesifik berdasarkan zona, regulasi, atau kata kunci.
+
+4) Pengembangan Fitur Export dan Utilitas Data
+Deskripsi:
+• Fitur export yang memungkinkan pengguna mengekspor hasil filter ke berbagai format (text, CSV, Excel) dengan metadata lengkap, serta utilitas copy to clipboard untuk kemudahan berbagi data.
+• Langkah-langkah:
+o Export Multi-Format:
+• Implementasi export ke format text dengan header informasi zona dan regulasi.
+• Export ke format CSV (format tabular) yang siap digunakan dalam spreadsheet.
+• Export ke format Excel (.xls) dengan tab separator untuk kompatibilitas maksimal.
+o Metadata dan Header:
+• Setiap export dilengkapi dengan metadata seperti tanggal export, total kegiatan, dan informasi filter yang diterapkan.
+• Header informasi mencakup zona yang dipilih, regulasi yang difilter, dan timestamp.
+o Copy to Clipboard:
+• Implementasi utilitas copy to clipboard untuk daftar aktivitas dengan format yang rapi.
+• Dukungan fallback untuk browser yang tidak mendukung clipboard API modern.
+• Feedback visual berupa notifikasi sukses ketika data berhasil disalin.
+o Format Data Terstruktur:
+• Data export disusun dalam format tabular dengan kolom zona, regulasi, aktivitas, dan keterangan.
+• Konsistensi format untuk memudahkan analisis lebih lanjut di aplikasi eksternal.
+• Hasil Kegiatan:
+• Pengguna dapat mengekspor data hasil filter dalam berbagai format sesuai kebutuhan.
+• Proses berbagi dan analisis data menjadi lebih mudah dengan format yang terstandarisasi.
+• Meningkatkan interoperabilitas dengan sistem dan aplikasi lain melalui format export yang beragam.
