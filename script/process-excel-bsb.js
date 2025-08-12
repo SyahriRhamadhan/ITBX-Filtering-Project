@@ -156,24 +156,23 @@ function processExcelFileBSB(filePath) {
       
       const zoneData = {};
       
-      // Check each zone column
+      // Check each zone column - include ALL values including 'X'
       Object.entries(zoneMapping).forEach(([colIndex, zoneName]) => {
         const cellValue = row[parseInt(colIndex)];
-        if (cellValue && String(cellValue).trim() !== '' && String(cellValue).trim() !== 'X') {
+        if (cellValue && String(cellValue).trim() !== '') {
           const regulation = String(cellValue).trim();
-          // Only include valid regulation codes
+          // Include all regulation codes including 'X'
           if (/^[ITBX]\d*$/.test(regulation) || regulation === 'I' || regulation === 'T' || regulation === 'B' || regulation === 'X') {
             zoneData[zoneName] = regulation;
           }
         }
       });
       
-      if (Object.keys(zoneData).length > 0) {
-        activities.push({
-          activity,
-          zones: zoneData
-        });
-      }
+      // Include ALL activities, even those without zone data or only with 'X' values
+      activities.push({
+        activity,
+        zones: zoneData
+      });
     }
     
     console.log('Activities processed:', activities.length);
@@ -191,7 +190,7 @@ function processExcelFileBSB(filePath) {
 }
 
 // Main execution
-const excelPath = path.join(__dirname, 'app', 'data', 'LAMPIRAN XV KETENTUAN KEGIATAN DAN PEMANFAATAN RUANG ZONASI.xlsx');
+const excelPath = path.join(__dirname, 'app', 'data', 'itbx', 'LAMPIRAN XV KETENTUAN KEGIATAN DAN PEMANFAATAN RUANG ZONASI.xlsx');
 const outputPath = path.join(__dirname, 'app', 'data', 'bsb-data.json');
 
 // Create data directory if it doesn't exist

@@ -1,4 +1,4 @@
-import { processRDTRData } from './app/utils/excelProcessor.js';
+import { processRDTRData } from '../app/utils/excelProcessor.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 

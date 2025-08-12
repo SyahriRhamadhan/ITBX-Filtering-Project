@@ -85,20 +85,19 @@ function processExcelFile(filePath) {
       
       const zoneData = {};
       
-      // Check each zone column
+      // Check each zone column - include ALL values including 'X'
       Object.entries(zoneMapping).forEach(([colIndex, zoneName]) => {
         const cellValue = row[parseInt(colIndex)];
-        if (cellValue && cellValue !== 'X' && String(cellValue).trim() !== '') {
+        if (cellValue && String(cellValue).trim() !== '') {
           zoneData[zoneName] = String(cellValue).trim();
         }
       });
       
-      if (Object.keys(zoneData).length > 0) {
-        activities.push({
-          activity,
-          zones: zoneData
-        });
-      }
+      // Include ALL activities, even those without zone data or only with 'X' values
+      activities.push({
+        activity,
+        zones: zoneData
+      });
     }
     
     console.log('Activities processed:', activities.length);
@@ -116,7 +115,7 @@ function processExcelFile(filePath) {
 }
 
 // Main execution
-const excelPath = path.join(__dirname, '..', 'RDTR BUILDER TRIKORA', '3. ITBX LAMPIRAN XIV KETENTUAN KEGIATAN DAN PENGGUNAAN LAHAN (1) - Copy.xlsx');
+const excelPath = path.join(__dirname, 'app', 'data', 'itbx', '3. ITBX LAMPIRAN XIV KETENTUAN KEGIATAN DAN PENGGUNAAN LAHAN (1).xlsx');
 const outputPath = path.join(__dirname, 'app', 'data', 'rdtr-data.json');
 
 // Create data directory if it doesn't exist
