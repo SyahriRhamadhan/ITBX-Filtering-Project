@@ -1,0 +1,36 @@
+Sub Zona,Jenis,Tinggi Bangunan Maks. (m) - Kolektor,Tinggi Bangunan Maks. (m) - Lokal,Lantai Bangunan Maks. - Kolektor,Lantai Bangunan Maks. - Lokal,Garis Sempadan Bangunan Min. (m) - Kolektor,Garis Sempadan Bangunan Min. (m) - Lokal,Jarak Bebas Samping Min. (m),Jarak Bebas Belakang Min. (m),Tampilan Bangunan,Keterangan
+Zona Lindung - Badan Air,-,-,-,-,-,-,-,-,-,-,-
+Zona Lindung - Hutan Lindung,-,-,-,-,-,-,-,-,-,-,-
+Zona Lindung - Perlindungan Setempat,-,5,5,-,-,17.5,12.5,-,-,-,-
+Zona Lindung - Taman Kelurahan,-,5,5,-,-,17.5,12.5,-,-,-,-
+Zona Lindung - Taman RW,-,5,5,-,-,17.5,12.5,-,-,-,-
+Zona Lindung - Taman RT,-,5,5,-,-,17.5,12.5,-,-,-,-
+Zona Lindung - Pemakaman,-,5,5,-,-,17.5,12.5,-,-,-,-
+Zona Lindung - Jalur Hijau,-,5,5,-,-,,,-,-,-,-
+Zona Lindung - Cagar Budaya,-,8,8,-,-,17.5,12.5,3,3,-,-
+Zona Lindung - Ekosistem Mangrove,-,-,-,-,-,-,-,-,-,-,-
+Zona Budidaya - Badan Jalan,-,-,-,-,-,-,-,-,-,-,-
+Zona Budidaya - Hutan Produksi Tetap,-,-,-,-,-,-,-,-,-,-,-
+Zona Budidaya - Hutan Produksi yang dapat Dikonversi,-,-,-,-,-,-,-,-,-,-,-
+Zona Budidaya - Perkebunan,-,5,5,-,-,17.5,12.5,2,2,-,-
+Zona Budidaya - Peternakan,-,13,9,-,-,17.5,12.5,2,2,-,-
+Zona Budidaya - Pertambangan Mineral Bukan Logam,-,13,9,-,-,17.5,12.5,3,3,-,-
+Zona Budidaya - Kawasan Peruntukan Industri,-,13,9,-,-,17.5,12.5,2,2,-,-
+Zona Budidaya - Pariwisata,persil disebelah barat jalan Nasional,21,13,-,-,17.5,12.5,2,2,-,
+Zona Budidaya - Pariwisata,persil disebelah timur jalan Nasional,9,-,-,-,17.5,12.5,2,2,-,"untuk tinggi pagar yang menghadap pantai maksimal adalah 1,5 meter"
+Zona Budidaya - Pariwisata,pariwisata Desa Berakit,21,13,-,-,17.5,12.5,2,2,-,
+Zona Budidaya - Perumahan Kepadatan Tinggi,-,13,9,-,-,17.5,12.5,1,1,-,-
+Zona Budidaya - Perumahan Kepadatan Sedang,-,13,9,-,-,17.5,12.5,1,1,-,-
+Zona Budidaya - Perumahan Kepadatan Rendah,-,13,9,-,-,17.5,12.5,1,1,-,-
+Zona Budidaya - SPU Skala Kota,-,16,12,3 lantai,2 lantai,17.5,12.5,1,1,a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.,-
+Zona Budidaya - SPU Skala Kecamatan,-,16,12,3 lantai,2 lantai,17.5,12.5,1,1,a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.,-
+Zona Budidaya - SPU Skala Kelurahan,-,16,12,3 lantai,2 lantai,17.5,12.5,1,1,a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.,-
+Zona Budidaya - SPU Skala RW,-,16,12,3 lantai,2 lantai,17.5,12.5,1,1,a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.,-
+Zona Budidaya - Ruang Terbuka Non Hijau,-,5,5,-,-,17.5,12.5,2,2,-,-
+Zona Budidaya - Perdagangan dan Jasa Skala WP,persil disebelah barat jalan Nasional,21,13,-,-,17.5,12.5,1,1,-,-
+Zona Budidaya - Perdagangan dan Jasa Skala WP,persil disebelah timur jalan Nasional,9,9,-,-,17.5,12.5,1,1,-,-
+Zona Budidaya - Perdagangan dan Jasa Skala SWP,persil disebelah barat jalan Nasional,21,13,-,-,17.5,12.5,1,1,-,-
+Zona Budidaya - Perdagangan dan Jasa Skala SWP,persil disebelah timur jalan Nasional,9,9,-,-,17.5,12.5,1,1,-,-
+Zona Budidaya - Perkantoran,-,12,9,-,-,17.5,12.5,1,1,-,-
+Zona Budidaya - Transportasi,-,13,9,-,-,17.5,12.5,1,1,-,-
+Zona Budidaya - Pertahanan dan Keamanan,-,-,-,-,-,-,-,-,-,-,-

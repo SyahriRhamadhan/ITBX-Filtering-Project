@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import intensitasData from '../data/intensitas-data.json';
+import intensitasData from '../data/intensitas-data-merged.json';
 
 interface IntensitasItem {
   Zona: string;
@@ -10,6 +10,16 @@ interface IntensitasItem {
   'KLB Maks': number | null;
   'KTB Maks (%)': number | null;
   'Luas Kavling Min (m2)': number | null;
+  'Tinggi Bangunan Maks. (m) - Kolektor': number | null;
+  'Tinggi Bangunan Maks. (m) - Lokal': number | null;
+  'Lantai Bangunan Maks. - Kolektor': number | null;
+  'Lantai Bangunan Maks. - Lokal': number | null;
+  'Garis Sempadan Bangunan Min. (m) - Kolektor': number | null;
+  'Garis Sempadan Bangunan Min. (m) - Lokal': number | null;
+  'Jarak Bebas Samping Min. (m)': number | null;
+  'Jarak Bebas Belakang Min. (m)': number | null;
+  'Tampilan Bangunan': string | null;
+  'Keterangan': string | null;
 }
 
 interface IntensitasData {
@@ -159,28 +169,76 @@ const IntensitasFilter: React.FC = () => {
     result += `Maksimum: ${ktb}\n`;
     result += '\n';
 
-    // Additional sections with default values
+    // Jarak Bebas Samping (JBS)
     result += 'Jarak Bebas Samping (JBS)\n';
-    result += 'Minimum: -\n';
+    const jbs = filteredData.some(item => item['Jarak Bebas Samping Min. (m)'] !== null)
+      ? filteredData.map(item => item['Jarak Bebas Samping Min. (m)'] ? `${item['Jarak Bebas Samping Min. (m)']} m` : '-').join(', ')
+      : '-';
+    result += `Minimum: ${jbs}\n`;
     result += '\n';
 
+    // Jarak Bebas Belakang (JBB)
     result += 'Jarak Bebas Belakang (JBB)\n';
-    result += 'Minimum: -\n';
+    const jbb = filteredData.some(item => item['Jarak Bebas Belakang Min. (m)'] !== null)
+      ? filteredData.map(item => item['Jarak Bebas Belakang Min. (m)'] ? `${item['Jarak Bebas Belakang Min. (m)']} m` : '-').join(', ')
+      : '-';
+    result += `Minimum: ${jbb}\n`;
     result += '\n';
 
+    // Ketinggian Bangunan
     result += 'Ketinggian Bangunan\n';
-    result += 'Maksimum: 0\n';
+    const tinggiKolektor = filteredData.some(item => item['Tinggi Bangunan Maks. (m) - Kolektor'] !== null)
+      ? filteredData.map(item => item['Tinggi Bangunan Maks. (m) - Kolektor'] ? `${item['Tinggi Bangunan Maks. (m) - Kolektor']} m` : '-').join(', ')
+      : '-';
+    const tinggiLokal = filteredData.some(item => item['Tinggi Bangunan Maks. (m) - Lokal'] !== null)
+      ? filteredData.map(item => item['Tinggi Bangunan Maks. (m) - Lokal'] ? `${item['Tinggi Bangunan Maks. (m) - Lokal']} m` : '-').join(', ')
+      : '-';
+    result += `Maksimum Kolektor: ${tinggiKolektor}\n`;
+    result += `Maksimum Lokal: ${tinggiLokal}\n`;
     result += '\n';
 
-    result += 'Koefisien Tapak Basement (%)\n';
-    result += 'Maksimum: 0\n';
+    // Lantai Bangunan
+    result += 'Lantai Bangunan\n';
+    const lantaiKolektor = filteredData.some(item => item['Lantai Bangunan Maks. - Kolektor'] !== null)
+      ? filteredData.map(item => item['Lantai Bangunan Maks. - Kolektor'] || '-').join(', ')
+      : '-';
+    const lantaiLokal = filteredData.some(item => item['Lantai Bangunan Maks. - Lokal'] !== null)
+      ? filteredData.map(item => item['Lantai Bangunan Maks. - Lokal'] || '-').join(', ')
+      : '-';
+    result += `Maksimum Kolektor: ${lantaiKolektor}\n`;
+    result += `Maksimum Lokal: ${lantaiLokal}\n`;
     result += '\n';
 
+    // Garis Sempadan Bangunan
     result += 'Garis Sempadan Bangunan\n';
-    result += 'Fungsi Jalan Arteri Primer: -\n';
-    result += 'Fungsi Jalan Kolektor Primer: -\n';
-    result += 'Fungsi Jalan Lokal Primer: -\n';
-    result += 'Fungsi Jalan Lingkungan: -\n';
+    const gsbKolektor = filteredData.some(item => item['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null)
+      ? filteredData.map(item => item['Garis Sempadan Bangunan Min. (m) - Kolektor'] ? `${item['Garis Sempadan Bangunan Min. (m) - Kolektor']} m` : '-').join(', ')
+      : '-';
+    const gsbLokal = filteredData.some(item => item['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null)
+      ? filteredData.map(item => item['Garis Sempadan Bangunan Min. (m) - Lokal'] ? `${item['Garis Sempadan Bangunan Min. (m) - Lokal']} m` : '-').join(', ')
+      : '-';
+    result += `Fungsi Jalan Kolektor: ${gsbKolektor}\n`;
+    result += `Fungsi Jalan Lokal: ${gsbLokal}\n`;
+    result += '\n';
+
+    // Tampilan Bangunan
+    const tampilanBangunan = filteredData.some(item => item['Tampilan Bangunan'])
+      ? filteredData.map(item => item['Tampilan Bangunan'] || '-').join(', ')
+      : '-';
+    if (tampilanBangunan !== '-') {
+      result += 'Tampilan Bangunan\n';
+      result += `${tampilanBangunan}\n`;
+      result += '\n';
+    }
+
+    // Keterangan
+    const keterangan = filteredData.some(item => item['Keterangan'])
+      ? filteredData.map(item => item['Keterangan'] || '-').join(', ')
+      : '-';
+    if (keterangan !== '-') {
+      result += 'Keterangan\n';
+      result += `${keterangan}\n`;
+    }
 
     return result;
   };
@@ -321,14 +379,24 @@ const IntensitasFilter: React.FC = () => {
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
-                {data.headers.map(header => (
-                  <th
-                    key={header}
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-                  >
-                    {header}
-                  </th>
-                ))}
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">ZONA</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">SUBZONA</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">JENIS</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">KDB MAKS (%)</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">KDH MIN (%)</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">KLB MAKS</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">KTB MAKS (%)</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">LUAS KAVLING MIN (m2)</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">TINGGI BGN KOLEKTOR (m)</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">TINGGI BGN LOKAL (m)</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">LANTAI BGN KOLEKTOR</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">LANTAI BGN LOKAL</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">GSB KOLEKTOR (m)</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">GSB LOKAL (m)</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">JARAK SAMPING (m)</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">JARAK BELAKANG (m)</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">TAMPILAN BANGUNAN</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">KETERANGAN</th>
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -357,6 +425,36 @@ const IntensitasFilter: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     {item['Luas Kavling Min (m2)'] !== null ? `${item['Luas Kavling Min (m2)']} m²` : '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {item['Tinggi Bangunan Maks. (m) - Kolektor'] !== null ? `${item['Tinggi Bangunan Maks. (m) - Kolektor']} m` : '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {item['Tinggi Bangunan Maks. (m) - Lokal'] !== null ? `${item['Tinggi Bangunan Maks. (m) - Lokal']} m` : '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {item['Lantai Bangunan Maks. - Kolektor'] !== null ? item['Lantai Bangunan Maks. - Kolektor'] : '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {item['Lantai Bangunan Maks. - Lokal'] !== null ? item['Lantai Bangunan Maks. - Lokal'] : '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {item['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null ? `${item['Garis Sempadan Bangunan Min. (m) - Kolektor']} m` : '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {item['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null ? `${item['Garis Sempadan Bangunan Min. (m) - Lokal']} m` : '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {item['Jarak Bebas Samping Min. (m)'] !== null ? `${item['Jarak Bebas Samping Min. (m)']} m` : '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {item['Jarak Bebas Belakang Min. (m)'] !== null ? `${item['Jarak Bebas Belakang Min. (m)']} m` : '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {item['Tampilan Bangunan'] || '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    {item['Keterangan'] || '-'}
                   </td>
                 </tr>
               ))}
