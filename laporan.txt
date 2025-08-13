@@ -1,51 +1,103 @@
 Ketentuan Khusus Kawasan Keselamatan Operasi Penerbangan:
   Kawasan di Bawah Permukaan Horizontal-Luar:
-    1.	Tidak menimbulkan gangguan terhadap isyarat-isyarat navigasi penerbangan atau komunikasi radio antar bandar udara dan pesawat udara;
-    2.	Tidak menyulitkan penerbang membedakan lampu- lampu rambu udara dengan lampu-lampu lain;
-    3.	Tidak menyebabkan kesilauan pada mata penerbang yang mempergunakan bandar udara;
-    4.	Tidak melemahkan jarak pandang sekitar bandar udara; dan
-    5.	Tidak menyebabkan timbulnya bahaya burung, atau dengan cara lain dapat membahayakan atau mengganggu pendaratan atau lepas landas atau gerakan pesawat udara yang bermaksud mempergunakan bandar udara.
+    a.: Tidak menimbulkan gangguan terhadap isyarat-isyarat navigasi penerbangan atau komunikasi radio antar bandar udara dan pesawat udara;
+    b.: Tidak menyulitkan penerbang membedakan lampu- lampu rambu udara dengan lampu-lampu lain;
+    c.: Tidak menyebabkan kesilauan pada mata penerbang yang mempergunakan bandar udara;
+    d.: Tidak melemahkan jarak pandang sekitar bandar udara; dan
+    e.: Tidak menyebabkan timbulnya bahaya burung, atau dengan cara lain dapat membahayakan atau mengganggu pendaratan atau lepas landas atau gerakan pesawat udara yang bermaksud mempergunakan bandar udara.
 
 Ketentuan Khusus Kawasan Rawan Bencana:
   Rawan Bencana Banjir dan Cuaca Ekstrem Tingkat Tinggi:
-    1.	Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
-    2.	Melakukan normalisasi drainase pada GSB masing-masing bangunan;
-    3.	Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana;
-    4.	Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
-    5.	Menghindari pemakaian kaca lebar untuk jendela; dan
-    6.	Pemantauan cuaca dan peringatan dini.
+    a.: Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
+    b.: Melakukan normalisasi drainase pada GSB masing-masing bangunan;
+    c.: Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana;
+    d.: Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
+    e.: Menghindari pemakaian kaca lebar untuk jendela; dan
+    f.: Pemantauan cuaca dan peringatan dini.
 
   Rawan Bencana Banjir Tingkat Tinggi:
-    1.	Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
-    2.	Melakukan normalisasi drainase pada GSB masing-masing bangunan; dan
-    3.	Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana.
+    a.: Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
+    b.: Melakukan normalisasi drainase pada GSB masing-masing bangunan; dan
+    c.: Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana.
 
 Ketentuan Khusus Kawasan Sempadan:
   Sempadan Sungai:
-    1.	Tidak diperbolehkan adanya pengembangan bangunan untuk menambah intensitas pada bangunan yang telah ada;
-    2.	Penyediaan prasarana pengelolaan limbah secara komunal;
-    3.	Penyediaan jalan inspeksi; dan
-    4.	Penyediaan tanggul sungai.
+    a.: Tidak diperbolehkan adanya pengembangan bangunan untuk menambah intensitas pada bangunan yang telah ada;
+    b.: Penyediaan prasarana pengelolaan limbah secara komunal;
+    c.: Penyediaan jalan inspeksi; dan
+    d.: Penyediaan tanggul sungai.
 
   Sempadan Pantai:
-    1.	Penyediaan akses jalan publik ke area pantai yang berfungsi juga sebagai jalan inspeksi;
-    2.	Penyediaan fasilitas pejalan kaki dan penyandang disabilitas dengan lebar minimal 1,5 meter untuk persil yang menghadap pantai;
-    3.	Tinggi bangunan kegiatan pariwisata maksimal adalah 9 meter untuk bangunan baru dengan syarat menambahkan fasilitas pengamanan pantai;
-    4.	Tinggi bangunan untuk kegiatan lain mengacu kepada ketentuan tata bangunan;
-    5.	Tinggi pagar yang berada di pinggir Pantai dan menghadap jalan maksimal adalah 1,5 meter dengan menggunakan jenis pagar yang tidak menghalangi pemandangan ke pantai; dan
-    6.	Bangunan yang diperbolehkan adalah bangunan tidak permanen.
+    a.: Penyediaan akses jalan publik ke area pantai yang berfungsi juga sebagai jalan inspeksi;
+    b.: Penyediaan fasilitas pejalan kaki dan penyandang disabilitas dengan lebar minimal 1,5 meter untuk persil yang menghadap pantai;
+    c.: Tinggi bangunan kegiatan pariwisata maksimal adalah 9 meter untuk bangunan baru dengan syarat menambahkan fasilitas pengamanan pantai;
+    d.: Tinggi bangunan untuk kegiatan lain mengacu kepada ketentuan tata bangunan;
+    e.: Tinggi pagar yang berada di pinggir Pantai dan menghadap jalan maksimal adalah 1,5 meter dengan menggunakan jenis pagar yang tidak menghalangi pemandangan ke pantai; dan
+    f.: Bangunan yang diperbolehkan adalah bangunan tidak permanen.
+
+Ketentuan Khusus Kawasan Pertambangan Mineral Dan Batubara:
+  Kawasan Pertambangan Mineral dan Batubara:
+    a.: Angkutan tambang yang keluar dari lokasi kegiatan pertambangan dilarang melebihi kapasitas daya dukung jalan yang dilaluinya;
+    b.: Pengembangan Kawasan pertambangan dilakukan dengan mempertimbangkan potensi bahan tambang, kondisi geologi dan geohidrologi dalam kaitannya dengan kelestarian lingkungan;
+    c.: Wajib menyediakan RTH dalam kawasan pertambangan sebagai buffer area;
+    d.: Wajib melaksanakan reklamasi pada lahan-lahan bekas galian/ penambangan;
+    e.: Mendapatkan rekomendasi dari Forum Penataan Ruang (FPR);
+    f.: Pelaksanaan kegiatan penambangan wajib memenuhi ketentuan peraturan perundangan yang berlaku; dan
+    g.: Wajib menerapkan Good Mining Practice atau kaidah pertambangan.
 
 
 
-    kan sebelumnya format gini boleh ga ubah jadi 
 
-    a.:
-    b.:
+    kenapa ga lengkap harusnya ini elngkapnya
 
-    Ketentuan Khusus Kawasan Keselamatan Operasi Penerbangan: 
-    Kawasan Keselamatan Operasi Penerbangan: 
-      a.: Tidak menimbulkan gangguan terhadap isyarat-isyarat navigasi penerbangan atau komunikasi radio antar bandar udara dan pesawat udara;
-      b.: Tidak menyulitkan penerbang membedakan lampu-lampu rambu udara dengan lampu-lampu lain;
-      c.: Tidak menyebabkan kesilauan pada mata penerbang yang mempergunakan bandar udara;
-      d.: Tidak melemahkan jarak pandang sekitar bandar udara; dan
-      e.: Tidak menyebabkan timbulnya bahaya burung, atau dengan cara lain dapat membahayakan atau mengganggu pendaratan atau lepas landas atau gerakan pesawat udara yang bermaksud mempergunakan bandar udara.
+Ketentuan Khusus Kawasan Keselamatan Operasi Penerbangan:
+  Kawasan di Bawah Permukaan Horizontal-Luar:
+    a.: Tidak menimbulkan gangguan terhadap isyarat-isyarat navigasi penerbangan atau komunikasi radio antar bandar udara dan pesawat udara;
+    b.: Tidak menyulitkan penerbang membedakan lampu- lampu rambu udara dengan lampu-lampu lain;
+    c.: Tidak menyebabkan kesilauan pada mata penerbang yang mempergunakan bandar udara;
+    d.: Tidak melemahkan jarak pandang sekitar bandar udara; dan
+    e.: Tidak menyebabkan timbulnya bahaya burung, atau dengan cara lain dapat membahayakan atau mengganggu pendaratan atau lepas landas atau gerakan pesawat udara yang bermaksud mempergunakan bandar udara.
+
+Ketentuan Khusus Kawasan Rawan Bencana:
+  Rawan Bencana Banjir dan Cuaca Ekstrem Tingkat Tinggi:
+    a.: Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
+    b.: Melakukan normalisasi drainase pada GSB masing-masing bangunan;
+    c.: Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana;
+    d.: Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
+    e.: Menghindari pemakaian kaca lebar untuk jendela; dan
+    f.: Pemantauan cuaca dan peringatan dini.
+
+  Rawan Bencana Banjir Tingkat Tinggi:
+    a.: Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
+    b.: Melakukan normalisasi drainase pada GSB masing-masing bangunan; dan
+    c.: Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana.
+
+  Rawan Bencana Cuaca Ekstrem Tingkat Tinggi
+    a.: Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
+    b.: Menghindari pemakaian kaca lebar untuk jendela; dan
+    c.: Pemantauan cuaca dan peringatan dini.
+
+Ketentuan Khusus Kawasan Sempadan:
+  Sempadan Sungai:
+    a.: Tidak diperbolehkan adanya pengembangan bangunan untuk menambah intensitas pada bangunan yang telah ada;
+    b.: Penyediaan prasarana pengelolaan limbah secara komunal;
+    c.: Penyediaan jalan inspeksi; dan
+    d.: Penyediaan tanggul sungai.
+
+  Sempadan Pantai:
+    a.: Penyediaan akses jalan publik ke area pantai yang berfungsi juga sebagai jalan inspeksi;
+    b.: Penyediaan fasilitas pejalan kaki dan penyandang disabilitas dengan lebar minimal 1,5 meter untuk persil yang menghadap pantai;
+    c.: Tinggi bangunan kegiatan pariwisata maksimal adalah 9 meter untuk bangunan baru dengan syarat menambahkan fasilitas pengamanan pantai;
+    d.: Tinggi bangunan untuk kegiatan lain mengacu kepada ketentuan tata bangunan;
+    e.: Tinggi pagar yang berada di pinggir Pantai dan menghadap jalan maksimal adalah 1,5 meter dengan menggunakan jenis pagar yang tidak menghalangi pemandangan ke pantai; dan
+    f.: Bangunan yang diperbolehkan adalah bangunan tidak permanen.
+
+Ketentuan Khusus Kawasan Pertambangan Mineral Dan Batubara:
+  Kawasan Pertambangan Mineral dan Batubara:
+    a.: Angkutan tambang yang keluar dari lokasi kegiatan pertambangan dilarang melebihi kapasitas daya dukung jalan yang dilaluinya;
+    b.: Pengembangan Kawasan pertambangan dilakukan dengan mempertimbangkan potensi bahan tambang, kondisi geologi dan geohidrologi dalam kaitannya dengan kelestarian lingkungan;
+    c.: Wajib menyediakan RTH dalam kawasan pertambangan sebagai buffer area;
+    d.: Wajib melaksanakan reklamasi pada lahan-lahan bekas galian/ penambangan;
+    e.: Mendapatkan rekomendasi dari Forum Penataan Ruang (FPR);
+    f.: Pelaksanaan kegiatan penambangan wajib memenuhi ketentuan peraturan perundangan yang berlaku; dan
+    g.: Wajib menerapkan Good Mining Practice atau kaidah pertambangan.
