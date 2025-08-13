@@ -143,6 +143,84 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
     return filtered;
   }, [data.activities, searchTerm, selectedKawasan, selectedKodeSWP, selectedKodeBlok, selectedSubZona, selectedTabel, sortBy, showWithoutRegulations]);
 
+  // Generate copy format function
+  const generateCopyFormat = (activities: KepsusActivity[]) => {
+    const groupedByTabel = new Map<string, Map<string, KepsusActivity[]>>();
+    
+    // Group activities by tabel first, then by kawasanType
+    activities.forEach(activity => {
+      const tabel = activity.metadata?.tabel || 'Tidak Diketahui';
+      const kawasanType = activity.metadata?.kawasanType || 'Tidak Diketahui';
+      
+      if (!groupedByTabel.has(tabel)) {
+        groupedByTabel.set(tabel, new Map());
+      }
+      
+      const kawasanMap = groupedByTabel.get(tabel)!;
+      if (!kawasanMap.has(kawasanType)) {
+        kawasanMap.set(kawasanType, []);
+      }
+      
+      kawasanMap.get(kawasanType)!.push(activity);
+    });
+
+    let result = '';
+    
+    groupedByTabel.forEach((kawasanMap, tabel) => {
+      // Convert tabel name to title case format
+       const formatTabelName = (name: string) => {
+         let formatted = name.replace(/TABEL\s+/i, '');
+         
+         // Special case for aviation safety
+         if (formatted.includes('KESELAMATAN OPERASI PENERBANGAN')) {
+           formatted = formatted.replace('KESELAMATAN OPERASI PENERBANGAN', 'Penerbangan');
+         }
+         
+         // Convert to title case
+         formatted = formatted.replace(/\b\w/g, l => l.toUpperCase());
+         
+         return formatted;
+       };
+      
+      result += `${formatTabelName(tabel)}:\n`;
+      
+      kawasanMap.forEach((kawasanActivities, kawasanType) => {
+        result += `  ${kawasanType}:\n`;
+        
+        // Get the first activity's ketentuan (since all activities with same kawasanType have same ketentuan)
+        const ketentuan = kawasanActivities[0].zones['Ketentuan'];
+        if (ketentuan) {
+          const lines = ketentuan.split(/\r?\n/).filter(line => line.trim());
+          let letterIndex = 0;
+          
+          lines.forEach(line => {
+            const trimmedLine = line.trim();
+            if (trimmedLine) {
+              // Skip source references
+              if (!trimmedLine.startsWith('(Sumber:')) {
+                // Convert number to letter (a, b, c, etc.)
+                const letter = String.fromCharCode(97 + letterIndex); // 97 is 'a' in ASCII
+                
+                // Check if line already starts with a number, replace it with letter
+                if (trimmedLine.match(/^\d+\./)) {
+                  const contentAfterNumber = trimmedLine.replace(/^\d+\.\s*/, '');
+                  result += `    ${letter}.: ${contentAfterNumber}\n`;
+                } else {
+                  result += `    ${letter}.: ${trimmedLine}\n`;
+                }
+                letterIndex++;
+              }
+            }
+          });
+        }
+        
+        result += '\n';
+      });
+    });
+    
+    return result.trim();
+  };
+
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="mb-6">
@@ -191,7 +269,7 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
           {/* Kawasan Filter */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Kawasan Keselamatan Operasi Penerbangan
+              Sub Kawasan
             </label>
             <select
               value={selectedKawasan}
@@ -383,6 +461,32 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
             </table>
           </div>
         )}
+      </div>
+
+      {/* Copy Format Section */}
+      <div className="mt-8 bg-white rounded-lg shadow-md p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl font-semibold text-gray-800">Format Copy Ketentuan</h3>
+          <button
+            onClick={() => {
+              const copyText = generateCopyFormat(filteredActivities);
+              navigator.clipboard.writeText(copyText).then(() => {
+                alert('Format ketentuan berhasil disalin ke clipboard!');
+              }).catch(() => {
+                alert('Gagal menyalin ke clipboard');
+              });
+            }}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            📋 Copy Format
+          </button>
+        </div>
+        
+        <div className="bg-gray-50 p-4 rounded-lg max-h-96 overflow-y-auto">
+          <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono">
+            {generateCopyFormat(filteredActivities)}
+          </pre>
+        </div>
       </div>
 
       {/* Summary */}
