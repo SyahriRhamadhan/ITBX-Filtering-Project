@@ -117,17 +117,15 @@ const IntensitasFilter: React.FC = () => {
   const generateCopyText = () => {
     if (filteredData.length === 0) return 'Tidak ada data yang tersedia.';
 
-    // Group data by jenis for better formatting
-    const groupedData: { [key: string]: IntensitasItem[] } = {};
-    filteredData.forEach(item => {
-      const key = item.Jenis || 'Umum';
-      if (!groupedData[key]) {
-        groupedData[key] = [];
-      }
-      groupedData[key].push(item);
-    });
-
     let result = '';
+
+    // Helper function to format values
+    const formatValue = (value: number | null) => value !== null ? value.toString() : '-';
+
+    // Group data by location (assuming we have different locations in the data)
+    // For now, we'll assume we have data for both sides of the national road
+    const westSideData = filteredData[0] || null; // First item represents west side
+    const eastSideData = filteredData[1] || filteredData[0] || null; // Second item or same as first
 
     // KDB (Koefisien Dasar Bangunan)
     result += 'Koefisien Dasar Bangunan (%)\n';
@@ -161,40 +159,76 @@ const IntensitasFilter: React.FC = () => {
     result += `Minimum: ${luasKavling}\n`;
     result += '\n';
 
-    // KTB (Koefisien Tapak Basement)
-    result += 'Koefisien Wilayah Terbangun\n';
+    // Ketinggian Bangunan - New structured format
+    result += 'Ketinggian Bangunan\n';
+    result += 'Persil disebelah barat jalan Nasional:\n';
+    result += '    a.: Jalan Arteri = -;\n';
+    const tinggiKolektorWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
+      ? westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] 
+      : '-';
+    result += `    b.: Jalan Kolektor = ${tinggiKolektorWest}; dan\n`;
+    const tinggiLokalWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
+      ? westSideData['Tinggi Bangunan Maks. (m) - Lokal'] 
+      : '-';
+    result += `    c.: Jalan Lokal = ${tinggiLokalWest}.\n`;
+    result += 'Persil disebelah timur jalan Nasional:\n';
+    result += '    a.: Jalan Arteri = -;\n';
+    const tinggiKolektorEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
+      ? eastSideData['Tinggi Bangunan Maks. (m) - Kolektor'] 
+      : '-';
+    result += `    b.: Jalan Kolektor = ${tinggiKolektorEast}; dan\n`;
+    const tinggiLokalEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
+      ? eastSideData['Tinggi Bangunan Maks. (m) - Lokal'] 
+      : '-';
+    result += `    c.: Jalan Lokal = ${tinggiLokalEast}.\n`;
+    result += '\n';
+
+    // Koefisien Tapak Basement
+    result += 'Koefisien Tapak Basement\n';
     const ktb = filteredData.some(item => item['KTB Maks (%)'] !== null)
       ? filteredData.map(item => item['KTB Maks (%)'] ? `${item['KTB Maks (%)']}%` : '-').join(', ')
       : '-';
-    result += `Maksimum: ${ktb}\n`;
+    result += `${ktb}\n`;
+    result += '\n';
+
+    // Garis Sempadan Bangunan - New structured format
+    result += 'Garis Sempadan Bangunan\n';
+    result += 'Persil disebelah barat jalan Nasional:\n';
+    result += '    a.: Jalan Arteri = -;\n';
+    const gsbKolektorWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
+      ? westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] 
+      : '-';
+    result += `    b.: Jalan Kolektor = ${gsbKolektorWest}; dan\n`;
+    const gsbLokalWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
+      ? westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] 
+      : '-';
+    result += `    c.: Jalan Lokal = ${gsbLokalWest}.\n`;
+    result += 'Persil disebelah timur jalan Nasional:\n';
+    result += '    a.: Jalan Arteri = -;\n';
+    const gsbKolektorEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
+      ? eastSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] 
+      : '-';
+    result += `    b.: Jalan Kolektor = ${gsbKolektorEast}; dan\n`;
+    const gsbLokalEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
+      ? eastSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] 
+      : '-';
+    result += `    c.: Jalan Lokal = ${gsbLokalEast}.\n`;
     result += '\n';
 
     // Jarak Bebas Samping (JBS)
     result += 'Jarak Bebas Samping (JBS)\n';
-    const jbs = filteredData.some(item => item['Jarak Bebas Samping Min. (m)'] !== null)
-      ? filteredData.map(item => item['Jarak Bebas Samping Min. (m)'] ? `${item['Jarak Bebas Samping Min. (m)']} m` : '-').join(', ')
+    const jbsValue = westSideData && westSideData['Jarak Bebas Samping Min. (m)'] !== null 
+      ? `${westSideData['Jarak Bebas Samping Min. (m)']} m` 
       : '-';
-    result += `Minimum: ${jbs}\n`;
+    result += `Minimum: ${jbsValue}\n`;
     result += '\n';
 
     // Jarak Bebas Belakang (JBB)
     result += 'Jarak Bebas Belakang (JBB)\n';
-    const jbb = filteredData.some(item => item['Jarak Bebas Belakang Min. (m)'] !== null)
-      ? filteredData.map(item => item['Jarak Bebas Belakang Min. (m)'] ? `${item['Jarak Bebas Belakang Min. (m)']} m` : '-').join(', ')
+    const jbbValue = westSideData && westSideData['Jarak Bebas Belakang Min. (m)'] !== null 
+      ? `${westSideData['Jarak Bebas Belakang Min. (m)']} m` 
       : '-';
-    result += `Minimum: ${jbb}\n`;
-    result += '\n';
-
-    // Ketinggian Bangunan
-    result += 'Ketinggian Bangunan\n';
-    const tinggiKolektor = filteredData.some(item => item['Tinggi Bangunan Maks. (m) - Kolektor'] !== null)
-      ? filteredData.map(item => item['Tinggi Bangunan Maks. (m) - Kolektor'] ? `${item['Tinggi Bangunan Maks. (m) - Kolektor']} m` : '-').join(', ')
-      : '-';
-    const tinggiLokal = filteredData.some(item => item['Tinggi Bangunan Maks. (m) - Lokal'] !== null)
-      ? filteredData.map(item => item['Tinggi Bangunan Maks. (m) - Lokal'] ? `${item['Tinggi Bangunan Maks. (m) - Lokal']} m` : '-').join(', ')
-      : '-';
-    result += `Maksimum Kolektor: ${tinggiKolektor}\n`;
-    result += `Maksimum Lokal: ${tinggiLokal}\n`;
+    result += `Minimum: ${jbbValue}\n`;
     result += '\n';
 
     // Lantai Bangunan
@@ -207,18 +241,6 @@ const IntensitasFilter: React.FC = () => {
       : '-';
     result += `Maksimum Kolektor: ${lantaiKolektor}\n`;
     result += `Maksimum Lokal: ${lantaiLokal}\n`;
-    result += '\n';
-
-    // Garis Sempadan Bangunan
-    result += 'Garis Sempadan Bangunan\n';
-    const gsbKolektor = filteredData.some(item => item['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null)
-      ? filteredData.map(item => item['Garis Sempadan Bangunan Min. (m) - Kolektor'] ? `${item['Garis Sempadan Bangunan Min. (m) - Kolektor']} m` : '-').join(', ')
-      : '-';
-    const gsbLokal = filteredData.some(item => item['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null)
-      ? filteredData.map(item => item['Garis Sempadan Bangunan Min. (m) - Lokal'] ? `${item['Garis Sempadan Bangunan Min. (m) - Lokal']} m` : '-').join(', ')
-      : '-';
-    result += `Fungsi Jalan Kolektor: ${gsbKolektor}\n`;
-    result += `Fungsi Jalan Lokal: ${gsbLokal}\n`;
     result += '\n';
 
     // Tampilan Bangunan
