@@ -15,6 +15,7 @@ interface KepsusActivity {
     kodeSWP: string;
     kodeBlok: string;
     tabel: string;
+    source: string;
   };
 }
 
@@ -28,26 +29,28 @@ interface KepsusData {
     dataStartIndex: number;
     processedAt: string;
     headers: string[];
+    source: string;
+    sourceFile: string;
   };
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
-    const dataPath = join(process.cwd(), 'app', 'data', 'kepsus-data.json');
+    const dataPath = join(process.cwd(), 'app', 'data', 'kepsus-bsb-data.json');
     const fileContent = readFileSync(dataPath, 'utf-8');
     const kepsusData: KepsusData = JSON.parse(fileContent);
     
     return json({ kepsusData, error: null });
   } catch (error) {
-    console.error('Error loading kepsus data:', error);
+    console.error('Error loading BSB kepsus data:', error);
     return json({ 
       kepsusData: null, 
-      error: 'Gagal memuat data ketentuan khusus. Pastikan file kepsus-data.json tersedia.' 
+      error: 'Gagal memuat data ketentuan khusus BSB. Pastikan file kepsus-bsb-data.json tersedia.' 
     });
   }
 }
 
-export default function KepsusPage() {
+export default function KepsusBsbPage() {
   const { kepsusData, error } = useLoaderData<typeof loader>();
 
   if (error) {
@@ -81,7 +84,7 @@ export default function KepsusPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-2 text-sm text-gray-500">Memuat data...</p>
+          <p className="mt-2 text-sm text-gray-500">Memuat data BSB...</p>
         </div>
       </div>
     );
@@ -103,19 +106,19 @@ export default function KepsusPage() {
                 </svg>
               </Link>
               <h1 className="text-xl font-semibold text-gray-900">
-                Ketentuan Khusus Kawasan Trikora
+                Ketentuan Khusus Kawasan BSB
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm bg-blue-100 text-blue-800 px-3 py-2 rounded-md font-medium">
-                Data Trikora
-              </span>
               <Link
-                to="/kepsus-bsb"
+                to="/kepsus"
                 className="text-sm text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md border border-gray-300 hover:border-gray-400"
               >
-                Data BSB
+                Data Trikora
               </Link>
+              <span className="text-sm bg-blue-100 text-blue-800 px-3 py-2 rounded-md font-medium">
+                Data BSB
+              </span>
             </div>
           </div>
         </div>

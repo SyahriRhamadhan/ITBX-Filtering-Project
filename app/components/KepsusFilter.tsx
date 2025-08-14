@@ -1,5 +1,13 @@
 import React, { useState, useMemo } from 'react';
 
+// Function to capitalize each word
+const capitalizeWords = (text: string): string => {
+  if (!text) return text;
+  return text.split(' ').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  ).join(' ');
+};
+
 interface KepsusActivity {
   activity: string;
   zones: {
@@ -167,7 +175,7 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
     let result = '';
     
     groupedByTabel.forEach((kawasanMap, tabel) => {
-      // Convert tabel name to title case format
+      // Convert tabel name to title case format using capitalizeWords
        const formatTabelName = (name: string) => {
          let formatted = name.replace(/TABEL\s+/i, '');
          
@@ -176,11 +184,9 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
            formatted = formatted.replace('KESELAMATAN OPERASI PENERBANGAN', 'Penerbangan');
          }
          
-         // Convert to title case
-         formatted = formatted.replace(/\b\w/g, l => l.toUpperCase());
-         
-         return formatted;
-       };
+         // Use capitalizeWords function for consistent formatting
+         return capitalizeWords(formatted);
+        };
       
       result += `${formatTabelName(tabel)}:\n`;
       
@@ -188,7 +194,7 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
         // Special handling for "Rawan Bencana Banjir dan Cuaca Ekstrem Tingkat Tinggi"
         if (kawasanType === 'Rawan Bencana Banjir dan Cuaca Ekstrem Tingkat Tinggi') {
           // First show "Rawan Bencana Banjir dan Cuaca Ekstrem Tingkat Tinggi" with all 6 points
-          result += `  ${kawasanType}:\n`;
+          result += `  ${capitalizeWords(kawasanType)}:\n`;
           
           const ketentuan = kawasanActivities[0].zones['Ketentuan'];
           if (ketentuan) {
@@ -216,7 +222,7 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
           result += '\n';
           
           // Then show "Rawan Bencana Cuaca Ekstrem Tingkat Tinggi" with only points 4-6
-          result += `  Rawan Bencana Cuaca Ekstrem Tingkat Tinggi:\n`;
+          result += `  ${capitalizeWords('Rawan Bencana Cuaca Ekstrem Tingkat Tinggi')}:\n`;
           
           if (ketentuan) {
             const lines = ketentuan.split(/\r?\n/).filter(line => line.trim());
@@ -248,7 +254,7 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
           result += '\n';
         } else {
           // Normal processing for other kawasanType
-          result += `  ${kawasanType}:\n`;
+          result += `  ${capitalizeWords(kawasanType)}:\n`;
           
           const ketentuan = kawasanActivities[0].zones['Ketentuan'];
           if (ketentuan) {
@@ -321,7 +327,7 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
             >
               <option value="">Semua Tabel</option>
               {tabelList.map(tabel => (
-                <option key={tabel} value={tabel}>{tabel}</option>
+                <option key={tabel} value={tabel}>{capitalizeWords(tabel)}</option>
               ))}
             </select>
           </div>
@@ -338,7 +344,7 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
             >
               <option value="">Semua Kawasan</option>
               {kawasanTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
+                <option key={type} value={type}>{capitalizeWords(type)}</option>
               ))}
             </select>
           </div>
@@ -483,10 +489,10 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
                 {filteredActivities.map((activity, index) => (
                   <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {activity.metadata?.tabel || 'TABEL KETENTUAN KHUSUS'}
+                      {capitalizeWords(activity.metadata?.tabel || 'TABEL KETENTUAN KHUSUS')}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {activity.metadata?.kawasanType || '-'}
+                      {capitalizeWords(activity.metadata?.kawasanType || '-')}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {activity.activity}

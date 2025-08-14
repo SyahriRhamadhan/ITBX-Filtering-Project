@@ -175,6 +175,30 @@ export default function WelcomeScreen({ data, currentDataSource, onDataSourceCha
           </div>
         </div>
 
+        {/* Kepsus Navigation */}
+        <div className="mt-6 sm:mt-8">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
+            Ketentuan Khusus Kawasan
+          </h3>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6 sm:mb-8">
+            <a
+              href="/kepsus"
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 text-center"
+            >
+              <div className="font-bold text-lg">Kepsus Trikora</div>
+              <div className="text-sm opacity-90">Ketentuan Khusus Kawasan Trikora</div>
+            </a>
+            
+            <a
+              href="/kepsus-bsb"
+              className="px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors duration-200 text-center"
+            >
+              <div className="font-bold text-lg">Kepsus BSB</div>
+              <div className="text-sm opacity-90">Ketentuan Khusus Kawasan BSB</div>
+            </a>
+          </div>
+        </div>
+
         {/* Available Regulations Legend */}
         <div className="mt-6 sm:mt-8">
           <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
