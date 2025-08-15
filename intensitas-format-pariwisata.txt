@@ -1,0 +1,164 @@
+# KETENTUAN INTENSITAS PEMANFAATAN RUANG
+# Filter: All Zona - Pariwisata
+# Generated automatically from intensitas-data-merged.json
+
+
+=== Pariwisata (persil disebelah barat jalan Nasional) ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 50%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 40
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 21; dan
+    c.: Jalan Lokal = 13.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 21; dan
+    c.: Jalan Lokal = 13.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 2 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 2 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Pariwisata (persil disebelah timur jalan Nasional) ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 50%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 1
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 40
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 9; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 9; dan
+    c.: Jalan Lokal = -.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 2 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 2 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+Keterangan: untuk tinggi pagar yang menghadap pantai maksimal adalah 1,5 meter
+
+
+
+================================================================================
+
+=== Pariwisata (pariwisata Desa Berakit) ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 50%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 40
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 21; dan
+    c.: Jalan Lokal = 13.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 21; dan
+    c.: Jalan Lokal = 13.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 2 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 2 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================

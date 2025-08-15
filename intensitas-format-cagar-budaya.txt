@@ -1,0 +1,57 @@
+# KETENTUAN INTENSITAS PEMANFAATAN RUANG
+# Filter: All Zona - Cagar Budaya
+# Generated automatically from intensitas-data-merged.json
+
+
+=== Cagar Budaya ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 60%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 0.6
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 30
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 8; dan
+    c.: Jalan Lokal = 8.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 8; dan
+    c.: Jalan Lokal = 8.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 3 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 3 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================

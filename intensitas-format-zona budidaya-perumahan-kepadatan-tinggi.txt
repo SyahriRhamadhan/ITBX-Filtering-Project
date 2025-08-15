@@ -1,0 +1,57 @@
+# KETENTUAN INTENSITAS PEMANFAATAN RUANG
+# Filter: Zona Budidaya - Perumahan Kepadatan Tinggi
+# Generated automatically from intensitas-data-merged.json
+
+
+=== Perumahan Kepadatan Tinggi ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 80%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 2.4
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 20
+
+Luas Kaveling
+Minimum: 120 m²
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================

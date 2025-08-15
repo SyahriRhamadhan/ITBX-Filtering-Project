@@ -1,0 +1,57 @@
+# KETENTUAN INTENSITAS PEMANFAATAN RUANG
+# Filter: All Zona - Badan Air
+# Generated automatically from intensitas-data-merged.json
+
+
+=== Badan Air ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: -
+
+Koefisien Lantai Bangunan
+KLB Maksimum: -
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: -
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
