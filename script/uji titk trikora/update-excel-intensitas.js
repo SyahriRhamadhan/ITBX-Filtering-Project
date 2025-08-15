@@ -89,14 +89,14 @@ function updateExcelWithIntensitas() {
                 // Generate format intensitas
                 const intensitasText = generateIntensitasForExcel(intensitasItem);
                 
-                // Update kolom F (index 5) dengan data intensitas
-                row[5] = intensitasText;
+                // Update kolom G (index 6) dengan data intensitas - Perda
+                row[6] = intensitasText;
                 
                 console.log(`✅ Updated intensitas for: ${zona}`);
             } else {
                 console.log(`⚠️  No intensitas data found for: ${zona}`);
                 // Tetap isi dengan format kosong
-                row[5] = `Koefisien Dasar Bangunan (%)\nMaksimum: -\n\nKoefisien Lantai Bangunan\nKLB Maksimum: -\nKLB Minimum: -\n\nKoefisien Dasar Hijau (%)\nMinimum: -\n\nLuas Kaveling\nMinimum: -\n\nKetinggian Bangunan\nPersil disebelah barat jalan Nasional:\na.: Jalan Arteri = -;\nb.: Jalan Kolektor = -; dan\nc.: Jalan Lokal = -.\nPersil disebelah timur jalan Nasional:\na.: Jalan Arteri = -;\nb.: Jalan Kolektor = -; dan\nc.: Jalan Lokal = -.\n\nKoefisien Tapak Basement\n-\n\nGaris Sempadan Bangunan\nPersil disebelah barat jalan Nasional:\na.: Jalan Arteri = -;\nb.: Jalan Kolektor = -; dan\nc.: Jalan Lokal = -.\nPersil disebelah timur jalan Nasional:\na.: Jalan Arteri = -;\nb.: Jalan Kolektor = -; dan\nc.: Jalan Lokal = -.\n\nJarak Bebas Samping (JBS)\nMinimum: -\n\nJarak Bebas Belakang (JBB)\nMinimum: -\n\nLantai Bangunan\nMaksimum Kolektor: -\nMaksimum Lokal: -`;
+                row[6] = `Koefisien Dasar Bangunan (%)\nMaksimum: -\n\nKoefisien Lantai Bangunan\nKLB Maksimum: -\nKLB Minimum: -\n\nKoefisien Dasar Hijau (%)\nMinimum: -\n\nLuas Kaveling\nMinimum: -\n\nKetinggian Bangunan\nPersil disebelah barat jalan Nasional:\na.: Jalan Arteri = -;\nb.: Jalan Kolektor = -; dan\nc.: Jalan Lokal = -.\nPersil disebelah timur jalan Nasional:\na.: Jalan Arteri = -;\nb.: Jalan Kolektor = -; dan\nc.: Jalan Lokal = -.\n\nKoefisien Tapak Basement\n-\n\nGaris Sempadan Bangunan\nPersil disebelah barat jalan Nasional:\na.: Jalan Arteri = -;\nb.: Jalan Kolektor = -; dan\nc.: Jalan Lokal = -.\nPersil disebelah timur jalan Nasional:\na.: Jalan Arteri = -;\nb.: Jalan Kolektor = -; dan\nc.: Jalan Lokal = -.\n\nJarak Bebas Samping (JBS)\nMinimum: -\n\nJarak Bebas Belakang (JBB)\nMinimum: -\n\nLantai Bangunan\nMaksimum Kolektor: -\nMaksimum Lokal: -`;
             }
         }
     }
@@ -111,7 +111,8 @@ function updateExcelWithIntensitas() {
         { wch: 20 },  // C: Kodunk
         { wch: 15 },  // D: Kode Zona
         { wch: 35 },  // E: Zona
-        { wch: 80 },  // F: Ketentuan Intensitas (lebih lebar untuk text panjang)
+        { wch: 15 },  // F: RDTR Interaktif/Parkiran
+        { wch: 80 },  // G: Perda (lebih lebar untuk text panjang)
     ];
     
     // Tambahkan width untuk kolom tambahan
@@ -124,13 +125,13 @@ function updateExcelWithIntensitas() {
     // Update workbook dengan worksheet baru
     workbook.Sheets['Sheet1'] = newWorksheet;
     
-    // Simpan file dengan nama baru
-    const outputPath = path.join(__dirname, 'app', 'data', 'uji titik', 'trikora-uji-titik-with-intensitas.xlsx');
+    // Simpan file dengan nama baru untuk menghindari konflik file
+    const outputPath = path.join(__dirname, 'app', 'data', 'uji titik', 'trikora-uji-titik-updated.xlsx');
     XLSX.writeFile(workbook, outputPath);
     
     console.log(`\n✅ File Excel berhasil diupdate: ${outputPath}`);
-    console.log('📋 Kolom F (Ketentuan Intensitas) telah diisi dengan data dari intensitas-data-merged.json');
-    console.log('📝 Kolom G, H, I, J (Perda, Cek, FIND, Kesesuaian) masih kosong untuk diisi manual');
+    console.log('📋 Kolom G (Perda) telah diisi dengan data intensitas dari intensitas-data-merged.json');
+    console.log('📝 Kolom F (RDTR Interaktif/Parkiran), H (Cek), I (FIND), J (Kesesuaian) masih kosong untuk diisi manual');
 }
 
 // Fungsi untuk menampilkan preview zona yang akan diupdate
