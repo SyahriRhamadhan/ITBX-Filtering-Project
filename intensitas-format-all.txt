@@ -1,0 +1,1863 @@
+# KETENTUAN INTENSITAS PEMANFAATAN RUANG
+# Generated automatically from intensitas-data-merged.json
+
+
+=== Badan Air ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: -
+
+Koefisien Lantai Bangunan
+KLB Maksimum: -
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: -
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Hutan Lindung ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: -
+
+Koefisien Lantai Bangunan
+KLB Maksimum: -
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: -
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Perlindungan Setempat ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 10%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 0.1
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 90
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Taman Kelurahan ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 20%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 0.2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 80
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Taman RW ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 20%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 0.2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 80
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Taman RT ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 20%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 0.2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 80
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Pemakaman ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 20%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 0.2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 80
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Jalur Hijau ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: -
+
+Koefisien Lantai Bangunan
+KLB Maksimum: -
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 95
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Cagar Budaya ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 60%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 0.6
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 30
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 8; dan
+    c.: Jalan Lokal = 8.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 8; dan
+    c.: Jalan Lokal = 8.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 3 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 3 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Ekosistem Mangrove ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: -
+
+Koefisien Lantai Bangunan
+KLB Maksimum: -
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 80
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Badan Jalan ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: -
+
+Koefisien Lantai Bangunan
+KLB Maksimum: -
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: -
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Hutan Produksi Tetap ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: -
+
+Koefisien Lantai Bangunan
+KLB Maksimum: -
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: -
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Hutan Produksi yang dapat Dikonversi ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: -
+
+Koefisien Lantai Bangunan
+KLB Maksimum: -
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: -
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Perkebunan ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 40%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 0.4
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 60
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 2 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 2 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Peternakan ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 40%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 1.2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 60
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 2 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 2 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Pertambangan Mineral Bukan Logam ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 40%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 1.2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 60
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 3 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 3 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Kawasan Peruntukan Industri ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 60%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 1.8
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 30
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 2 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 2 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Pariwisata (persil disebelah barat jalan Nasional) ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 50%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 40
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 21; dan
+    c.: Jalan Lokal = 13.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 21; dan
+    c.: Jalan Lokal = 13.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 2 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 2 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Pariwisata (persil disebelah timur jalan Nasional) ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 50%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 1
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 40
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 9; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 9; dan
+    c.: Jalan Lokal = -.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 2 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 2 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+Keterangan: untuk tinggi pagar yang menghadap pantai maksimal adalah 1,5 meter
+
+
+
+================================================================================
+
+=== Pariwisata (pariwisata Desa Berakit) ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 50%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 40
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 21; dan
+    c.: Jalan Lokal = 13.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 21; dan
+    c.: Jalan Lokal = 13.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 2 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 2 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Perumahan Kepadatan Tinggi ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 80%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 2.4
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 20
+
+Luas Kaveling
+Minimum: 120 m²
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Perumahan Kepadatan Sedang ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 70%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 2.1
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 20
+
+Luas Kaveling
+Minimum: 150 m²
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Perumahan Kepadatan Rendah ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 60%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 1.8
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 30
+
+Luas Kaveling
+Minimum: 150 m²
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== SPU Skala Kota ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 80%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 2.4
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 20
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 16; dan
+    c.: Jalan Lokal = 12.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 16; dan
+    c.: Jalan Lokal = 12.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: 3
+Maksimum Lokal: 2
+
+
+Tampilan Bangunan: a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.
+
+
+================================================================================
+
+=== SPU Skala Kecamatan ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 80%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 2.4
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 20
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 16; dan
+    c.: Jalan Lokal = 12.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 16; dan
+    c.: Jalan Lokal = 12.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: 3
+Maksimum Lokal: 2
+
+
+Tampilan Bangunan: a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.
+
+
+================================================================================
+
+=== SPU Skala Kelurahan ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 70%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 2.1
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 20
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 16; dan
+    c.: Jalan Lokal = 12.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 16; dan
+    c.: Jalan Lokal = 12.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: 3
+Maksimum Lokal: 2
+
+
+Tampilan Bangunan: a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.
+
+
+================================================================================
+
+=== SPU Skala RW ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 60%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 1.8
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 30
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 16; dan
+    c.: Jalan Lokal = 12.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 16; dan
+    c.: Jalan Lokal = 12.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: 3
+Maksimum Lokal: 2
+
+
+Tampilan Bangunan: a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.
+
+
+================================================================================
+
+=== Ruang Terbuka Non Hijau ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 20%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 0.2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 30
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 5; dan
+    c.: Jalan Lokal = 5.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 2 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 2 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Perdagangan dan Jasa Skala WP (persil disebelah barat jalan Nasional) ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 80%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 3.2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 20
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 21; dan
+    c.: Jalan Lokal = 13.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 21; dan
+    c.: Jalan Lokal = 13.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Perdagangan dan Jasa Skala WP (persil disebelah timur jalan Nasional) ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 70%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 1.4
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 20
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 9; dan
+    c.: Jalan Lokal = 9.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 9; dan
+    c.: Jalan Lokal = 9.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Perdagangan dan Jasa Skala SWP (persil disebelah barat jalan Nasional) ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 80%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 3.2
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 20
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 21; dan
+    c.: Jalan Lokal = 13.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 21; dan
+    c.: Jalan Lokal = 13.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Perdagangan dan Jasa Skala SWP (persil disebelah timur jalan Nasional) ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 70%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 1.4
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 20
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 9; dan
+    c.: Jalan Lokal = 9.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 9; dan
+    c.: Jalan Lokal = 9.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Perkantoran ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 70%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 2.1
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 20
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 12; dan
+    c.: Jalan Lokal = 9.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 12; dan
+    c.: Jalan Lokal = 9.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Transportasi ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: 60%
+
+Koefisien Lantai Bangunan
+KLB Maksimum: 1.8
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: 20
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 13; dan
+    c.: Jalan Lokal = 9.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = 17.5; dan
+    c.: Jalan Lokal = 12.5.
+
+Jarak Bebas Samping (JBS)
+Minimum: 1 m
+
+Jarak Bebas Belakang (JBB)
+Minimum: 1 m
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
+
+=== Pertahanan dan Keamanan ===
+
+Koefisien Dasar Bangunan (%)
+Maksimum: -
+
+Koefisien Lantai Bangunan
+KLB Maksimum: -
+KLB Minimum: -
+
+Koefisien Dasar Hijau (%)
+Minimum: -
+
+Luas Kaveling
+Minimum: -
+
+Ketinggian Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Koefisien Tapak Basement
+-
+
+Garis Sempadan Bangunan
+Persil disebelah barat jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+Persil disebelah timur jalan Nasional:
+    a.: Jalan Arteri = -;
+    b.: Jalan Kolektor = -; dan
+    c.: Jalan Lokal = -.
+
+Jarak Bebas Samping (JBS)
+Minimum: -
+
+Jarak Bebas Belakang (JBB)
+Minimum: -
+
+Lantai Bangunan
+Maksimum Kolektor: -
+Maksimum Lokal: -
+
+
+
+
+================================================================================
