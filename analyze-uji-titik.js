@@ -115,18 +115,18 @@ function analyzeUjiTitikExcel(filePath) {
 }
 
 // Main execution
-const excelPath = path.join(__dirname, 'app', 'data', 'uji titik', 'trikora uji titik.xlsx');
+const filePath = path.join(__dirname, 'app', 'data', 'uji titik', 'trikora-uji-titik-generated.xlsx');
 
 try {
   console.log('🚀 Starting Trikora Uji Titik Excel analysis...');
   
   // Check if file exists
-  if (!fs.existsSync(excelPath)) {
-    console.error('❌ Excel file not found at:', excelPath);
+  if (!fs.existsSync(filePath)) {
+    console.error('❌ Excel file not found at:', filePath);
     process.exit(1);
   }
   
-  analyzeUjiTitikExcel(excelPath);
+  analyzeUjiTitikExcel(filePath);
   
   console.log('\n✅ Analysis completed successfully!');
   
