@@ -1,0 +1,792 @@
+{
+  "data": [
+    {
+      "Zona": "Zona Lindung",
+      "SubZona": "Badan Air",
+      "Jenis": null,
+      "KDB Maks (%)": null,
+      "KDH Min (%)": null,
+      "KLB Maks": null,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Lindung",
+      "SubZona": "Hutan Lindung",
+      "Jenis": null,
+      "KDB Maks (%)": null,
+      "KDH Min (%)": null,
+      "KLB Maks": null,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Lindung",
+      "SubZona": "Perlindungan Setempat",
+      "Jenis": null,
+      "KDB Maks (%)": 10,
+      "KDH Min (%)": 90,
+      "KLB Maks": 0.1,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Lindung",
+      "SubZona": "Taman Kota",
+      "Jenis": null,
+      "KDB Maks (%)": 20,
+      "KDH Min (%)": 80,
+      "KLB Maks": 0.2,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Lindung",
+      "SubZona": "Taman Kecamatan",
+      "Jenis": null,
+      "KDB Maks (%)": 20,
+      "KDH Min (%)": 80,
+      "KLB Maks": 0.2,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Lindung",
+      "SubZona": "Taman Kelurahan",
+      "Jenis": null,
+      "KDB Maks (%)": 20,
+      "KDH Min (%)": 80,
+      "KLB Maks": 0.2,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Lindung",
+      "SubZona": "Taman RW",
+      "Jenis": null,
+      "KDB Maks (%)": 20,
+      "KDH Min (%)": 80,
+      "KLB Maks": 0.2,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Lindung",
+      "SubZona": "Taman RT",
+      "Jenis": null,
+      "KDB Maks (%)": 20,
+      "KDH Min (%)": 80,
+      "KLB Maks": 0.2,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Lindung",
+      "SubZona": "Pemakaman",
+      "Jenis": null,
+      "KDB Maks (%)": 20,
+      "KDH Min (%)": 80,
+      "KLB Maks": 0.2,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Lindung",
+      "SubZona": "Jalur Hijau",
+      "Jenis": null,
+      "KDB Maks (%)": null,
+      "KDH Min (%)": 95,
+      "KLB Maks": null,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Lindung",
+      "SubZona": "Cagar Budaya",
+      "Jenis": null,
+      "KDB Maks (%)": 50,
+      "KDH Min (%)": 45,
+      "KLB Maks": 0.5,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Lindung",
+      "SubZona": "Ekosistem Mangrove",
+      "Jenis": null,
+      "KDB Maks (%)": null,
+      "KDH Min (%)": 80,
+      "KLB Maks": null,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Badan Jalan",
+      "Jenis": null,
+      "KDB Maks (%)": null,
+      "KDH Min (%)": null,
+      "KLB Maks": null,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Hutan Produksi Terbatas",
+      "Jenis": null,
+      "KDB Maks (%)": null,
+      "KDH Min (%)": null,
+      "KLB Maks": null,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Hutan Produksi Tetap",
+      "Jenis": null,
+      "KDB Maks (%)": null,
+      "KDH Min (%)": null,
+      "KLB Maks": null,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Tanaman Pangan",
+      "Jenis": null,
+      "KDB Maks (%)": 10,
+      "KDH Min (%)": 90,
+      "KLB Maks": 0.1,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Hortikultura",
+      "Jenis": null,
+      "KDB Maks (%)": 40,
+      "KDH Min (%)": 60,
+      "KLB Maks": 0.4,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Perkebunan",
+      "Jenis": null,
+      "KDB Maks (%)": 40,
+      "KDH Min (%)": 60,
+      "KLB Maks": 0.4,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Perikanan Budi Daya",
+      "Jenis": null,
+      "KDB Maks (%)": 60,
+      "KDH Min (%)": 20,
+      "KLB Maks": 0.6,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Kawasan Peruntukan Industri",
+      "Jenis": null,
+      "KDB Maks (%)": 60,
+      "KDH Min (%)": 30,
+      "KLB Maks": 1.8,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Pariwisata",
+      "Jenis": null,
+      "KDB Maks (%)": 60,
+      "KDH Min (%)": 40,
+      "KLB Maks": 1.8,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Perumahan Kepadatan Tinggi",
+      "Jenis": null,
+      "KDB Maks (%)": 80,
+      "KDH Min (%)": 20,
+      "KLB Maks": 2.4,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": 90
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Perumahan Kepadatan Sedang",
+      "Jenis": null,
+      "KDB Maks (%)": 70,
+      "KDH Min (%)": 20,
+      "KLB Maks": 2.1,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": 120
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Perumahan Kepadatan Rendah",
+      "Jenis": null,
+      "KDB Maks (%)": 60,
+      "KDH Min (%)": 30,
+      "KLB Maks": 1.8,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": 120
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "SPU Skala Kota",
+      "Jenis": null,
+      "KDB Maks (%)": 80,
+      "KDH Min (%)": 20,
+      "KLB Maks": 2.4,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "SPU Skala Kecamatan",
+      "Jenis": null,
+      "KDB Maks (%)": 80,
+      "KDH Min (%)": 20,
+      "KLB Maks": 2.4,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "SPU Skala Kelurahan",
+      "Jenis": null,
+      "KDB Maks (%)": 70,
+      "KDH Min (%)": 20,
+      "KLB Maks": 2.1,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "SPU Skala RW",
+      "Jenis": null,
+      "KDB Maks (%)": 60,
+      "KDH Min (%)": 30,
+      "KLB Maks": 1.8,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Ruang Terbuka Non Hijau",
+      "Jenis": null,
+      "KDB Maks (%)": 20,
+      "KDH Min (%)": 30,
+      "KLB Maks": 0.2,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Perdagangan dan Jasa Skala Kota",
+      "Jenis": "Vertikal 1-3 lantai",
+      "KDB Maks (%)": 80,
+      "KDH Min (%)": 20,
+      "KLB Maks": 2.4,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Perdagangan dan Jasa Skala Kota",
+      "Jenis": "Vertikal 4-5 lantai",
+      "KDB Maks (%)": 60,
+      "KDH Min (%)": 20,
+      "KLB Maks": 3,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Perdagangan dan Jasa Skala WP",
+      "Jenis": null,
+      "KDB Maks (%)": 80,
+      "KDH Min (%)": 20,
+      "KLB Maks": 2.4,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Perdagangan dan Jasa Skala SWP",
+      "Jenis": null,
+      "KDB Maks (%)": 80,
+      "KDH Min (%)": 20,
+      "KLB Maks": 2.4,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Perkantoran",
+      "Jenis": "Vertikal 1-3 lantai",
+      "KDB Maks (%)": 70,
+      "KDH Min (%)": 20,
+      "KLB Maks": 2.1,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Perkantoran",
+      "Jenis": "Vertikal 4-5 lantai",
+      "KDB Maks (%)": 60,
+      "KDH Min (%)": 30,
+      "KLB Maks": 3,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    },
+    {
+      "Zona": "Zona Budidaya",
+      "SubZona": "Pertahanan dan Keamanan",
+      "Jenis": null,
+      "KDB Maks (%)": null,
+      "KDH Min (%)": null,
+      "KLB Maks": null,
+      "KTB Maks (%)": null,
+      "Luas Kavling Min (m2)": null
+    }
+  ],
+  "summary": {
+    "totalRows": 36,
+    "zonaCount": 2,
+    "subZonaCount": 34,
+    "jenisKhususCount": 2
+  },
+  "groupedByZona": {
+    "Zona Lindung": [
+      {
+        "Zona": "Zona Lindung",
+        "SubZona": "Badan Air",
+        "Jenis": null,
+        "KDB Maks (%)": null,
+        "KDH Min (%)": null,
+        "KLB Maks": null,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Lindung",
+        "SubZona": "Hutan Lindung",
+        "Jenis": null,
+        "KDB Maks (%)": null,
+        "KDH Min (%)": null,
+        "KLB Maks": null,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Lindung",
+        "SubZona": "Perlindungan Setempat",
+        "Jenis": null,
+        "KDB Maks (%)": 10,
+        "KDH Min (%)": 90,
+        "KLB Maks": 0.1,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Lindung",
+        "SubZona": "Taman Kota",
+        "Jenis": null,
+        "KDB Maks (%)": 20,
+        "KDH Min (%)": 80,
+        "KLB Maks": 0.2,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Lindung",
+        "SubZona": "Taman Kecamatan",
+        "Jenis": null,
+        "KDB Maks (%)": 20,
+        "KDH Min (%)": 80,
+        "KLB Maks": 0.2,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Lindung",
+        "SubZona": "Taman Kelurahan",
+        "Jenis": null,
+        "KDB Maks (%)": 20,
+        "KDH Min (%)": 80,
+        "KLB Maks": 0.2,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Lindung",
+        "SubZona": "Taman RW",
+        "Jenis": null,
+        "KDB Maks (%)": 20,
+        "KDH Min (%)": 80,
+        "KLB Maks": 0.2,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Lindung",
+        "SubZona": "Taman RT",
+        "Jenis": null,
+        "KDB Maks (%)": 20,
+        "KDH Min (%)": 80,
+        "KLB Maks": 0.2,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Lindung",
+        "SubZona": "Pemakaman",
+        "Jenis": null,
+        "KDB Maks (%)": 20,
+        "KDH Min (%)": 80,
+        "KLB Maks": 0.2,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Lindung",
+        "SubZona": "Jalur Hijau",
+        "Jenis": null,
+        "KDB Maks (%)": null,
+        "KDH Min (%)": 95,
+        "KLB Maks": null,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Lindung",
+        "SubZona": "Cagar Budaya",
+        "Jenis": null,
+        "KDB Maks (%)": 50,
+        "KDH Min (%)": 45,
+        "KLB Maks": 0.5,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Lindung",
+        "SubZona": "Ekosistem Mangrove",
+        "Jenis": null,
+        "KDB Maks (%)": null,
+        "KDH Min (%)": 80,
+        "KLB Maks": null,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      }
+    ],
+    "Zona Budidaya": [
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Badan Jalan",
+        "Jenis": null,
+        "KDB Maks (%)": null,
+        "KDH Min (%)": null,
+        "KLB Maks": null,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Hutan Produksi Terbatas",
+        "Jenis": null,
+        "KDB Maks (%)": null,
+        "KDH Min (%)": null,
+        "KLB Maks": null,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Hutan Produksi Tetap",
+        "Jenis": null,
+        "KDB Maks (%)": null,
+        "KDH Min (%)": null,
+        "KLB Maks": null,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Tanaman Pangan",
+        "Jenis": null,
+        "KDB Maks (%)": 10,
+        "KDH Min (%)": 90,
+        "KLB Maks": 0.1,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Hortikultura",
+        "Jenis": null,
+        "KDB Maks (%)": 40,
+        "KDH Min (%)": 60,
+        "KLB Maks": 0.4,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Perkebunan",
+        "Jenis": null,
+        "KDB Maks (%)": 40,
+        "KDH Min (%)": 60,
+        "KLB Maks": 0.4,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Perikanan Budi Daya",
+        "Jenis": null,
+        "KDB Maks (%)": 60,
+        "KDH Min (%)": 20,
+        "KLB Maks": 0.6,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Kawasan Peruntukan Industri",
+        "Jenis": null,
+        "KDB Maks (%)": 60,
+        "KDH Min (%)": 30,
+        "KLB Maks": 1.8,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Pariwisata",
+        "Jenis": null,
+        "KDB Maks (%)": 60,
+        "KDH Min (%)": 40,
+        "KLB Maks": 1.8,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Perumahan Kepadatan Tinggi",
+        "Jenis": null,
+        "KDB Maks (%)": 80,
+        "KDH Min (%)": 20,
+        "KLB Maks": 2.4,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": 90
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Perumahan Kepadatan Sedang",
+        "Jenis": null,
+        "KDB Maks (%)": 70,
+        "KDH Min (%)": 20,
+        "KLB Maks": 2.1,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": 120
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Perumahan Kepadatan Rendah",
+        "Jenis": null,
+        "KDB Maks (%)": 60,
+        "KDH Min (%)": 30,
+        "KLB Maks": 1.8,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": 120
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "SPU Skala Kota",
+        "Jenis": null,
+        "KDB Maks (%)": 80,
+        "KDH Min (%)": 20,
+        "KLB Maks": 2.4,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "SPU Skala Kecamatan",
+        "Jenis": null,
+        "KDB Maks (%)": 80,
+        "KDH Min (%)": 20,
+        "KLB Maks": 2.4,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "SPU Skala Kelurahan",
+        "Jenis": null,
+        "KDB Maks (%)": 70,
+        "KDH Min (%)": 20,
+        "KLB Maks": 2.1,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "SPU Skala RW",
+        "Jenis": null,
+        "KDB Maks (%)": 60,
+        "KDH Min (%)": 30,
+        "KLB Maks": 1.8,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Ruang Terbuka Non Hijau",
+        "Jenis": null,
+        "KDB Maks (%)": 20,
+        "KDH Min (%)": 30,
+        "KLB Maks": 0.2,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Perdagangan dan Jasa Skala Kota",
+        "Jenis": "Vertikal 1-3 lantai",
+        "KDB Maks (%)": 80,
+        "KDH Min (%)": 20,
+        "KLB Maks": 2.4,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Perdagangan dan Jasa Skala Kota",
+        "Jenis": "Vertikal 4-5 lantai",
+        "KDB Maks (%)": 60,
+        "KDH Min (%)": 20,
+        "KLB Maks": 3,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Perdagangan dan Jasa Skala WP",
+        "Jenis": null,
+        "KDB Maks (%)": 80,
+        "KDH Min (%)": 20,
+        "KLB Maks": 2.4,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Perdagangan dan Jasa Skala SWP",
+        "Jenis": null,
+        "KDB Maks (%)": 80,
+        "KDH Min (%)": 20,
+        "KLB Maks": 2.4,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Perkantoran",
+        "Jenis": "Vertikal 1-3 lantai",
+        "KDB Maks (%)": 70,
+        "KDH Min (%)": 20,
+        "KLB Maks": 2.1,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Perkantoran",
+        "Jenis": "Vertikal 4-5 lantai",
+        "KDB Maks (%)": 60,
+        "KDH Min (%)": 30,
+        "KLB Maks": 3,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      },
+      {
+        "Zona": "Zona Budidaya",
+        "SubZona": "Pertahanan dan Keamanan",
+        "Jenis": null,
+        "KDB Maks (%)": null,
+        "KDH Min (%)": null,
+        "KLB Maks": null,
+        "KTB Maks (%)": null,
+        "Luas Kavling Min (m2)": null
+      }
+    ]
+  },
+  "filters": {
+    "zonaList": [
+      "Zona Budidaya",
+      "Zona Lindung"
+    ],
+    "subZonaList": [
+      "Badan Air",
+      "Badan Jalan",
+      "Cagar Budaya",
+      "Ekosistem Mangrove",
+      "Hortikultura",
+      "Hutan Lindung",
+      "Hutan Produksi Terbatas",
+      "Hutan Produksi Tetap",
+      "Jalur Hijau",
+      "Kawasan Peruntukan Industri",
+      "Pariwisata",
+      "Pemakaman",
+      "Perdagangan dan Jasa Skala Kota",
+      "Perdagangan dan Jasa Skala SWP",
+      "Perdagangan dan Jasa Skala WP",
+      "Perikanan Budi Daya",
+      "Perkantoran",
+      "Perkebunan",
+      "Perlindungan Setempat",
+      "Pertahanan dan Keamanan",
+      "Perumahan Kepadatan Rendah",
+      "Perumahan Kepadatan Sedang",
+      "Perumahan Kepadatan Tinggi",
+      "Ruang Terbuka Non Hijau",
+      "SPU Skala Kecamatan",
+      "SPU Skala Kelurahan",
+      "SPU Skala Kota",
+      "SPU Skala RW",
+      "Taman Kecamatan",
+      "Taman Kelurahan",
+      "Taman Kota",
+      "Taman RT",
+      "Taman RW",
+      "Tanaman Pangan"
+    ],
+    "jenisKhususList": [
+      "Vertikal 1-3 lantai",
+      "Vertikal 4-5 lantai"
+    ]
+  },
+  "headers": [
+    "Zona",
+    "SubZona",
+    "Jenis",
+    "KDB Maks (%)",
+    "KDH Min (%)",
+    "KLB Maks",
+    "KTB Maks (%)",
+    "Luas Kavling Min (m2)"
+  ]
+}

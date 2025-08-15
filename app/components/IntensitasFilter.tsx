@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import intensitasData from '../data/intensitas-data-merged.json';
+import intensitasDataTrikora from '../data/intensitas-data-merged.json';
+import intensitasDataBsb from '../data/intensitas-data-merged-bsb.json';
 
 interface IntensitasItem {
   Zona: string;
@@ -39,7 +40,11 @@ interface IntensitasData {
   headers: string[];
 }
 
-const IntensitasFilter: React.FC = () => {
+interface IntensitasFilterProps {
+  dataSource?: 'trikora' | 'bsb';
+}
+
+const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'trikora' }) => {
   const [selectedZona, setSelectedZona] = useState<string>('');
   const [selectedSubZona, setSelectedSubZona] = useState<string>('');
   const [selectedJenis, setSelectedJenis] = useState<string>('');
@@ -49,7 +54,11 @@ const IntensitasFilter: React.FC = () => {
   const [showPreview, setShowPreview] = useState<boolean>(false);
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
 
-  const data = intensitasData as IntensitasData;
+  const data = useMemo(() => {
+    return dataSource === 'bsb' 
+      ? intensitasDataBsb as IntensitasData
+      : intensitasDataTrikora as IntensitasData;
+  }, [dataSource]);
 
   const filteredData = useMemo(() => {
     let filtered = data.data.filter(item => {
@@ -129,26 +138,27 @@ const IntensitasFilter: React.FC = () => {
 
     // KDB (Koefisien Dasar Bangunan)
     result += 'Koefisien Dasar Bangunan (%)\n';
-    filteredData.forEach(item => {
-      const kdb = item['KDB Maks (%)'] !== null ? `${item['KDB Maks (%)']}` : '-';
-      result += `${item.Jenis || item.SubZona}: ${kdb}\n`;
-    });
+    const kdbValue = filteredData.some(item => item['KDB Maks (%)'] !== null)
+      ? filteredData.map(item => item['KDB Maks (%)'] || '-').find(val => val !== '-')
+      : '-';
+    result += `Maksimum: ${kdbValue !== '-' ? kdbValue + '%' : '-'}\n`;
     result += '\n';
 
     // KLB (Koefisien Lantai Bangunan)
     result += 'Koefisien Lantai Bangunan\n';
-    filteredData.forEach(item => {
-      const klb = item['KLB Maks'] !== null ? `${item['KLB Maks']}` : '-';
-      result += `${item.Jenis || item.SubZona}: ${klb}\n`;
-    });
+    const klbMaksValue = filteredData.some(item => item['KLB Maks'] !== null)
+      ? filteredData.map(item => item['KLB Maks'] || '-').find(val => val !== '-')
+      : '-';
+    result += `KLB Maksimum: ${klbMaksValue !== '-' && klbMaksValue !== undefined ? klbMaksValue.toString().replace('.', ',') : '-'}\n`;
+    result += `KLB Minimum: -\n`;
     result += '\n';
 
     // KDH (Koefisien Dasar Hijau)
     result += 'Koefisien Dasar Hijau (%)\n';
-    filteredData.forEach(item => {
-      const kdh = item['KDH Min (%)'] !== null ? `${item['KDH Min (%)']}` : '-';
-      result += `${item.Jenis || item.SubZona}: ${kdh}\n`;
-    });
+    const kdhValue = filteredData.some(item => item['KDH Min (%)'] !== null)
+      ? filteredData.map(item => item['KDH Min (%)'] || '-').find(val => val !== '-')
+      : '-';
+    result += `Minimum: ${kdhValue}\n`;
     result += '\n';
 
     // Luas Kaveling
@@ -280,7 +290,7 @@ const IntensitasFilter: React.FC = () => {
     <div className="p-6 max-w-7xl mx-auto">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Filter Ketentuan Intensitas Pemanfaatan Ruang
+          Filter Ketentuan Intensitas Pemanfaatan Ruang - {dataSource === 'bsb' ? 'BSB' : 'Trikora'}
         </h1>
         <p className="text-gray-600 dark:text-gray-300">
           Total: {data.summary.totalRows} data | Ditampilkan: {filteredData.length} data

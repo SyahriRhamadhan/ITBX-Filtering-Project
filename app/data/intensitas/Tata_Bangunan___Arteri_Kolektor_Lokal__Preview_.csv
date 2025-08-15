@@ -1,0 +1,38 @@
+Sub Zona,Jenis,Tinggi Bangunan Maks. (m) - Arteri,Tinggi Bangunan Maks. (m) - Kolektor,Tinggi Bangunan Maks. (m) - Lokal,Lantai Bangunan Maks. - Arteri,Lantai Bangunan Maks. - Kolektor,Lantai Bangunan Maks. - Lokal,Garis Sempadan Bangunan Min. (m) - Arteri,Garis Sempadan Bangunan Min. (m) - Kolektor,Garis Sempadan Bangunan Min. (m) - Lokal,Jarak Bebas Samping Min. (m),Jarak Bebas Belakang Min. (m),Tampilan Bangunan,Keterangan
+Zona Lindung - Badan Air,-,-,-,-,-,-,-,-,-,-,-,-,-,-
+Zona Lindung - Hutan Lindung,-,-,-,-,-,-,-,-,-,-,-,-,-,-
+Zona Lindung - Perlindungan Setempat,-,5,5,5,-,-,-,22.5,17.5,12.5,-,-,-,-
+Zona Lindung - Taman Kota,-,5,5,5,-,-,-,22.5,17.5,12.5,-,-,-,-
+Zona Lindung - Taman Kecamatan,-,5,5,5,-,-,-,22.5,17.5,12.5,-,-,-,-
+Zona Lindung - Taman Kelurahan,-,5,5,5,-,-,-,22.5,17.5,12.5,-,-,-,-
+Zona Lindung - Taman RW,-,5,5,5,-,-,-,22.5,17.5,12.5,-,-,-,-
+Zona Lindung - Taman RT,-,5,5,5,-,-,-,22.5,17.5,12.5,-,-,-,-
+Zona Lindung - Pemakaman,-,5,5,5,-,-,-,22.5,17.5,12.5,-,-,-,-
+Zona Lindung - Jalur Hijau,-,5,5,5,-,-,-,22.5,17.5,12.5,-,-,-,-
+Zona Lindung - Cagar Budaya,-,5,5,5,-,-,-,22.5,17.5,12.5,3,3,-,-
+Zona Lindung - Ekosistem Mangrove,-,-,-,-,-,-,-,-,-,-,-,-,-,-
+Zona Budidaya - Badan Jalan,-,-,-,-,-,-,-,-,-,-,-,-,-,-
+Zona Budidaya - Hutan Produksi Terbatas,-,-,-,-,-,-,-,-,-,-,-,-,-,-
+Zona Budidaya - Hutan Produksi Tetap,-,-,-,-,-,-,-,-,-,-,-,-,-,-
+Zona Budidaya - Tanaman Pangan,-,5,5,5,-,-,-,22.5,17.5,12.5,-,-,-,-
+Zona Budidaya - Hortikultura,-,5,5,5,-,-,-,22.5,17.5,12.5,2,2,-,-
+Zona Budidaya - Perkebunan,-,5,5,5,-,-,-,22.5,17.5,12.5,2,2,-,-
+Zona Budidaya - Perikanan Budi Daya,-,5,5,5,-,-,-,22.5,17.5,12.5,3,3,-,-
+Zona Budidaya - Kawasan Peruntukan Industri,-,13,9,9,-,-,-,22.5,17.5,12.5,2,2,-,-
+Zona Budidaya - Pariwisata,-,13,9,9,-,-,-,22.5,17.5,12.5,2,2,"a) Bentuk atap dapat mengikuti bentuk atap khas Melayu.
+ b) Penerapan motif berciri khas Melayu.",-
+Zona Budidaya - Perumahan Kepadatan Tinggi,-,13,9,9,-,-,-,22.5,17.5,12.5,1,1,-,-
+Zona Budidaya - Perumahan Kepadatan Sedang,-,13,9,9,-,-,-,22.5,17.5,12.5,1,1,-,-
+Zona Budidaya - Perumahan Kepadatan Rendah,-,13,9,9,-,-,-,22.5,17.5,12.5,1,1,-,-
+Zona Budidaya - SPU Skala Kota,-,16,12,12,3 lantai,2 lantai,2 lantai,22.5,17.5,12.5,1,1,a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.,-
+Zona Budidaya - SPU Skala Kecamatan,-,16,12,12,3 lantai,2 lantai,2 lantai,22.5,17.5,12.5,1,1,a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.,-
+Zona Budidaya - SPU Skala Kelurahan,-,16,12,12,3 lantai,2 lantai,2 lantai,22.5,17.5,12.5,1,1,a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.,-
+Zona Budidaya - SPU Skala RW,-,16,12,12,3 lantai,2 lantai,2 lantai,22.5,17.5,12.5,1,1,a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.,-
+Zona Budidaya - Ruang Terbuka Non Hijau,-,5,5,5,-,-,-,22.5,17.5,12.5,2,2,-,-
+Zona Budidaya - Perdagangan dan Jasa Skala Kota,Vertikal 1-3 lantai,21,13,13,-,-,-,22.5,17.5,12.5,1,1,Penerapan motif berciri khas Melayu.,-
+Zona Budidaya - Perdagangan dan Jasa Skala Kota,Vertikal 4-5 lantai,21,17,17,-,-,-,22.5,17.5,12.5,1,1,Penerapan motif berciri khas Melayu.,-
+Zona Budidaya - Perdagangan dan Jasa Skala WP,-,13,9,9,-,-,-,22.5,17.5,12.5,1,1,Penerapan motif berciri khas Melayu.,-
+Zona Budidaya - Perdagangan dan Jasa Skala SWP,-,13,9,9,-,-,-,22.5,17.5,12.5,1,1,Penerapan motif berciri khas Melayu.,-
+Zona Budidaya - Perkantoran,Vertikal 1-3 lantai,16,16,16,3 lantai,3 lantai,3 lantai,22.5,17.5,12.5,1,1,a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.,Jaringan telekomunikasi dan ketenagalistrikan wajib ditempatkan pada tempat khusus dibawah tanah.
+Zona Budidaya - Perkantoran,Vertikal 4-5 lantai,24,20,20,5 lantai,4 lantai,4 lantai,22.5,17.5,12.5,1,1,a) Bentuk atap dapat mengikuti bentuk atap khas Melayu. b) Penerapan motif berciri khas Melayu.,Jaringan telekomunikasi dan ketenagalistrikan wajib ditempatkan pada tempat khusus dibawah tanah.
+Zona Budidaya - Pertahanan dan Keamanan,-,-,-,-,-,-,-,-,-,-,-,-,-,-

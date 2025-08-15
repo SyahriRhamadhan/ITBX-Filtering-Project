@@ -1,0 +1,37 @@
+Zona,Sub Zona,Jenis,KDB Maks. (%),KTB Maks. (%),KDH Min. (%),KLB Maks.,Luas Kavling Min. (m2)
+Zona Lindung,Badan Air,-,-,-,-,-,-
+Zona Lindung,Hutan Lindung,-,-,-,-,-,-
+Zona Lindung,Perlindungan Setempat,-,10,-,90,0.1,-
+Zona Lindung,Taman Kota,-,20,-,80,0.2,-
+Zona Lindung,Taman Kecamatan,-,20,-,80,0.2,-
+Zona Lindung,Taman Kelurahan,-,20,-,80,0.2,-
+Zona Lindung,Taman RW,-,20,-,80,0.2,-
+Zona Lindung,Taman RT,-,20,-,80,0.2,-
+Zona Lindung,Pemakaman,-,20,-,80,0.2,-
+Zona Lindung,Jalur Hijau,-,-,-,95,-,-
+Zona Lindung,Cagar Budaya,-,50,-,45,0.5,-
+Zona Lindung,Ekosistem Mangrove,-,-,-,80,-,-
+Zona Budidaya,Badan Jalan,-,-,-,-,-,-
+Zona Budidaya,Hutan Produksi Terbatas,-,-,-,-,-,-
+Zona Budidaya,Hutan Produksi Tetap,-,-,-,-,-,-
+Zona Budidaya,Tanaman Pangan,-,10,-,90,0.1,-
+Zona Budidaya,Hortikultura,-,40,-,60,0.4,-
+Zona Budidaya,Perkebunan,-,40,-,60,0.4,-
+Zona Budidaya,Perikanan Budi Daya,-,60,-,20,0.6,-
+Zona Budidaya,Kawasan Peruntukan Industri,-,60,-,30,1.8,-
+Zona Budidaya,Pariwisata,-,60,-,40,1.8,-
+Zona Budidaya,Perumahan Kepadatan Tinggi,-,80,-,20,2.4,90
+Zona Budidaya,Perumahan Kepadatan Sedang,-,70,-,20,2.1,120
+Zona Budidaya,Perumahan Kepadatan Rendah,-,60,-,30,1.8,120
+Zona Budidaya,SPU Skala Kota,-,80,-,20,2.4,-
+Zona Budidaya,SPU Skala Kecamatan,-,80,-,20,2.4,-
+Zona Budidaya,SPU Skala Kelurahan,-,70,-,20,2.1,-
+Zona Budidaya,SPU Skala RW,-,60,-,30,1.8,-
+Zona Budidaya,Ruang Terbuka Non Hijau,-,20,-,30,0.2,-
+Zona Budidaya,Perdagangan dan Jasa Skala Kota,Vertikal 1-3 lantai,80,-,20,2.4,-
+Zona Budidaya,Perdagangan dan Jasa Skala Kota,Vertikal 4-5 lantai,60,-,20,3.0,-
+Zona Budidaya,Perdagangan dan Jasa Skala WP,-,80,-,20,2.4,-
+Zona Budidaya,Perdagangan dan Jasa Skala SWP,-,80,-,20,2.4,-
+Zona Budidaya,Perkantoran,Vertikal 1-3 lantai,70,-,20,2.1,-
+Zona Budidaya,Perkantoran,Vertikal 4-5 lantai,60,-,30,3.0,-
+Zona Budidaya,Pertahanan dan Keamanan,-,-,-,-,-,-
