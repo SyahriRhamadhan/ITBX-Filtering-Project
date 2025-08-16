@@ -131,10 +131,38 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     // Helper function to format values
     const formatValue = (value: number | null) => value !== null ? value.toString() : '-';
 
-    // Group data by location (assuming we have different locations in the data)
-    // For now, we'll assume we have data for both sides of the national road
-    const westSideData = filteredData[0] || null; // First item represents west side
-    const eastSideData = filteredData[1] || filteredData[0] || null; // Second item or same as first
+    // Check if data has persil (location-specific data)
+    const hasPersil = filteredData.some(item => 
+      item.Jenis && 
+      item.Jenis !== '-' && 
+      item.Jenis.trim() !== '' && (
+        item.Jenis.toLowerCase().includes('persil disebelah barat') ||
+        item.Jenis.toLowerCase().includes('persil disebelah timur')
+      )
+    );
+
+    // Group data by location if persil exists
+    let westSideData = null;
+    let eastSideData = null;
+    
+    if (hasPersil) {
+      westSideData = filteredData.find(item => 
+        item.Jenis && 
+        item.Jenis !== '-' && 
+        item.Jenis.trim() !== '' && 
+        item.Jenis.toLowerCase().includes('persil disebelah barat')
+      ) || null;
+      eastSideData = filteredData.find(item => 
+        item.Jenis && 
+        item.Jenis !== '-' && 
+        item.Jenis.trim() !== '' && 
+        item.Jenis.toLowerCase().includes('persil disebelah timur')
+      ) || null;
+    } else {
+      // Use first item for non-persil data
+      westSideData = filteredData[0] || null;
+      eastSideData = filteredData[0] || null;
+    }
 
     // KDB (Koefisien Dasar Bangunan)
     result += 'Koefisien Dasar Bangunan (%)\n';
@@ -169,28 +197,42 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     result += `Minimum: ${luasKavling}\n`;
     result += '\n';
 
-    // Ketinggian Bangunan - New structured format
+    // Ketinggian Bangunan - Conditional format based on persil
     result += 'Ketinggian Bangunan\n';
-    result += 'Persil disebelah barat jalan Nasional:\n';
-    result += '    a.: Jalan Arteri = -;\n';
-    const tinggiKolektorWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
-      ? westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] 
-      : '-';
-    result += `    b.: Jalan Kolektor = ${tinggiKolektorWest}; dan\n`;
-    const tinggiLokalWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
-      ? westSideData['Tinggi Bangunan Maks. (m) - Lokal'] 
-      : '-';
-    result += `    c.: Jalan Lokal = ${tinggiLokalWest}.\n`;
-    result += 'Persil disebelah timur jalan Nasional:\n';
-    result += '    a.: Jalan Arteri = -;\n';
-    const tinggiKolektorEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
-      ? eastSideData['Tinggi Bangunan Maks. (m) - Kolektor'] 
-      : '-';
-    result += `    b.: Jalan Kolektor = ${tinggiKolektorEast}; dan\n`;
-    const tinggiLokalEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
-      ? eastSideData['Tinggi Bangunan Maks. (m) - Lokal'] 
-      : '-';
-    result += `    c.: Jalan Lokal = ${tinggiLokalEast}.\n`;
+    
+    if (hasPersil) {
+      // Format with persil
+      result += 'Persil disebelah barat jalan Nasional:\n';
+      result += '    a.: Jalan Arteri = -;\n';
+      const tinggiKolektorWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
+        ? westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] 
+        : '-';
+      result += `    b.: Jalan Kolektor = ${tinggiKolektorWest}; dan\n`;
+      const tinggiLokalWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
+        ? westSideData['Tinggi Bangunan Maks. (m) - Lokal'] 
+        : '-';
+      result += `    c.: Jalan Lokal = ${tinggiLokalWest}.\n`;
+      result += 'Persil disebelah timur jalan Nasional:\n';
+      result += '    a.: Jalan Arteri = -;\n';
+      const tinggiKolektorEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
+        ? eastSideData['Tinggi Bangunan Maks. (m) - Kolektor'] 
+        : '-';
+      result += `    b.: Jalan Kolektor = ${tinggiKolektorEast}; dan\n`;
+      const tinggiLokalEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
+        ? eastSideData['Tinggi Bangunan Maks. (m) - Lokal'] 
+        : '-';
+      result += `    c.: Jalan Lokal = ${tinggiLokalEast}.\n`;
+    } else {
+      // Simple format without persil
+      const tinggiKolektor = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
+        ? westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] 
+        : '-';
+      const tinggiLokal = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
+        ? westSideData['Tinggi Bangunan Maks. (m) - Lokal'] 
+        : '-';
+      result += `Maksimum Kolektor: ${tinggiKolektor !== '-' ? tinggiKolektor + ' m' : '-'}\n`;
+      result += `Maksimum Lokal: ${tinggiLokal !== '-' ? tinggiLokal + ' m' : '-'}\n`;
+    }
     result += '\n';
 
     // Koefisien Tapak Basement
@@ -201,28 +243,42 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     result += `${ktb}\n`;
     result += '\n';
 
-    // Garis Sempadan Bangunan - New structured format
+    // Garis Sempadan Bangunan - Conditional format based on persil
     result += 'Garis Sempadan Bangunan\n';
-    result += 'Persil disebelah barat jalan Nasional:\n';
-    result += '    a.: Jalan Arteri = -;\n';
-    const gsbKolektorWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
-      ? westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] 
-      : '-';
-    result += `    b.: Jalan Kolektor = ${gsbKolektorWest}; dan\n`;
-    const gsbLokalWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
-      ? westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] 
-      : '-';
-    result += `    c.: Jalan Lokal = ${gsbLokalWest}.\n`;
-    result += 'Persil disebelah timur jalan Nasional:\n';
-    result += '    a.: Jalan Arteri = -;\n';
-    const gsbKolektorEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
-      ? eastSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] 
-      : '-';
-    result += `    b.: Jalan Kolektor = ${gsbKolektorEast}; dan\n`;
-    const gsbLokalEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
-      ? eastSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] 
-      : '-';
-    result += `    c.: Jalan Lokal = ${gsbLokalEast}.\n`;
+    
+    if (hasPersil) {
+      // Format with persil
+      result += 'Persil disebelah barat jalan Nasional:\n';
+      result += '    a.: Jalan Arteri = -;\n';
+      const gsbKolektorWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
+        ? westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] 
+        : '-';
+      result += `    b.: Jalan Kolektor = ${gsbKolektorWest}; dan\n`;
+      const gsbLokalWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
+        ? westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] 
+        : '-';
+      result += `    c.: Jalan Lokal = ${gsbLokalWest}.\n`;
+      result += 'Persil disebelah timur jalan Nasional:\n';
+      result += '    a.: Jalan Arteri = -;\n';
+      const gsbKolektorEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
+        ? eastSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] 
+        : '-';
+      result += `    b.: Jalan Kolektor = ${gsbKolektorEast}; dan\n`;
+      const gsbLokalEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
+        ? eastSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] 
+        : '-';
+      result += `    c.: Jalan Lokal = ${gsbLokalEast}.\n`;
+    } else {
+      // Simple format without persil
+      const gsbKolektor = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
+        ? westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] 
+        : '-';
+      const gsbLokal = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
+        ? westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] 
+        : '-';
+      result += `Minimum Kolektor: ${gsbKolektor !== '-' ? gsbKolektor + ' m' : '-'}\n`;
+      result += `Minimum Lokal: ${gsbLokal !== '-' ? gsbLokal + ' m' : '-'}\n`;
+    }
     result += '\n';
 
     // Jarak Bebas Samping (JBS)
