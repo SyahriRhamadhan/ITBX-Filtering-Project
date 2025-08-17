@@ -159,6 +159,110 @@ function getKegiatanDiizinkan(zona) {
     }
 }
 
+// Fungsi untuk mendapatkan kegiatan bersyarat (B1, B2, B3) dan kombinasinya
+function getKegiatanBersyarat(zona) {
+    const kegiatanBersyarat = {
+        B1: [],
+        B2: [],
+        B3: [],
+        kombinasi: []
+    };
+    
+    try {
+        bsbData.activities.forEach(activity => {
+            // Cari zona yang sesuai dalam activity.zones
+            const zoneKeys = Object.keys(activity.zones);
+            const matchingZone = zoneKeys.find(key => {
+                const keyLower = key.toLowerCase();
+                const zonaLower = zona.toLowerCase();
+                return keyLower.includes(zonaLower) || zonaLower.includes(keyLower);
+            });
+            
+            if (matchingZone) {
+                const zoneValue = activity.zones[matchingZone];
+                
+                // Handle single B values (exact match only, no other codes)
+                if (zoneValue === 'B1') {
+                    kegiatanBersyarat.B1.push(activity.activity);
+                } else if (zoneValue === 'B2') {
+                    kegiatanBersyarat.B2.push(activity.activity);
+                } else if (zoneValue === 'B3') {
+                    kegiatanBersyarat.B3.push(activity.activity);
+                }
+                
+                // Handle combinations containing ONLY B1, B2, or B3 (no other codes)
+                if (zoneValue && zoneValue.includes(',')) {
+                    const codes = zoneValue.split(',').map(c => c.trim());
+                    const allValidBCodes = codes.every(code => ['B1', 'B2', 'B3'].includes(code));
+                    if (allValidBCodes && codes.length > 1) {
+                        kegiatanBersyarat.kombinasi.push({
+                            activity: activity.activity,
+                            codes: zoneValue
+                        });
+                    }
+                }
+            }
+        });
+        
+        // Fungsi untuk membersihkan nama aktivitas dari kode dalam kurung
+        const cleanActivityName = (activityName) => {
+            // Hapus kode dalam kurung seperti (B1,B3), (T1,B3), dll
+            return activityName.replace(/\s*\([^)]*\)\s*$/, '').trim();
+        };
+        
+        // Format output untuk Excel - gabung semua kegiatan bersyarat tanpa header kategori
+        const allKegiatanBersyarat = [];
+        
+        // Gabungkan semua kegiatan bersyarat dari B1, B2, B3 (bersihkan dari kode)
+        allKegiatanBersyarat.push(...kegiatanBersyarat.B1.map(cleanActivityName));
+        allKegiatanBersyarat.push(...kegiatanBersyarat.B2.map(cleanActivityName));
+        allKegiatanBersyarat.push(...kegiatanBersyarat.B3.map(cleanActivityName));
+        
+        // Tambahkan kegiatan kombinasi (tanpa kode)
+        kegiatanBersyarat.kombinasi.forEach(item => {
+            allKegiatanBersyarat.push(cleanActivityName(item.activity));
+        });
+        
+        // Sort ascending dan join
+        const finalResult = allKegiatanBersyarat.length > 0 ? 
+            allKegiatanBersyarat.sort().join('\n') : 
+            '-';
+        
+        // Handle Excel's 32767 character limit for kegiatan bersyarat - return array for splitting
+        if (finalResult.length > 32767) {
+            console.log(`⚠️  Warning: Kegiatan bersyarat for zona ${zona} exceeds Excel limit (${finalResult.length} chars). Will split into multiple rows...`);
+            
+            // Split into chunks that fit Excel limit
+            const chunks = [];
+            let currentChunk = '';
+            const sortedActivities = allKegiatanBersyarat.sort();
+            
+            for (const activity of sortedActivities) {
+                const activityWithNewline = activity + '\n';
+                if (currentChunk.length + activityWithNewline.length <= 32700) {
+                    currentChunk += activityWithNewline;
+                } else {
+                    if (currentChunk) {
+                        chunks.push(currentChunk.trim());
+                    }
+                    currentChunk = activityWithNewline;
+                }
+            }
+            
+            if (currentChunk) {
+                chunks.push(currentChunk.trim());
+            }
+            
+            return chunks; // Return array for multiple rows
+        }
+        
+        return finalResult;
+    } catch (error) {
+        console.error(`Error processing kegiatan bersyarat for zona ${zona}:`, error.message);
+        return 'Error memproses data kegiatan bersyarat';
+    }
+}
+
 // Fungsi untuk mendapatkan kegiatan terbatas (T1, T2, T3) dan kombinasinya
 function getKegiatanTerbatas(zona) {
     const kegiatanTerbatas = {
@@ -329,19 +433,22 @@ function generateExcelBSB() {
             const intensitasItem = findIntensitasData(zona);
             const kegiatanDiizinkan = getKegiatanDiizinkan(zona);
             const kegiatanTerbatas = getKegiatanTerbatas(zona);
+            const kegiatanBersyarat = getKegiatanBersyarat(zona);
             
             // Handle splitting for large data
             const kegiatanDiizinkanArray = Array.isArray(kegiatanDiizinkan) ? kegiatanDiizinkan : [kegiatanDiizinkan];
             const kegiatanTerbatasArray = Array.isArray(kegiatanTerbatas) ? kegiatanTerbatas : [kegiatanTerbatas];
+            const kegiatanBersyaratArray = Array.isArray(kegiatanBersyarat) ? kegiatanBersyarat : [kegiatanBersyarat];
             
             // Determine maximum parts needed
-            const maxParts = Math.max(kegiatanDiizinkanArray.length, kegiatanTerbatasArray.length);
+            const maxParts = Math.max(kegiatanDiizinkanArray.length, kegiatanTerbatasArray.length, kegiatanBersyaratArray.length);
             
             // Create rows for each part
             for (let partIndex = 0; partIndex < maxParts; partIndex++) {
                 const zoneName = partIndex === 0 ? zona : `${zona} Part ${partIndex + 1}`;
                 const kegiatanDiizinkanPart = kegiatanDiizinkanArray[partIndex] || '';
                 const kegiatanTerbatasPart = kegiatanTerbatasArray[partIndex] || '';
+                const kegiatanBersyaratPart = kegiatanBersyaratArray[partIndex] || '';
                 
                 const row = [
                     rowNumber, // No
@@ -365,7 +472,7 @@ function generateExcelBSB() {
                     '', // S: FIND - kosong
                     '', // T: Kesesuaian - kosong
                     '', // U: RDTR Interaktif/Parkiran - kosong
-                    '', // V: Perda - Kegiatan Bersyarat - kosong
+                    kegiatanBersyaratPart || '-', // V: Perda - Kegiatan Bersyarat
                     '', // W: Cek - kosong
                     '', // X: FIND - kosong
                     '', // Y: Kesesuaian - kosong
@@ -459,6 +566,7 @@ function generateExcelBSB() {
     console.log('📋 Kolom G (Perda) berisi data intensitas dari intensitas-data-merged-bsb.json');
     console.log('📋 Kolom L (Perda) berisi kegiatan yang diizinkan (I) dari bsb-data.json');
     console.log('📋 Kolom Q (Perda) berisi kegiatan terbatas (T1, T2, T3) dan kombinasinya dari bsb-data.json');
+    console.log('📋 Kolom V (Perda) berisi kegiatan bersyarat (B1, B2, B3) dan kombinasinya dari bsb-data.json');
     console.log('📝 Kolom lainnya masih kosong untuk diisi manual');
     console.log('🚀 Pembatasan karakter Excel telah dihapus - data lengkap akan ditampilkan');
 }
@@ -471,6 +579,7 @@ function previewZonaBSB() {
         const intensitasItem = findIntensitasData(zona);
         const kegiatanDiizinkan = getKegiatanDiizinkan(zona);
         const kegiatanTerbatas = getKegiatanTerbatas(zona);
+        const kegiatanBersyarat = getKegiatanBersyarat(zona);
         
         // Handle array or string for kegiatanDiizinkan
         let kegiatanCount = 0;
@@ -492,17 +601,29 @@ function previewZonaBSB() {
             terbatasCount = kegiatanTerbatas.split('\n').filter(k => k.trim() && !k.includes(':')).length;
         }
         
+        // Handle array or string for kegiatanBersyarat
+        let bersyaratCount = 0;
+        if (Array.isArray(kegiatanBersyarat)) {
+            bersyaratCount = kegiatanBersyarat.reduce((total, part) => {
+                return total + (part && part !== '-' ? part.split('\n').filter(k => k.trim() && !k.includes(':')).length : 0);
+            }, 0);
+        } else if (kegiatanBersyarat && kegiatanBersyarat !== '-') {
+            bersyaratCount = kegiatanBersyarat.split('\n').filter(k => k.trim() && !k.includes(':')).length;
+        }
+        
         const intensitasStatus = intensitasItem ? '✅ Ada data intensitas' : '⚠️  Tidak ada data intensitas';
         const kegiatanStatus = kegiatanCount > 0 ? `✅ ${kegiatanCount} kegiatan diizinkan` : '⚠️  Tidak ada kegiatan diizinkan';
         const terbatasStatus = terbatasCount > 0 ? `✅ ${terbatasCount} kegiatan terbatas` : '⚠️  -';
+        const bersyaratStatus = bersyaratCount > 0 ? `✅ ${bersyaratCount} kegiatan bersyarat` : '⚠️  -';
         
         // Show if data is split into multiple parts
         const kegiatanParts = Array.isArray(kegiatanDiizinkan) ? kegiatanDiizinkan.length : 1;
         const terbatasParts = Array.isArray(kegiatanTerbatas) ? kegiatanTerbatas.length : 1;
-        const maxParts = Math.max(kegiatanParts, terbatasParts);
+        const bersyaratParts = Array.isArray(kegiatanBersyarat) ? kegiatanBersyarat.length : 1;
+        const maxParts = Math.max(kegiatanParts, terbatasParts, bersyaratParts);
         const partsInfo = maxParts > 1 ? ` (${maxParts} parts)` : '';
         
-        console.log(`${zona.padEnd(35)} ${intensitasStatus} | ${kegiatanStatus} | ${terbatasStatus}${partsInfo}`);
+        console.log(`${zona.padEnd(35)} ${intensitasStatus} | ${kegiatanStatus} | ${terbatasStatus} | ${bersyaratStatus}${partsInfo}`);
     });
     
     console.log(`\nTotal zona: ${zonaList.length}`);
