@@ -121,12 +121,35 @@ function getKegiatanDiizinkan(zona) {
             }
         });
         
-        // Batasi jumlah kegiatan untuk menghindari cell yang terlalu besar
+        // Kembalikan semua kegiatan yang diizinkan tanpa pembatasan
         const sortedKegiatan = kegiatanDiizinkan.sort();
-        if (sortedKegiatan.length > 50) {
-            return sortedKegiatan.slice(0, 50).join('\n') + '\n... dan ' + (sortedKegiatan.length - 50) + ' kegiatan lainnya';
+        const joinedKegiatan = sortedKegiatan.join('\n');
+        
+        // Handle Excel's 32767 character limit by splitting into chunks
+        if (joinedKegiatan.length > 32767) {
+            console.log(`⚠️  Warning: Kegiatan list for zona ${zona} exceeds Excel limit (${joinedKegiatan.length} chars). Splitting into chunks...`);
+            // Split into chunks of ~30000 characters to be safe
+            const chunks = [];
+            const chunkSize = 30000;
+            const activities = sortedKegiatan;
+            
+            let currentChunk = '';
+            for (const activity of activities) {
+                if ((currentChunk + activity + '\n').length > chunkSize && currentChunk.length > 0) {
+                    chunks.push(currentChunk.trim());
+                    currentChunk = activity + '\n';
+                } else {
+                    currentChunk += activity + '\n';
+                }
+            }
+            if (currentChunk.trim().length > 0) {
+                chunks.push(currentChunk.trim());
+            }
+            
+            return chunks; // Return array of chunks instead of single string
         }
-        return sortedKegiatan.join('\n');
+        
+        return joinedKegiatan;
     } catch (error) {
         console.error(`Error processing kegiatan for zona ${zona}:`, error.message);
         return 'Error memproses data kegiatan';
@@ -197,45 +220,90 @@ function generateExcelBSB() {
             const intensitasItem = findIntensitasData(zona);
             const kegiatanDiizinkan = getKegiatanDiizinkan(zona);
             
-            const row = [
-                index + 1, // No
-                '', // Koordinat - kosong
-                '', // Kodunk - kosong
-                '', // Kode Zona - kosong
-                zona, // Zona
-                '', // F: RDTR Interaktif/Parkiran - kosong
-                intensitasItem ? generateIntensitasForExcel(intensitasItem) : 'Data intensitas tidak ditemukan', // G: Perda - Intensitas
-                '', // H: Cek - kosong
-                '', // I: FIND - kosong
-                '', // J: Kesesuaian - kosong
-                '', // K: RDTR Interaktif/Parkiran - kosong
-                kegiatanDiizinkan || 'Tidak ada kegiatan diizinkan', // L: Perda - Kegiatan Diizinkan
-                '', // M: Cek - kosong
-                '', // N: FIND - kosong
-                '', // O: Kesesuaian - kosong
-                '', // P: RDTR Interaktif/Parkiran - kosong
-                '', // Q: Perda - Kegiatan Terbatas - kosong
-                '', // R: Cek - kosong
-                '', // S: FIND - kosong
-                '', // T: Kesesuaian - kosong
-                '', // U: RDTR Interaktif/Parkiran - kosong
-                '', // V: Perda - Kegiatan Bersyarat - kosong
-                '', // W: Cek - kosong
-                '', // X: FIND - kosong
-                '', // Y: Kesesuaian - kosong
-                '', // Z: RDTR Interaktif/Parkiran - kosong
-                '', // AA: Perda - Kegiatan Bersyarat Terbatas - kosong
-                '', // AB: Cek - kosong
-                '', // AC: FIND - kosong
-                '', // AD: Kesesuaian - kosong
-                '', // AE: RDTR Interaktif/Parkiran - kosong
-                '', // AF: Perda - Keterangan - kosong
-                '', // AG: Cek - kosong
-                '', // AH: FIND - kosong
-                ''  // AI: Kesesuaian - kosong
-            ];
-            
-            data.push(row);
+            // Handle chunked data for large activity lists
+            if (Array.isArray(kegiatanDiizinkan)) {
+                // If data is chunked, create multiple rows
+                kegiatanDiizinkan.forEach((chunk, chunkIndex) => {
+                    const row = [
+                        index + 1, // No
+                        '', // Koordinat - kosong
+                        '', // Kodunk - kosong
+                        '', // Kode Zona - kosong
+                        chunkIndex === 0 ? zona : `${zona} (Part ${chunkIndex + 1})`, // Zona
+                        '', // F: RDTR Interaktif/Parkiran - kosong
+                        chunkIndex === 0 ? (intensitasItem ? generateIntensitasForExcel(intensitasItem) : 'Data intensitas tidak ditemukan') : '', // G: Perda - Intensitas
+                        '', // H: Cek - kosong
+                        '', // I: FIND - kosong
+                        '', // J: Kesesuaian - kosong
+                        '', // K: RDTR Interaktif/Parkiran - kosong
+                        chunk, // L: Perda - Kegiatan Diizinkan (chunk)
+                        '', // M: Cek - kosong
+                        '', // N: FIND - kosong
+                        '', // O: Kesesuaian - kosong
+                        '', // P: RDTR Interaktif/Parkiran - kosong
+                        '', // Q: Perda - Kegiatan Terbatas - kosong
+                        '', // R: Cek - kosong
+                        '', // S: FIND - kosong
+                        '', // T: Kesesuaian - kosong
+                        '', // U: RDTR Interaktif/Parkiran - kosong
+                        '', // V: Perda - Kegiatan Bersyarat - kosong
+                        '', // W: Cek - kosong
+                        '', // X: FIND - kosong
+                        '', // Y: Kesesuaian - kosong
+                        '', // Z: RDTR Interaktif/Parkiran - kosong
+                        '', // AA: Perda - Kegiatan Bersyarat Terbatas - kosong
+                        '', // AB: Cek - kosong
+                        '', // AC: FIND - kosong
+                        '', // AD: Kesesuaian - kosong
+                        '', // AE: RDTR Interaktif/Parkiran - kosong
+                        '', // AF: Perda - Keterangan - kosong
+                        '', // AG: Cek - kosong
+                        '', // AH: FIND - kosong
+                        ''  // AI: Kesesuaian - kosong
+                    ];
+                    data.push(row);
+                });
+            } else {
+                // Normal single row for zones with data under the limit
+                const row = [
+                    index + 1, // No
+                    '', // Koordinat - kosong
+                    '', // Kodunk - kosong
+                    '', // Kode Zona - kosong
+                    zona, // Zona
+                    '', // F: RDTR Interaktif/Parkiran - kosong
+                    intensitasItem ? generateIntensitasForExcel(intensitasItem) : 'Data intensitas tidak ditemukan', // G: Perda - Intensitas
+                    '', // H: Cek - kosong
+                    '', // I: FIND - kosong
+                    '', // J: Kesesuaian - kosong
+                    '', // K: RDTR Interaktif/Parkiran - kosong
+                    kegiatanDiizinkan || 'Tidak ada kegiatan diizinkan', // L: Perda - Kegiatan Diizinkan
+                    '', // M: Cek - kosong
+                    '', // N: FIND - kosong
+                    '', // O: Kesesuaian - kosong
+                    '', // P: RDTR Interaktif/Parkiran - kosong
+                    '', // Q: Perda - Kegiatan Terbatas - kosong
+                    '', // R: Cek - kosong
+                    '', // S: FIND - kosong
+                    '', // T: Kesesuaian - kosong
+                    '', // U: RDTR Interaktif/Parkiran - kosong
+                    '', // V: Perda - Kegiatan Bersyarat - kosong
+                    '', // W: Cek - kosong
+                    '', // X: FIND - kosong
+                    '', // Y: Kesesuaian - kosong
+                    '', // Z: RDTR Interaktif/Parkiran - kosong
+                    '', // AA: Perda - Kegiatan Bersyarat Terbatas - kosong
+                    '', // AB: Cek - kosong
+                    '', // AC: FIND - kosong
+                    '', // AD: Kesesuaian - kosong
+                    '', // AE: RDTR Interaktif/Parkiran - kosong
+                    '', // AF: Perda - Keterangan - kosong
+                    '', // AG: Cek - kosong
+                    '', // AH: FIND - kosong
+                    ''  // AI: Kesesuaian - kosong
+                ];
+                data.push(row);
+            }
             
             if (intensitasItem) {
                 console.log(`✅ Updated data for: ${zona}`);
