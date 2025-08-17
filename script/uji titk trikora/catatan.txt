@@ -43,34 +43,45 @@
 - AI : Kesesuaian
 
 
-Badan Air
+Badan Air	Badan Air
 Badan Jalan	Badan Jalan
 Cagar Budaya	Cagar Budaya
 Ekosistem Mangrove	Ekosistem Mangrove
+Hortikultura	Hortikultura
 Hutan Lindung	Hutan Lindung
+Hutan Produksi Terbatas	Hutan Produksi Terbatas
 Hutan Produksi Tetap	Hutan Produksi Tetap
-Hutan Produksi yang dapat Dikonversi	Hutan Produksi yang dapat Dikonversi
 Jalur Hijau	Jalur Hijau
 Kawasan Peruntukan Industri	Kawasan Peruntukan Industri
 Pariwisata	Pariwisata
 Pemakaman	Pemakaman
+Perdagangan dan Jasa Skala Kota	Perdagangan dan Jasa Skala Kota
 Perdagangan dan Jasa Skala SWP	Perdagangan dan Jasa Skala SWP
 Perdagangan dan Jasa Skala WP	Perdagangan dan Jasa Skala WP
+Perikanan Budi Daya	Perikanan Budi Daya
 Perkantoran	Perkantoran
 Perkebunan	Perkebunan
 Perlindungan Setempat	Perlindungan Setempat
 Pertahanan dan Keamanan	Pertahanan dan Keamanan
-Pertambangan Mineral Bukan Logam	Pertambangan Mineral Bukan Logam
 Perumahan Kepadatan Rendah	Perumahan Kepadatan Rendah
 Perumahan Kepadatan Sedang	Perumahan Kepadatan Sedang
 Perumahan Kepadatan Tinggi	Perumahan Kepadatan Tinggi
-Peternakan	Peternakan
 Ruang Terbuka Non Hijau	Ruang Terbuka Non Hijau
 SPU Skala Kecamatan	SPU Skala Kecamatan
 SPU Skala Kelurahan	SPU Skala Kelurahan
 SPU Skala Kota	SPU Skala Kota
 SPU Skala RW	SPU Skala RW
+Taman Kecamatan	Taman Kecamatan
 Taman Kelurahan	Taman Kelurahan
+Taman Kota	Taman Kota
 Taman RT	Taman RT
 Taman RW	Taman RW
-Transportasi	Transportasi
+Tanaman Pangan	Tanaman Pangan
+
+
+baik sejauh ini oke dengan konsep yg sama
+
+- ini
+
+kegiatan terbatas adalah kombinasi dari
+T1-T3 jadi T1-T3 Faktorial

@@ -160,11 +160,7 @@ function processExcelFileBSB(filePath) {
       Object.entries(zoneMapping).forEach(([colIndex, zoneName]) => {
         const cellValue = row[parseInt(colIndex)];
         if (cellValue && String(cellValue).trim() !== '') {
-          const regulation = String(cellValue).trim();
-          // Include all regulation codes including 'X'
-          if (/^[ITBX]\d*$/.test(regulation) || regulation === 'I' || regulation === 'T' || regulation === 'B' || regulation === 'X') {
-            zoneData[zoneName] = regulation;
-          }
+          zoneData[zoneName] = String(cellValue).trim();
         }
       });
       
@@ -190,8 +186,8 @@ function processExcelFileBSB(filePath) {
 }
 
 // Main execution
-const excelPath = path.join(__dirname, 'app', 'data', 'itbx', 'LAMPIRAN XV KETENTUAN KEGIATAN DAN PEMANFAATAN RUANG ZONASI.xlsx');
-const outputPath = path.join(__dirname, 'app', 'data', 'bsb-data.json');
+const excelPath = path.join(__dirname, '..', 'app', 'data', 'itbx', 'LAMPIRAN XV KETENTUAN KEGIATAN DAN PEMANFAATAN RUANG ZONASI.xlsx');
+const outputPath = path.join(__dirname, '..', 'app', 'data', 'bsb-data.json');
 
 // Create data directory if it doesn't exist
 const dataDir = path.dirname(outputPath);
