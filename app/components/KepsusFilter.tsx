@@ -179,11 +179,6 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
        const formatTabelName = (name: string) => {
          let formatted = name.replace(/TABEL\s+/i, '');
          
-         // Special case for aviation safety
-         if (formatted.includes('KESELAMATAN OPERASI PENERBANGAN')) {
-           formatted = formatted.replace('KESELAMATAN OPERASI PENERBANGAN', 'Penerbangan');
-         }
-         
          // Use capitalizeWords function for consistent formatting
          return capitalizeWords(formatted);
         };
@@ -191,96 +186,33 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
       result += `${formatTabelName(tabel)}:\n`;
       
       kawasanMap.forEach((kawasanActivities, kawasanType) => {
-        // Special handling for "Rawan Bencana Banjir dan Cuaca Ekstrem Tingkat Tinggi"
-        if (kawasanType === 'Rawan Bencana Banjir dan Cuaca Ekstrem Tingkat Tinggi') {
-          // First show "Rawan Bencana Banjir dan Cuaca Ekstrem Tingkat Tinggi" with all 6 points
-          result += `  ${capitalizeWords(kawasanType)}:\n`;
+        // Normal processing for all kawasanType
+        result += `  ${capitalizeWords(kawasanType)}:\n`;
+        
+        const ketentuan = kawasanActivities[0].zones['Ketentuan'];
+        if (ketentuan) {
+          const lines = ketentuan.split(/\r?\n/).filter(line => line.trim());
+          let letterIndex = 0;
           
-          const ketentuan = kawasanActivities[0].zones['Ketentuan'];
-          if (ketentuan) {
-            const lines = ketentuan.split(/\r?\n/).filter(line => line.trim());
-            let letterIndex = 0;
-            
-            lines.forEach(line => {
-              const trimmedLine = line.trim();
-              if (trimmedLine) {
-                if (!trimmedLine.startsWith('(Sumber:')) {
-                  const letter = String.fromCharCode(97 + letterIndex);
-                  
-                  if (trimmedLine.match(/^\d+\./)) {
-                    const contentAfterNumber = trimmedLine.replace(/^\d+\.\s*/, '');
-                    result += `    ${letter}.: ${contentAfterNumber}\n`;
-                  } else {
-                    result += `    ${letter}.: ${trimmedLine}\n`;
-                  }
-                  letterIndex++;
+          lines.forEach(line => {
+            const trimmedLine = line.trim();
+            if (trimmedLine) {
+              if (!trimmedLine.startsWith('(Sumber:')) {
+                const letter = String.fromCharCode(97 + letterIndex);
+                
+                if (trimmedLine.match(/^\d+\./)) {
+                  const contentAfterNumber = trimmedLine.replace(/^\d+\.\s*/, '');
+                  result += `    ${letter}.: ${contentAfterNumber}\n`;
+                } else {
+                  result += `    ${letter}.: ${trimmedLine}\n`;
                 }
+                letterIndex++;
               }
-            });
-          }
-          
-          result += '\n';
-          
-          // Then show "Rawan Bencana Cuaca Ekstrem Tingkat Tinggi" with only points 4-6
-          result += `  ${capitalizeWords('Rawan Bencana Cuaca Ekstrem Tingkat Tinggi')}:\n`;
-          
-          if (ketentuan) {
-            const lines = ketentuan.split(/\r?\n/).filter(line => line.trim());
-            let letterIndex = 0;
-            let pointIndex = 0;
-            
-            lines.forEach(line => {
-              const trimmedLine = line.trim();
-              if (trimmedLine) {
-                if (!trimmedLine.startsWith('(Sumber:')) {
-                  pointIndex++;
-                  // Only show points 4, 5, 6 (structure, glass, weather monitoring)
-                  if (pointIndex >= 4) {
-                    const letter = String.fromCharCode(97 + letterIndex);
-                    
-                    if (trimmedLine.match(/^\d+\./)) {
-                      const contentAfterNumber = trimmedLine.replace(/^\d+\.\s*/, '');
-                      result += `    ${letter}.: ${contentAfterNumber}\n`;
-                    } else {
-                      result += `    ${letter}.: ${trimmedLine}\n`;
-                    }
-                    letterIndex++;
-                  }
-                }
-              }
-            });
-          }
-          
-          result += '\n';
-        } else {
-          // Normal processing for other kawasanType
-          result += `  ${capitalizeWords(kawasanType)}:\n`;
-          
-          const ketentuan = kawasanActivities[0].zones['Ketentuan'];
-          if (ketentuan) {
-            const lines = ketentuan.split(/\r?\n/).filter(line => line.trim());
-            let letterIndex = 0;
-            
-            lines.forEach(line => {
-              const trimmedLine = line.trim();
-              if (trimmedLine) {
-                if (!trimmedLine.startsWith('(Sumber:')) {
-                  const letter = String.fromCharCode(97 + letterIndex);
-                  
-                  if (trimmedLine.match(/^\d+\./)) {
-                    const contentAfterNumber = trimmedLine.replace(/^\d+\.\s*/, '');
-                    result += `    ${letter}.: ${contentAfterNumber}\n`;
-                  } else {
-                    result += `    ${letter}.: ${trimmedLine}\n`;
-                  }
-                  letterIndex++;
-                }
-              }
-            });
-          }
-          
-          result += '\n';
+            }
+          });
         }
+        
+        result += '\n';
       });
     });
     

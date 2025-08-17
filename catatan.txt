@@ -1,0 +1,283 @@
+Tabel	Sub Kawasan	Nama Sub-Zona	Kode SWP	Kode Blok	Luas (Ha)	Ketentuan
+Tabel Ketentuan Khusus Kawasan Keselamatan Operasi Penerbangan	Kawasan Di Bawah Permukaan Horizontal-luar	Perumahan Kepadatan Tinggi	III.C	III.C.3	13,43	
+1. Tidak menimbulkan gangguan terhadap isyarat-isyarat navigasi penerbangan atau komunikasi radio antar bandar udara dan pesawat udara;
+
+2. Tidak menyulitkan penerbang membedakan lampu- lampu rambu udara dengan lampu-lampu lain;
+
+3. Tidak menyebabkan kesilauan pada mata penerbang yang mempergunakan bandar udara;
+
+4. Tidak melemahkan jarak pandang sekitar bandar udara; dan
+
+5. Tidak menyebabkan timbulnya bahaya burung, atau dengan cara lain dapat membahayakan atau mengganggu pendaratan atau lepas landas atau gerakan pesawat udara yang bermaksud mempergunakan bandar udara.
+
+(Sumber: Pasal 30 Peraturan Menteri Perhubungan Republik Indonesia Nomor PM 55 Tahun 2023 Tentang Tata Cara dan Prosedur Penetapan Lokasi Bandar Udara dan Tempat Pendaratan Dan Lepas Landas Helikopter)
+
+Tabel Ketentuan Khusus Kawasan Keselamatan Operasi Penerbangan	Kawasan Di Bawah Permukaan Horizontal-luar	Perumahan Kepadatan Tinggi	III.C	III.C.4	71,91	
+1. Tidak menimbulkan gangguan terhadap isyarat-isyarat navigasi penerbangan atau komunikasi radio antar bandar udara dan pesawat udara;
+
+2. Tidak menyulitkan penerbang membedakan lampu- lampu rambu udara dengan lampu-lampu lain;
+
+3. Tidak menyebabkan kesilauan pada mata penerbang yang mempergunakan bandar udara;
+
+4. Tidak melemahkan jarak pandang sekitar bandar udara; dan
+
+5. Tidak menyebabkan timbulnya bahaya burung, atau dengan cara lain dapat membahayakan atau mengganggu pendaratan atau lepas landas atau gerakan pesawat udara yang bermaksud mempergunakan bandar udara.
+
+(Sumber: Pasal 30 Peraturan Menteri Perhubungan Republik Indonesia Nomor PM 55 Tahun 2023 Tentang Tata Cara dan Prosedur Penetapan Lokasi Bandar Udara dan Tempat Pendaratan Dan Lepas Landas Helikopter)
+
+Tabel Ketentuan Khusus Kawasan Keselamatan Operasi Penerbangan	Kawasan Di Bawah Permukaan Horizontal-luar	Perumahan Kepadatan Tinggi	SWP III.C	-	85,34	
+1. Tidak menimbulkan gangguan terhadap isyarat-isyarat navigasi penerbangan atau komunikasi radio antar bandar udara dan pesawat udara;
+
+2. Tidak menyulitkan penerbang membedakan lampu- lampu rambu udara dengan lampu-lampu lain;
+
+3. Tidak menyebabkan kesilauan pada mata penerbang yang mempergunakan bandar udara;
+
+4. Tidak melemahkan jarak pandang sekitar bandar udara; dan
+
+5. Tidak menyebabkan timbulnya bahaya burung, atau dengan cara lain dapat membahayakan atau mengganggu pendaratan atau lepas landas atau gerakan pesawat udara yang bermaksud mempergunakan bandar udara.
+
+(Sumber: Pasal 30 Peraturan Menteri Perhubungan Republik Indonesia Nomor PM 55 Tahun 2023 Tentang Tata Cara dan Prosedur Penetapan Lokasi Bandar Udara dan Tempat Pendaratan Dan Lepas Landas Helikopter)
+
+Tabel Ketentuan Khusus Kawasan Keselamatan Operasi Penerbangan	Kawasan Di Bawah Permukaan Horizontal-luar	Perumahan Kepadatan Tinggi	-	-	85,34	
+1. Tidak menimbulkan gangguan terhadap isyarat-isyarat navigasi penerbangan atau komunikasi radio antar bandar udara dan pesawat udara;
+
+2. Tidak menyulitkan penerbang membedakan lampu- lampu rambu udara dengan lampu-lampu lain;
+
+3. Tidak menyebabkan kesilauan pada mata penerbang yang mempergunakan bandar udara;
+
+4. Tidak melemahkan jarak pandang sekitar bandar udara; dan
+
+5. Tidak menyebabkan timbulnya bahaya burung, atau dengan cara lain dapat membahayakan atau mengganggu pendaratan atau lepas landas atau gerakan pesawat udara yang bermaksud mempergunakan bandar udara.
+
+(Sumber: Pasal 30 Peraturan Menteri Perhubungan Republik Indonesia Nomor PM 55 Tahun 2023 Tentang Tata Cara dan Prosedur Penetapan Lokasi Bandar Udara dan Tempat Pendaratan Dan Lepas Landas Helikopter)
+
+Tabel Ketentuan Khusus Kawasan Rawan Bencana	Rawan Bencana Banjir Dan Cuaca Ekstrem Tingkat Tinggi	Perumahan Kepadatan Tinggi	III.C	III.C.2	0,38	
+1. Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
+
+2. Melakukan normalisasi drainase pada GSB masing-masing bangunan;
+
+3. Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana;
+
+4. Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
+
+5. Menghindari pemakaian kaca lebar untuk jendela; dan
+
+6. Pemantauan cuaca dan peringatan dini.
+
+Tabel Ketentuan Khusus Kawasan Rawan Bencana	Rawan Bencana Banjir Dan Cuaca Ekstrem Tingkat Tinggi	Perumahan Kepadatan Tinggi	III.C	III.C.3	37,27	
+1. Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
+
+2. Melakukan normalisasi drainase pada GSB masing-masing bangunan;
+
+3. Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana;
+
+4. Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
+
+5. Menghindari pemakaian kaca lebar untuk jendela; dan
+
+6. Pemantauan cuaca dan peringatan dini.
+
+Tabel Ketentuan Khusus Kawasan Rawan Bencana	Rawan Bencana Banjir Dan Cuaca Ekstrem Tingkat Tinggi	Perumahan Kepadatan Tinggi	III.C	III.C.4	43,19	
+1. Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
+
+2. Melakukan normalisasi drainase pada GSB masing-masing bangunan;
+
+3. Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana;
+
+4. Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
+
+5. Menghindari pemakaian kaca lebar untuk jendela; dan
+
+6. Pemantauan cuaca dan peringatan dini.
+
+Tabel Ketentuan Khusus Kawasan Rawan Bencana	Rawan Bencana Banjir Dan Cuaca Ekstrem Tingkat Tinggi	Perumahan Kepadatan Tinggi	SWP III.C	-	80,84	
+1. Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
+
+2. Melakukan normalisasi drainase pada GSB masing-masing bangunan;
+
+3. Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana;
+
+4. Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
+
+5. Menghindari pemakaian kaca lebar untuk jendela; dan
+
+6. Pemantauan cuaca dan peringatan dini.
+
+Tabel Ketentuan Khusus Kawasan Rawan Bencana	Rawan Bencana Banjir Tingkat Tinggi	Perumahan Kepadatan Tinggi	III.C	III.C.4	0,59	
+1. Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
+
+2. Melakukan normalisasi drainase pada GSB masing-masing bangunan; dan
+
+3. Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana.
+
+Tabel Ketentuan Khusus Kawasan Rawan Bencana	Rawan Bencana Banjir Tingkat Tinggi	Perumahan Kepadatan Tinggi	SWP III.C	-	0,59	
+1. Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
+
+2. Melakukan normalisasi drainase pada GSB masing-masing bangunan; dan
+
+3. Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana.
+
+Tabel Ketentuan Khusus Kawasan Rawan Bencana	Rawan Bencana Banjir Tingkat Tinggi	Perumahan Kepadatan Tinggi	-	-	0,59	
+1. Penyediaan resapan air, dapat berupa sumur resapan atau biopori;
+
+2. Melakukan normalisasi drainase pada GSB masing-masing bangunan; dan
+
+3. Kegiatan bangunan yang sudah ada dan memiliki izin wajib menerapkan pedoman keselamatan bencana dan mitigasi bencana.
+
+Tabel Ketentuan Khusus Kawasan Rawan Bencana	Rawan Bencana Cuaca Ekstrem Tingkat Tinggi	Perumahan Kepadatan Tinggi	III.C	III.C.2	0,38	
+1. Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
+
+2. Menghindari pemakaian kaca lebar untuk jendela; dan
+
+3. Pemantauan cuaca dan peringatan dini.
+
+Tabel Ketentuan Khusus Kawasan Rawan Bencana	Rawan Bencana Cuaca Ekstrem Tingkat Tinggi	Perumahan Kepadatan Tinggi	III.C	III.C.3	37,27	
+1. Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
+
+2. Menghindari pemakaian kaca lebar untuk jendela; dan
+
+3. Pemantauan cuaca dan peringatan dini.
+
+Tabel Ketentuan Khusus Kawasan Rawan Bencana	Rawan Bencana Cuaca Ekstrem Tingkat Tinggi	Perumahan Kepadatan Tinggi	III.C	III.C.4	43,19	
+1. Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
+
+2. Menghindari pemakaian kaca lebar untuk jendela; dan
+
+3. Pemantauan cuaca dan peringatan dini.
+
+Tabel Ketentuan Khusus Kawasan Rawan Bencana	Rawan Bencana Cuaca Ekstrem Tingkat Tinggi	Perumahan Kepadatan Tinggi	SWP III.C	-	80,84	
+1. Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
+
+2. Menghindari pemakaian kaca lebar untuk jendela; dan
+
+3. Pemantauan cuaca dan peringatan dini.
+
+Tabel Ketentuan Khusus Kawasan Rawan Bencana	Rawan Bencana Cuaca Ekstrem Tingkat Tinggi	Perumahan Kepadatan Tinggi	-	-	80,84	
+1. Struktur dan konstruksi bangunan harus mempunyai ikatan yang baik sehingga dapat menahan kerangka mapun penutup atap untuk tetap pada posisinya;
+
+2. Menghindari pemakaian kaca lebar untuk jendela; dan
+
+3. Pemantauan cuaca dan peringatan dini.
+
+Tabel Ketentuan Khusus Kawasan Sempadan	Sempadan Sungai	Perumahan Kepadatan Tinggi	III.C	III.C.2	0,16	
+1. Tidak diperbolehkan adanya pengembangan bangunan untuk menambah intensitas pada bangunan yang telah ada;
+
+2. Penyediaan prasarana pengelolaan limbah secara komunal;
+
+3. Penyediaan jalan inspeksi; dan
+
+4. Penyediaan tanggul sungai.
+
+Tabel Ketentuan Khusus Kawasan Sempadan	Sempadan Sungai	Perumahan Kepadatan Tinggi	III.C	III.C.3	1,50	
+1. Tidak diperbolehkan adanya pengembangan bangunan untuk menambah intensitas pada bangunan yang telah ada;
+
+2. Penyediaan prasarana pengelolaan limbah secara komunal;
+
+3. Penyediaan jalan inspeksi; dan
+
+4. Penyediaan tanggul sungai.
+
+Tabel Ketentuan Khusus Kawasan Sempadan	Sempadan Sungai	Perumahan Kepadatan Tinggi	SWP III.C	-	1,66	
+1. Tidak diperbolehkan adanya pengembangan bangunan untuk menambah intensitas pada bangunan yang telah ada;
+
+2. Penyediaan prasarana pengelolaan limbah secara komunal;
+
+3. Penyediaan jalan inspeksi; dan
+
+4. Penyediaan tanggul sungai.
+
+Tabel Ketentuan Khusus Kawasan Sempadan	Sempadan Sungai	Perumahan Kepadatan Tinggi	-	-	1,66	
+1. Tidak diperbolehkan adanya pengembangan bangunan untuk menambah intensitas pada bangunan yang telah ada;
+
+2. Penyediaan prasarana pengelolaan limbah secara komunal;
+
+3. Penyediaan jalan inspeksi; dan
+
+4. Penyediaan tanggul sungai.
+
+Tabel Ketentuan Khusus Kawasan Sempadan	Sempadan Pantai	Perumahan Kepadatan Tinggi	III.C	III.C.3	0,23	
+1. Penyediaan akses jalan publik ke area pantai yang berfungsi juga sebagai jalan inspeksi;
+
+2. Penyediaan fasilitas pejalan kaki dan penyandang disabilitas dengan lebar minimal 1,5 meter untuk persil yang menghadap pantai;
+
+3. Tinggi bangunan kegiatan pariwisata maksimal adalah 9 meter untuk bangunan baru dengan syarat menambahkan fasilitas pengamanan pantai;
+
+4. Tinggi bangunan untuk kegiatan lain mengacu kepada ketentuan tata bangunan;
+
+5. Tinggi pagar yang berada di pinggir Pantai dan menghadap jalan maksimal adalah 1,5 meter dengan menggunakan jenis pagar yang tidak menghalangi pemandangan ke pantai; dan
+
+6. Bangunan yang diperbolehkan adalah bangunan tidak permanen.
+
+Tabel Ketentuan Khusus Kawasan Sempadan	Sempadan Pantai	Perumahan Kepadatan Tinggi	SWP III.C	-	0,23	
+1. Penyediaan akses jalan publik ke area pantai yang berfungsi juga sebagai jalan inspeksi;
+
+2. Penyediaan fasilitas pejalan kaki dan penyandang disabilitas dengan lebar minimal 1,5 meter untuk persil yang menghadap pantai;
+
+3. Tinggi bangunan kegiatan pariwisata maksimal adalah 9 meter untuk bangunan baru dengan syarat menambahkan fasilitas pengamanan pantai;
+
+4. Tinggi bangunan untuk kegiatan lain mengacu kepada ketentuan tata bangunan;
+
+5. Tinggi pagar yang berada di pinggir Pantai dan menghadap jalan maksimal adalah 1,5 meter dengan menggunakan jenis pagar yang tidak menghalangi pemandangan ke pantai; dan
+
+6. Bangunan yang diperbolehkan adalah bangunan tidak permanen.
+
+Tabel Ketentuan Khusus Kawasan Sempadan	Sempadan Pantai	Perumahan Kepadatan Tinggi	-	-	0,23	
+1. Penyediaan akses jalan publik ke area pantai yang berfungsi juga sebagai jalan inspeksi;
+
+2. Penyediaan fasilitas pejalan kaki dan penyandang disabilitas dengan lebar minimal 1,5 meter untuk persil yang menghadap pantai;
+
+3. Tinggi bangunan kegiatan pariwisata maksimal adalah 9 meter untuk bangunan baru dengan syarat menambahkan fasilitas pengamanan pantai;
+
+4. Tinggi bangunan untuk kegiatan lain mengacu kepada ketentuan tata bangunan;
+
+5. Tinggi pagar yang berada di pinggir Pantai dan menghadap jalan maksimal adalah 1,5 meter dengan menggunakan jenis pagar yang tidak menghalangi pemandangan ke pantai; dan
+
+6. Bangunan yang diperbolehkan adalah bangunan tidak permanen.
+
+Tabel Ketentuan Khusus Kawasan Pertambangan Mineral Dan Batubara	Kawasan Pertambangan Mineral Dan Batubara	Perumahan Kepadatan Tinggi	III.C	III.C.3	9,46	
+1. Angkutan tambang yang keluar dari lokasi kegiatan pertambangan dilarang melebihi kapasitas daya dukung jalan yang dilaluinya;
+
+2. Pengembangan Kawasan pertambangan dilakukan dengan mempertimbangkan potensi bahan tambang, kondisi geologi dan geohidrologi dalam kaitannya dengan kelestarian lingkungan;
+
+3. Wajib menyediakan RTH dalam kawasan pertambangan sebagai buffer area;
+
+4. Wajib melaksanakan reklamasi pada lahan-lahan bekas galian/ penambangan;
+
+5. Mendapatkan rekomendasi dari Forum Penataan Ruang (FPR);
+
+6. Pelaksanaan kegiatan penambangan wajib memenuhi ketentuan peraturan perundangan yang berlaku; dan
+
+7. Wajib menerapkan Good Mining Practice atau kaidah pertambangan.
+
+Tabel Ketentuan Khusus Kawasan Pertambangan Mineral Dan Batubara	Kawasan Pertambangan Mineral Dan Batubara	Perumahan Kepadatan Tinggi	III.C	III.C.4	10,20	
+1. Angkutan tambang yang keluar dari lokasi kegiatan pertambangan dilarang melebihi kapasitas daya dukung jalan yang dilaluinya;
+
+2. Pengembangan Kawasan pertambangan dilakukan dengan mempertimbangkan potensi bahan tambang, kondisi geologi dan geohidrologi dalam kaitannya dengan kelestarian lingkungan;
+
+3. Wajib menyediakan RTH dalam kawasan pertambangan sebagai buffer area;
+
+4. Wajib melaksanakan reklamasi pada lahan-lahan bekas galian/ penambangan;
+
+5. Mendapatkan rekomendasi dari Forum Penataan Ruang (FPR);
+
+6. Pelaksanaan kegiatan penambangan wajib memenuhi ketentuan peraturan perundangan yang berlaku; dan
+
+7. Wajib menerapkan Good Mining Practice atau kaidah pertambangan.
+
+Tabel Ketentuan Khusus Kawasan Pertambangan Mineral Dan Batubara	Kawasan Pertambangan Mineral Dan Batubara	Perumahan Kepadatan Tinggi	SWP III.C	-	19,65	
+1. Angkutan tambang yang keluar dari lokasi kegiatan pertambangan dilarang melebihi kapasitas daya dukung jalan yang dilaluinya;
+
+2. Pengembangan Kawasan pertambangan dilakukan dengan mempertimbangkan potensi bahan tambang, kondisi geologi dan geohidrologi dalam kaitannya dengan kelestarian lingkungan;
+
+3. Wajib menyediakan RTH dalam kawasan pertambangan sebagai buffer area;
+
+4. Wajib melaksanakan reklamasi pada lahan-lahan bekas galian/ penambangan;
+
+5. Mendapatkan rekomendasi dari Forum Penataan Ruang (FPR);
+
+6. Pelaksanaan kegiatan penambangan wajib memenuhi ketentuan peraturan perundangan yang berlaku; dan
+
+7. Wajib menerapkan Good Mining Practice atau kaidah pertambangan.
+
+Tabel Ketentuan Khusus Kawasan Pertambangan Mineral Dan Batubara	Kawasan Pertambangan Mineral Dan Batubara	Perumahan Kepadatan Tinggi	-	-	19,65	
+1. Angkutan tambang yang keluar dari lokasi kegiatan pertambangan dilarang melebih
