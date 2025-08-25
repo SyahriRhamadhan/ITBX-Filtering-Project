@@ -11,10 +11,13 @@ interface IntensitasItem {
   'KLB Maks': number | null;
   'KTB Maks (%)': number | null;
   'Luas Kavling Min (m2)': number | null;
+  'Tinggi Bangunan Maks. (m) - Arteri'?: number | null;
   'Tinggi Bangunan Maks. (m) - Kolektor': number | null;
   'Tinggi Bangunan Maks. (m) - Lokal': number | null;
+  'Lantai Bangunan Maks. - Arteri'?: string | null;
   'Lantai Bangunan Maks. - Kolektor': number | null;
   'Lantai Bangunan Maks. - Lokal': number | null;
+  'Garis Sempadan Bangunan Min. (m) - Arteri'?: number | null;
   'Garis Sempadan Bangunan Min. (m) - Kolektor': number | null;
   'Garis Sempadan Bangunan Min. (m) - Lokal': number | null;
   'Jarak Bebas Samping Min. (m)': number | null;
@@ -203,27 +206,43 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     if (hasPersil) {
       // Format with persil
       result += 'Persil disebelah barat jalan Nasional:\n';
-      result += '    a.: Jalan Arteri = -;\n';
+      if (dataSource === 'bsb') {
+        const tinggiArteriWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== null 
+          ? westSideData['Tinggi Bangunan Maks. (m) - Arteri'] 
+          : '-';
+        result += `    a.: Jalan Arteri = ${tinggiArteriWest};\n`;
+      }
       const tinggiKolektorWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
         ? westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] 
         : '-';
-      result += `    b.: Jalan Kolektor = ${tinggiKolektorWest}; dan\n`;
+      result += `    ${dataSource === 'bsb' ? 'b' : 'a'}.: Jalan Kolektor = ${tinggiKolektorWest}; dan\n`;
       const tinggiLokalWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
         ? westSideData['Tinggi Bangunan Maks. (m) - Lokal'] 
         : '-';
-      result += `    c.: Jalan Lokal = ${tinggiLokalWest}.\n`;
+      result += `    ${dataSource === 'bsb' ? 'c' : 'b'}.: Jalan Lokal = ${tinggiLokalWest}.\n`;
       result += 'Persil disebelah timur jalan Nasional:\n';
-      result += '    a.: Jalan Arteri = -;\n';
+      if (dataSource === 'bsb') {
+        const tinggiArteriEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== null 
+          ? eastSideData['Tinggi Bangunan Maks. (m) - Arteri'] 
+          : '-';
+        result += `    a.: Jalan Arteri = ${tinggiArteriEast};\n`;
+      }
       const tinggiKolektorEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
         ? eastSideData['Tinggi Bangunan Maks. (m) - Kolektor'] 
         : '-';
-      result += `    b.: Jalan Kolektor = ${tinggiKolektorEast}; dan\n`;
+      result += `    ${dataSource === 'bsb' ? 'b' : 'a'}.: Jalan Kolektor = ${tinggiKolektorEast}; dan\n`;
       const tinggiLokalEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
         ? eastSideData['Tinggi Bangunan Maks. (m) - Lokal'] 
         : '-';
-      result += `    c.: Jalan Lokal = ${tinggiLokalEast}.\n`;
+      result += `    ${dataSource === 'bsb' ? 'c' : 'b'}.: Jalan Lokal = ${tinggiLokalEast}.\n`;
     } else {
       // Simple format without persil
+      if (dataSource === 'bsb') {
+        const tinggiArteri = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== null 
+          ? westSideData['Tinggi Bangunan Maks. (m) - Arteri'] 
+          : '-';
+        result += `Maksimum Arteri: ${tinggiArteri !== '-' ? tinggiArteri + ' m' : '-'}\n`;
+      }
       const tinggiKolektor = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
         ? westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] 
         : '-';
@@ -249,27 +268,43 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     if (hasPersil) {
       // Format with persil
       result += 'Persil disebelah barat jalan Nasional:\n';
-      result += '    a.: Jalan Arteri = -;\n';
+      if (dataSource === 'bsb') {
+        const gsbArteriWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null 
+          ? westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] 
+          : '-';
+        result += `    a.: Jalan Arteri = ${gsbArteriWest};\n`;
+      }
       const gsbKolektorWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
         ? westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] 
         : '-';
-      result += `    b.: Jalan Kolektor = ${gsbKolektorWest}; dan\n`;
+      result += `    ${dataSource === 'bsb' ? 'b' : 'a'}.: Jalan Kolektor = ${gsbKolektorWest}; dan\n`;
       const gsbLokalWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
         ? westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] 
         : '-';
-      result += `    c.: Jalan Lokal = ${gsbLokalWest}.\n`;
+      result += `    ${dataSource === 'bsb' ? 'c' : 'b'}.: Jalan Lokal = ${gsbLokalWest}.\n`;
       result += 'Persil disebelah timur jalan Nasional:\n';
-      result += '    a.: Jalan Arteri = -;\n';
+      if (dataSource === 'bsb') {
+        const gsbArteriEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null 
+          ? eastSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] 
+          : '-';
+        result += `    a.: Jalan Arteri = ${gsbArteriEast};\n`;
+      }
       const gsbKolektorEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
         ? eastSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] 
         : '-';
-      result += `    b.: Jalan Kolektor = ${gsbKolektorEast}; dan\n`;
+      result += `    ${dataSource === 'bsb' ? 'b' : 'a'}.: Jalan Kolektor = ${gsbKolektorEast}; dan\n`;
       const gsbLokalEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
         ? eastSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] 
         : '-';
-      result += `    c.: Jalan Lokal = ${gsbLokalEast}.\n`;
+      result += `    ${dataSource === 'bsb' ? 'c' : 'b'}.: Jalan Lokal = ${gsbLokalEast}.\n`;
     } else {
       // Simple format without persil
+      if (dataSource === 'bsb') {
+        const gsbArteri = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null 
+          ? westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] 
+          : '-';
+        result += `Minimum Arteri: ${gsbArteri !== '-' ? gsbArteri + ' m' : '-'}\n`;
+      }
       const gsbKolektor = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
         ? westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] 
         : '-';
@@ -475,10 +510,19 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">KLB MAKS</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">KTB MAKS (%)</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">LUAS KAVLING MIN (m2)</th>
+                {dataSource === 'bsb' && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">TINGGI BGN ARTERI (m)</th>
+                )}
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">TINGGI BGN KOLEKTOR (m)</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">TINGGI BGN LOKAL (m)</th>
+                {dataSource === 'bsb' && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">LANTAI BGN ARTERI</th>
+                )}
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">LANTAI BGN KOLEKTOR</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">LANTAI BGN LOKAL</th>
+                {dataSource === 'bsb' && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">GSB ARTERI (m)</th>
+                )}
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">GSB KOLEKTOR (m)</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">GSB LOKAL (m)</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">JARAK SAMPING (m)</th>
@@ -514,18 +558,33 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     {item['Luas Kavling Min (m2)'] !== null ? `${item['Luas Kavling Min (m2)']} m²` : '-'}
                   </td>
+                  {dataSource === 'bsb' && (
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      {item['Tinggi Bangunan Maks. (m) - Arteri'] !== null ? `${item['Tinggi Bangunan Maks. (m) - Arteri']} m` : '-'}
+                    </td>
+                  )}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     {item['Tinggi Bangunan Maks. (m) - Kolektor'] !== null ? `${item['Tinggi Bangunan Maks. (m) - Kolektor']} m` : '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     {item['Tinggi Bangunan Maks. (m) - Lokal'] !== null ? `${item['Tinggi Bangunan Maks. (m) - Lokal']} m` : '-'}
                   </td>
+                  {dataSource === 'bsb' && (
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      {item['Lantai Bangunan Maks. - Arteri'] !== null ? item['Lantai Bangunan Maks. - Arteri'] : '-'}
+                    </td>
+                  )}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     {item['Lantai Bangunan Maks. - Kolektor'] !== null ? item['Lantai Bangunan Maks. - Kolektor'] : '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     {item['Lantai Bangunan Maks. - Lokal'] !== null ? item['Lantai Bangunan Maks. - Lokal'] : '-'}
                   </td>
+                  {dataSource === 'bsb' && (
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      {item['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null ? `${item['Garis Sempadan Bangunan Min. (m) - Arteri']} m` : '-'}
+                    </td>
+                  )}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     {item['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null ? `${item['Garis Sempadan Bangunan Min. (m) - Kolektor']} m` : '-'}
                   </td>

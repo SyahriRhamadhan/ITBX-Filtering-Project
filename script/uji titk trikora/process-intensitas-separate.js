@@ -71,10 +71,13 @@ function mergeData(intensitasData, tataBangunanData) {
     
     // Add tata bangunan data if found
     if (matchingTataRow) {
+      mergedRow['Tinggi Bangunan Maks. (m) - Arteri'] = matchingTataRow['Tinggi Bangunan Maks. (m) - Arteri'];
       mergedRow['Tinggi Bangunan Maks. (m) - Kolektor'] = matchingTataRow['Tinggi Bangunan Maks. (m) - Kolektor'];
       mergedRow['Tinggi Bangunan Maks. (m) - Lokal'] = matchingTataRow['Tinggi Bangunan Maks. (m) - Lokal'];
+      mergedRow['Lantai Bangunan Maks. - Arteri'] = matchingTataRow['Lantai Bangunan Maks. - Arteri'];
       mergedRow['Lantai Bangunan Maks. - Kolektor'] = matchingTataRow['Lantai Bangunan Maks. - Kolektor'];
       mergedRow['Lantai Bangunan Maks. - Lokal'] = matchingTataRow['Lantai Bangunan Maks. - Lokal'];
+      mergedRow['Garis Sempadan Bangunan Min. (m) - Arteri'] = matchingTataRow['Garis Sempadan Bangunan Min. (m) - Arteri'];
       mergedRow['Garis Sempadan Bangunan Min. (m) - Kolektor'] = matchingTataRow['Garis Sempadan Bangunan Min. (m) - Kolektor'];
       mergedRow['Garis Sempadan Bangunan Min. (m) - Lokal'] = matchingTataRow['Garis Sempadan Bangunan Min. (m) - Lokal'];
       mergedRow['Jarak Bebas Samping Min. (m)'] = matchingTataRow['Jarak Bebas Samping Min. (m)'];
@@ -83,10 +86,13 @@ function mergeData(intensitasData, tataBangunanData) {
       mergedRow['Keterangan'] = matchingTataRow['Keterangan'];
     } else {
       // Add null values for missing tata bangunan data
+      mergedRow['Tinggi Bangunan Maks. (m) - Arteri'] = null;
       mergedRow['Tinggi Bangunan Maks. (m) - Kolektor'] = null;
       mergedRow['Tinggi Bangunan Maks. (m) - Lokal'] = null;
+      mergedRow['Lantai Bangunan Maks. - Arteri'] = null;
       mergedRow['Lantai Bangunan Maks. - Kolektor'] = null;
       mergedRow['Lantai Bangunan Maks. - Lokal'] = null;
+      mergedRow['Garis Sempadan Bangunan Min. (m) - Arteri'] = null;
       mergedRow['Garis Sempadan Bangunan Min. (m) - Kolektor'] = null;
       mergedRow['Garis Sempadan Bangunan Min. (m) - Lokal'] = null;
       mergedRow['Jarak Bebas Samping Min. (m)'] = null;
@@ -144,8 +150,8 @@ async function main() {
     console.log('Processing Trikora intensitas data...');
     
     // Read CSV files
-    const intensitasData = await csvToJson('app/data/intensitas/Intensitas_v4___Preview (1).csv');
-    const tataBangunanData = await csvToJson('app/data/intensitas/Tata_Bangunan___Arteri_Kolektor_Lokal__Preview_.csv');
+    const intensitasData = await csvToJson('../../app/data/intensitas/Intensitas_v4___Preview (1).csv');
+    const tataBangunanData = await csvToJson('../../app/data/intensitas/Tata_Bangunan___Arteri_Kolektor_Lokal__Preview_.csv');
     
     // Clean data
     const cleanedIntensitasData = cleanData(intensitasData);
@@ -182,8 +188,8 @@ async function main() {
     };
     
     // Write Trikora files
-    fs.writeFileSync('app/data/intensitas-data-trikora.json', JSON.stringify(trikoraJson, null, 2));
-    fs.writeFileSync('app/data/intensitas-data-merged-trikora.json', JSON.stringify(trikoraMergedJson, null, 2));
+    fs.writeFileSync('../../app/data/intensitas-data-trikora.json', JSON.stringify(trikoraJson, null, 2));
+    fs.writeFileSync('../../app/data/intensitas-data-merged-trikora.json', JSON.stringify(trikoraMergedJson, null, 2));
     
     console.log('✅ Trikora intensitas data files created successfully!');
     console.log(`- intensitas-data-trikora.json: ${trikoraData.length} rows`);
@@ -215,8 +221,8 @@ async function main() {
     };
     
     // Write BSB files (currently same as Trikora - replace with actual BSB data when available)
-    fs.writeFileSync('app/data/intensitas-data-bsb.json', JSON.stringify(bsbJson, null, 2));
-    fs.writeFileSync('app/data/intensitas-data-merged-bsb.json', JSON.stringify(bsbMergedJson, null, 2));
+    fs.writeFileSync('../../app/data/intensitas-data-bsb.json', JSON.stringify(bsbJson, null, 2));
+    fs.writeFileSync('../../app/data/intensitas-data-merged-bsb.json', JSON.stringify(bsbMergedJson, null, 2));
     
     console.log('✅ BSB intensitas data files created successfully!');
     console.log(`- intensitas-data-bsb.json: ${bsbData.length} rows`);

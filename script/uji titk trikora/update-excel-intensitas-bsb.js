@@ -368,6 +368,94 @@ function getKegiatanTerbatas(zona) {
     }
 }
 
+// Fungsi untuk mendapatkan kegiatan bersyarat terbatas (kombinasi T dan B)
+function getKegiatanBersyaratTerbatas(zona) {
+    const kegiatanBersyaratTerbatas = [];
+    
+    try {
+        bsbData.activities.forEach(activity => {
+            // Cari zona yang sesuai dalam activity.zones
+            const zoneKeys = Object.keys(activity.zones);
+            const matchingZone = zoneKeys.find(key => {
+                const keyLower = key.toLowerCase();
+                const zonaLower = zona.toLowerCase();
+                return keyLower.includes(zonaLower) || zonaLower.includes(keyLower);
+            });
+            
+            if (matchingZone) {
+                const zoneValue = activity.zones[matchingZone];
+                
+                // Handle combinations containing BOTH T and B codes
+                if (zoneValue && zoneValue.includes(',')) {
+                    const codes = zoneValue.split(',').map(c => c.trim());
+                    const hasTCode = codes.some(code => ['T1', 'T2', 'T3'].includes(code));
+                    const hasBCode = codes.some(code => ['B1', 'B2', 'B3'].includes(code));
+                    
+                    // Only include if it has BOTH T and B codes
+                    if (hasTCode && hasBCode) {
+                        kegiatanBersyaratTerbatas.push({
+                            activity: activity.activity,
+                            codes: zoneValue
+                        });
+                    }
+                }
+            }
+        });
+        
+        // Fungsi untuk membersihkan nama aktivitas dari kode dalam kurung
+        const cleanActivityName = (activityName) => {
+            // Hapus kode dalam kurung seperti (T1,B1), (T1,B3), dll
+            return activityName.replace(/\s*\([^)]*\)\s*$/, '').trim();
+        };
+        
+        // Format output untuk Excel - gabung semua kegiatan bersyarat terbatas
+        const allKegiatanBersyaratTerbatas = [];
+        
+        // Tambahkan kegiatan kombinasi T dan B (tanpa kode)
+        kegiatanBersyaratTerbatas.forEach(item => {
+            allKegiatanBersyaratTerbatas.push(cleanActivityName(item.activity));
+        });
+        
+        // Sort ascending dan join
+        const finalResult = allKegiatanBersyaratTerbatas.length > 0 ? 
+            allKegiatanBersyaratTerbatas.sort().join('\n') : 
+            '-';
+        
+        // Handle Excel's 32767 character limit for kegiatan bersyarat terbatas - return array for splitting
+        if (finalResult.length > 32767) {
+            console.log(`⚠️  Warning: Kegiatan bersyarat terbatas for zona ${zona} exceeds Excel limit (${finalResult.length} chars). Will split into multiple rows...`);
+            
+            // Split into chunks that fit Excel limit
+            const chunks = [];
+            let currentChunk = '';
+            const sortedActivities = allKegiatanBersyaratTerbatas.sort();
+            
+            for (const activity of sortedActivities) {
+                const activityWithNewline = activity + '\n';
+                if (currentChunk.length + activityWithNewline.length <= 32700) {
+                    currentChunk += activityWithNewline;
+                } else {
+                    if (currentChunk) {
+                        chunks.push(currentChunk.trim());
+                    }
+                    currentChunk = activityWithNewline;
+                }
+            }
+            
+            if (currentChunk) {
+                chunks.push(currentChunk.trim());
+            }
+            
+            return chunks; // Return array for multiple rows
+        }
+        
+        return finalResult;
+    } catch (error) {
+        console.error(`Error processing kegiatan bersyarat terbatas for zona ${zona}:`, error.message);
+        return 'Error memproses data kegiatan bersyarat terbatas';
+    }
+}
+
 // Fungsi utama untuk generate Excel BSB
 function generateExcelBSB() {
     console.log('Memulai generate Excel BSB...');
@@ -434,14 +522,16 @@ function generateExcelBSB() {
             const kegiatanDiizinkan = getKegiatanDiizinkan(zona);
             const kegiatanTerbatas = getKegiatanTerbatas(zona);
             const kegiatanBersyarat = getKegiatanBersyarat(zona);
+            const kegiatanBersyaratTerbatas = getKegiatanBersyaratTerbatas(zona);
             
             // Handle splitting for large data
             const kegiatanDiizinkanArray = Array.isArray(kegiatanDiizinkan) ? kegiatanDiizinkan : [kegiatanDiizinkan];
             const kegiatanTerbatasArray = Array.isArray(kegiatanTerbatas) ? kegiatanTerbatas : [kegiatanTerbatas];
             const kegiatanBersyaratArray = Array.isArray(kegiatanBersyarat) ? kegiatanBersyarat : [kegiatanBersyarat];
+            const kegiatanBersyaratTerbatasArray = Array.isArray(kegiatanBersyaratTerbatas) ? kegiatanBersyaratTerbatas : [kegiatanBersyaratTerbatas];
             
             // Determine maximum parts needed
-            const maxParts = Math.max(kegiatanDiizinkanArray.length, kegiatanTerbatasArray.length, kegiatanBersyaratArray.length);
+            const maxParts = Math.max(kegiatanDiizinkanArray.length, kegiatanTerbatasArray.length, kegiatanBersyaratArray.length, kegiatanBersyaratTerbatasArray.length);
             
             // Create rows for each part
             for (let partIndex = 0; partIndex < maxParts; partIndex++) {
@@ -449,6 +539,7 @@ function generateExcelBSB() {
                 const kegiatanDiizinkanPart = kegiatanDiizinkanArray[partIndex] || '';
                 const kegiatanTerbatasPart = kegiatanTerbatasArray[partIndex] || '';
                 const kegiatanBersyaratPart = kegiatanBersyaratArray[partIndex] || '';
+                const kegiatanBersyaratTerbatasPart = kegiatanBersyaratTerbatasArray[partIndex] || '';
                 
                 const row = [
                     rowNumber, // No
@@ -477,7 +568,7 @@ function generateExcelBSB() {
                     '', // X: FIND - kosong
                     '', // Y: Kesesuaian - kosong
                     '', // Z: RDTR Interaktif/Parkiran - kosong
-                    '', // AA: Perda - Kegiatan Bersyarat Terbatas - kosong
+                    kegiatanBersyaratTerbatasPart || '-', // AA: Perda - Kegiatan Bersyarat Terbatas
                     '', // AB: Cek - kosong
                     '', // AC: FIND - kosong
                     '', // AD: Kesesuaian - kosong
@@ -567,6 +658,7 @@ function generateExcelBSB() {
     console.log('📋 Kolom L (Perda) berisi kegiatan yang diizinkan (I) dari bsb-data.json');
     console.log('📋 Kolom Q (Perda) berisi kegiatan terbatas (T1, T2, T3) dan kombinasinya dari bsb-data.json');
     console.log('📋 Kolom V (Perda) berisi kegiatan bersyarat (B1, B2, B3) dan kombinasinya dari bsb-data.json');
+    console.log('📋 Kolom AA (Perda) berisi kegiatan bersyarat terbatas (kombinasi T dan B) dari bsb-data.json');
     console.log('📝 Kolom lainnya masih kosong untuk diisi manual');
     console.log('🚀 Pembatasan karakter Excel telah dihapus - data lengkap akan ditampilkan');
 }
@@ -580,6 +672,7 @@ function previewZonaBSB() {
         const kegiatanDiizinkan = getKegiatanDiizinkan(zona);
         const kegiatanTerbatas = getKegiatanTerbatas(zona);
         const kegiatanBersyarat = getKegiatanBersyarat(zona);
+        const kegiatanBersyaratTerbatas = getKegiatanBersyaratTerbatas(zona);
         
         // Handle array or string for kegiatanDiizinkan
         let kegiatanCount = 0;
@@ -611,19 +704,31 @@ function previewZonaBSB() {
             bersyaratCount = kegiatanBersyarat.split('\n').filter(k => k.trim() && !k.includes(':')).length;
         }
         
+        // Handle array or string for kegiatanBersyaratTerbatas
+        let bersyaratTerbatasCount = 0;
+        if (Array.isArray(kegiatanBersyaratTerbatas)) {
+            bersyaratTerbatasCount = kegiatanBersyaratTerbatas.reduce((total, part) => {
+                return total + (part && part !== '-' ? part.split('\n').filter(k => k.trim() && !k.includes(':')).length : 0);
+            }, 0);
+        } else if (kegiatanBersyaratTerbatas && kegiatanBersyaratTerbatas !== '-') {
+            bersyaratTerbatasCount = kegiatanBersyaratTerbatas.split('\n').filter(k => k.trim() && !k.includes(':')).length;
+        }
+        
         const intensitasStatus = intensitasItem ? '✅ Ada data intensitas' : '⚠️  Tidak ada data intensitas';
         const kegiatanStatus = kegiatanCount > 0 ? `✅ ${kegiatanCount} kegiatan diizinkan` : '⚠️  Tidak ada kegiatan diizinkan';
         const terbatasStatus = terbatasCount > 0 ? `✅ ${terbatasCount} kegiatan terbatas` : '⚠️  -';
         const bersyaratStatus = bersyaratCount > 0 ? `✅ ${bersyaratCount} kegiatan bersyarat` : '⚠️  -';
+        const bersyaratTerbatasStatus = bersyaratTerbatasCount > 0 ? `✅ ${bersyaratTerbatasCount} kegiatan bersyarat terbatas` : '⚠️  -';
         
         // Show if data is split into multiple parts
         const kegiatanParts = Array.isArray(kegiatanDiizinkan) ? kegiatanDiizinkan.length : 1;
         const terbatasParts = Array.isArray(kegiatanTerbatas) ? kegiatanTerbatas.length : 1;
         const bersyaratParts = Array.isArray(kegiatanBersyarat) ? kegiatanBersyarat.length : 1;
-        const maxParts = Math.max(kegiatanParts, terbatasParts, bersyaratParts);
+        const bersyaratTerbatasParts = Array.isArray(kegiatanBersyaratTerbatas) ? kegiatanBersyaratTerbatas.length : 1;
+        const maxParts = Math.max(kegiatanParts, terbatasParts, bersyaratParts, bersyaratTerbatasParts);
         const partsInfo = maxParts > 1 ? ` (${maxParts} parts)` : '';
         
-        console.log(`${zona.padEnd(35)} ${intensitasStatus} | ${kegiatanStatus} | ${terbatasStatus} | ${bersyaratStatus}${partsInfo}`);
+        console.log(`${zona.padEnd(35)} ${intensitasStatus} | ${kegiatanStatus} | ${terbatasStatus} | ${bersyaratStatus} | ${bersyaratTerbatasStatus}${partsInfo}`);
     });
     
     console.log(`\nTotal zona: ${zonaList.length}`);
