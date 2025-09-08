@@ -1,59 +1,133 @@
-1)	Pengembangan Landing Page V.1.0.0
-Deskripsi:
-•	Pengembangan halaman landing page utama aplikasi GIS berbasis web, menampilkan informasi penting dan akses cepat ke fitur-fitur utama melalui komponen modular React.
-•	Landing page terdiri dari beberapa section: Hero, Visi Misi, Layanan, Berita, Kontak, Pengumuman, Navbar, dan Footer, yang semuanya diintegrasikan dalam satu halaman responsif.
-•	Setiap komponen dikembangkan secara terpisah untuk memudahkan pemeliharaan dan pengembangan lebih lanjut.
-•	Langkah-langkah:
-•	Penyusunan struktur halaman utama pada `welcome.tsx` dengan mengimpor dan merangkai komponen:
-•	HeroSection untuk tampilan utama dan highlight aplikasi
-•	VisionMissionSection untuk menampilkan visi dan misi
-•	ServicesSection untuk daftar layanan
-•	NewsSection untuk berita terbaru
-•	ContactSection untuk informasi kontak
-•	Pengumuman untuk pengumuman penting
-•	Navbar dan Footer sebagai navigasi dan penutup halaman
-•	Implementasi desain responsif dengan class Tailwind CSS agar tampilan optimal di berbagai perangkat.
-•	Penambahan preconnect dan font custom pada elemen <Head> untuk meningkatkan performa dan estetika.
-•	Integrasi data dinamis (misal: geojsons, regions, user) melalui props untuk mendukung pengembangan fitur selanjutnya.
-•	Hasil Kegiatan:
-•	Landing page versi 1.0.0 yang menampilkan seluruh komponen utama secara terintegrasi dan responsif.
-•	Pengguna dapat langsung mengakses informasi penting, navigasi utama, serta fitur-fitur aplikasi GIS dari satu halaman utama.
-•	Struktur kode yang modular dan mudah dikembangkan untuk iterasi selanjutnya.
-2)	Pengembangan Fitur lihat & Menambahkan PDF
-Deskripsi:
-•	Penambahan fitur pada popup peta (MapView) untuk memungkinkan pengguna melihat (View) dan menambahkan (Add) file PDF yang terhubung dengan data GeoJSON tertentu.
-•	Setiap objek pada peta kini memiliki tombol aksi untuk menambah dokumen PDF baru atau melihat dokumen PDF yang sudah ada, sehingga pengelolaan dokumen spasial menjadi lebih terintegrasi dan mudah diakses.
-•	Integrasi dilakukan pada komponen popup yang muncul saat pengguna berinteraksi dengan layer GeoJSON di peta.
-•	Langkah-langkah:
-•	Penambahan fungsi renderPopupContent pada `MapView.tsx` untuk menampilkan detail properti GeoJSON dan tombol aksi.
-•	Implementasi tombol Add (menuju /dashboard/geojson/{id_geojson}/add ) untuk menambahkan PDF baru terkait objek spasial.
-•	Implementasi tombol View (menuju /dashboard/geojson/{id_geojson}/view ) untuk melihat PDF yang sudah diunggah.
-•	Penambahan tombol Edit untuk mengedit data spasial terkait.
-•	Setiap tombol menggunakan atribut target="_blank" agar halaman dokumen terbuka di tab baru tanpa mengganggu tampilan peta.
-•	Penggunaan ikon (IoAddCircleOutline, FaFilePdf, FaMapMarkedAlt) untuk memperjelas fungsi tombol secara visual.
-•	Hasil Kegiatan:
-•	Pengguna dapat langsung menambah atau melihat dokumen PDF yang terhubung dengan objek spasial di peta melalui popup interaktif.
-•	Proses pengelolaan dokumen spasial menjadi lebih efisien dan terintegrasi dengan tampilan peta.
-•	Meningkatkan user experience dalam mengakses dan mengelola dokumen PDF terkait data spasial.
-3)	Pengembangan Fitur View PDF
-Deskripsi:
-•	Fitur ini memungkinkan pengguna untuk melihat daftar file PDF yang terkait dengan satu GeoJSON beserta informasi detailnya, serta melakukan preview PDF secara langsung melalui modal. Pengguna juga dapat melakukan pagination dan memilih jumlah data yang ditampilkan per halaman. 
-•	Langkah-langkah:
-o	Struktur Data:
-•	Mendefinisikan tipe data Report , ReportsPaginator , dan Geojson untuk memastikan data yang diterima dari backend terstruktur dengan baik.
-o	Pengambilan Data:
-•	Mengambil data geojson beserta daftar PDF terkait dari props.
-o	Pagination & Per Page:
-•	Menyediakan handler untuk pagination ( handlePageChange ) dan pengaturan jumlah data per halaman ( handlePerPageChange ).
-o	Preview PDF:
-•	Menyediakan fungsi handlePreview yang membuka modal dan menampilkan PDF menggunakan elemen <iframe> .
-•	Modal dapat ditutup dengan tombol close.
-o	Tampilan Daftar PDF:
-•	Menampilkan daftar PDF dalam bentuk list, lengkap dengan badge informasi seperti nomor, sifat, kepada, deskripsi, dan tanggal upload.
-•	Jika tidak ada PDF, menampilkan pesan "Belum ada PDF terkait".
-o	Kontrol Pagination:
-•	Menampilkan tombol navigasi halaman jika jumlah halaman lebih dari satu.
-•	Hasil Kegiatan:
-•	Pengguna dapat melihat daftar PDF yang terhubung dengan satu GeoJSON secara terstruktur.
-•	Preview PDF dapat dilakukan langsung tanpa perlu mengunduh file.
-•	Navigasi data menjadi lebih mudah dengan fitur pagination dan pengaturan jumlah data per halaman.
+[{
+	"resource": "/c:/Users/le/Documents/PUPRP/PROJECT/rdtr-filter-app/app/components/IntensitasFilter.tsx",
+	"owner": "typescript",
+	"code": "2538",
+	"severity": 8,
+	"message": "Type 'null' cannot be used as an index type.",
+	"source": "ts",
+	"startLineNumber": 611,
+	"startColumn": 21,
+	"endLineNumber": 611,
+	"endColumn": 26,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/c:/Users/le/Documents/PUPRP/PROJECT/rdtr-filter-app/app/components/IntensitasFilter.tsx",
+	"owner": "typescript",
+	"code": "2538",
+	"severity": 8,
+	"message": "Type 'null' cannot be used as an index type.",
+	"source": "ts",
+	"startLineNumber": 636,
+	"startColumn": 21,
+	"endLineNumber": 636,
+	"endColumn": 26,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/c:/Users/le/Documents/PUPRP/PROJECT/rdtr-filter-app/app/components/IntensitasFilter.tsx",
+	"owner": "typescript",
+	"code": "2538",
+	"severity": 8,
+	"message": "Type 'null' cannot be used as an index type.",
+	"source": "ts",
+	"startLineNumber": 661,
+	"startColumn": 21,
+	"endLineNumber": 661,
+	"endColumn": 26,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/c:/Users/le/Documents/PUPRP/PROJECT/rdtr-filter-app/app/components/IntensitasFilter.tsx",
+	"owner": "typescript",
+	"code": "2538",
+	"severity": 8,
+	"message": "Type 'null' cannot be used as an index type.",
+	"source": "ts",
+	"startLineNumber": 689,
+	"startColumn": 23,
+	"endLineNumber": 689,
+	"endColumn": 28,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/c:/Users/le/Documents/PUPRP/PROJECT/rdtr-filter-app/app/components/IntensitasFilter.tsx",
+	"owner": "typescript",
+	"code": "2538",
+	"severity": 8,
+	"message": "Type 'null' cannot be used as an index type.",
+	"source": "ts",
+	"startLineNumber": 698,
+	"startColumn": 21,
+	"endLineNumber": 698,
+	"endColumn": 26,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/c:/Users/le/Documents/PUPRP/PROJECT/rdtr-filter-app/app/components/IntensitasFilter.tsx",
+	"owner": "typescript",
+	"code": "2538",
+	"severity": 8,
+	"message": "Type 'null' cannot be used as an index type.",
+	"source": "ts",
+	"startLineNumber": 699,
+	"startColumn": 26,
+	"endLineNumber": 699,
+	"endColumn": 31,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/c:/Users/le/Documents/PUPRP/PROJECT/rdtr-filter-app/app/components/IntensitasFilter.tsx",
+	"owner": "typescript",
+	"code": "2538",
+	"severity": 8,
+	"message": "Type 'null' cannot be used as an index type.",
+	"source": "ts",
+	"startLineNumber": 784,
+	"startColumn": 26,
+	"endLineNumber": 784,
+	"endColumn": 31,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/c:/Users/le/Documents/PUPRP/PROJECT/rdtr-filter-app/app/components/IntensitasFilter.tsx",
+	"owner": "typescript",
+	"code": "2538",
+	"severity": 8,
+	"message": "Type 'null' cannot be used as an index type.",
+	"source": "ts",
+	"startLineNumber": 784,
+	"startColumn": 46,
+	"endLineNumber": 784,
+	"endColumn": 51,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/c:/Users/le/Documents/PUPRP/PROJECT/rdtr-filter-app/app/components/IntensitasFilter.tsx",
+	"owner": "typescript",
+	"code": "2538",
+	"severity": 8,
+	"message": "Type 'null' cannot be used as an index type.",
+	"source": "ts",
+	"startLineNumber": 785,
+	"startColumn": 26,
+	"endLineNumber": 785,
+	"endColumn": 31,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/c:/Users/le/Documents/PUPRP/PROJECT/rdtr-filter-app/app/components/IntensitasFilter.tsx",
+	"owner": "typescript",
+	"code": "2538",
+	"severity": 8,
+	"message": "Type 'null' cannot be used as an index type.",
+	"source": "ts",
+	"startLineNumber": 794,
+	"startColumn": 24,
+	"endLineNumber": 794,
+	"endColumn": 29,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/c:/Users/le/Documents/PUPRP/PROJECT/rdtr-filter-app/app/components/IntensitasFilter.tsx",
+	"owner": "typescript",
+	"code": "2538",
+	"severity": 8,
+	"message": "Type 'null' cannot be used as an index type.",
+	"source": "ts",
+	"startLineNumber": 795,
+	"startColumn": 29,
+	"endLineNumber": 795,
+	"endColumn": 34,
+	"extensionID": "vscode.typescript-language-features"
+}]

@@ -56,6 +56,7 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [showPreview, setShowPreview] = useState<boolean>(false);
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
+  const [copyCategorySuccess, setCopyCategorySuccess] = useState<{[key: string]: boolean}>({});
 
   const data = useMemo(() => {
     return dataSource === 'bsb' 
@@ -544,6 +545,365 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     }
   };
 
+  // Generate JSON for specific category
+  const generateJsonForCategory = (category: string) => {
+    if (filteredData.length === 0) return JSON.stringify({data: "-"});
+
+    // Helper function to format values
+    const formatValue = (value: number | null) => value !== null ? value.toString() : '-';
+
+    // Check if data has persil (location-specific data)
+    const hasPersil = filteredData.some(item => 
+      item.Jenis && 
+      item.Jenis !== '-' && 
+      item.Jenis.trim() !== '' && (
+        item.Jenis.toLowerCase().includes('persil disebelah barat') ||
+        item.Jenis.toLowerCase().includes('persil disebelah timur')
+      )
+    );
+
+    // Group data by location if persil exists
+    let westSideData = null;
+    let eastSideData = null;
+    
+    if (hasPersil) {
+      westSideData = filteredData.find(item => 
+        item.Jenis && 
+        item.Jenis !== '-' && 
+        item.Jenis.trim() !== '' && 
+        item.Jenis.toLowerCase().includes('persil disebelah barat')
+      ) || null;
+      eastSideData = filteredData.find(item => 
+        item.Jenis && 
+        item.Jenis !== '-' && 
+        item.Jenis.trim() !== '' && 
+        item.Jenis.toLowerCase().includes('persil disebelah timur')
+      ) || null;
+    } else {
+      // Use first item for non-persil data
+      westSideData = filteredData[0] || null;
+      eastSideData = filteredData[0] || null;
+    }
+
+    // Check if there are multiple Jenis types (excluding persil and empty/null values)
+    const validJenisTypes = filteredData
+      .map(item => item.Jenis)
+      .filter(jenis => 
+        jenis && 
+        jenis !== '-' && 
+        jenis.trim() !== '' && 
+        !jenis.toLowerCase().includes('persil disebelah')
+      )
+      .filter((jenis, index, arr) => arr.indexOf(jenis) === index); // Remove duplicates
+
+    const hasMultipleJenis = validJenisTypes.length > 1;
+
+    let result: any = {};
+
+    switch(category) {
+      case 'kdb':
+        // KDB (Koefisien Dasar Bangunan)
+        if (hasMultipleJenis) {
+          const kdbData: {[key: string]: string} = {};
+          validJenisTypes.forEach(jenis => {
+            const jenisData = filteredData.find(item => item.Jenis === jenis);
+            const kdbValue = jenisData && jenisData['KDB Maks (%)'] !== null && jenisData['KDB Maks (%)'] !== undefined ? jenisData['KDB Maks (%)'].toString() : '-';
+            if (jenis) kdbData[jenis] = kdbValue;
+          });
+          result = {data: kdbData};
+        } else if (hasPersil) {
+          const kdbWest = westSideData && westSideData['KDB Maks (%)'] !== null ? westSideData['KDB Maks (%)'].toString() : '-';
+          const kdbEast = eastSideData && eastSideData['KDB Maks (%)'] !== null ? eastSideData['KDB Maks (%)'].toString() : '-';
+          result = {data: {
+            "Persil disebelah barat jalan Nasional": kdbWest,
+            "Persil disebelah timur jalan Nasional": kdbEast
+          }};
+        } else {
+          const kdbValue = filteredData.some(item => item['KDB Maks (%)'] !== null && item['KDB Maks (%)'] !== undefined)
+            ? filteredData.map(item => item['KDB Maks (%)'] !== null && item['KDB Maks (%)'] !== undefined ? item['KDB Maks (%)'].toString() : '-').find(val => val !== '-')
+            : '-';
+          result = {data: {"Maksimum": kdbValue !== '-' && kdbValue !== undefined ? kdbValue.toString() : '-'}};
+        }
+        break;
+
+      case 'klb':
+        // KLB (Koefisien Lantai Bangunan)
+        if (hasMultipleJenis) {
+          const klbData: {[key: string]: string} = {};
+          validJenisTypes.forEach(jenis => {
+            const jenisData = filteredData.find(item => item.Jenis === jenis);
+            const klbValue = jenisData && jenisData['KLB Maks'] !== null && jenisData['KLB Maks'] !== undefined ? jenisData['KLB Maks'].toString().replace('.', ',') : '-';
+            if (jenis) klbData[jenis] = klbValue;
+          });
+          result = {data: klbData};
+        } else if (hasPersil) {
+          const klbWest = westSideData && westSideData['KLB Maks'] !== null ? westSideData['KLB Maks'].toString().replace('.', ',') : '-';
+          const klbEast = eastSideData && eastSideData['KLB Maks'] !== null ? eastSideData['KLB Maks'].toString().replace('.', ',') : '-';
+          result = {data: {
+            "Persil disebelah barat jalan Nasional": klbWest,
+            "Persil disebelah timur jalan Nasional": klbEast
+          }};
+        } else {
+          const klbMaksValue = filteredData.some(item => item['KLB Maks'] !== null && item['KLB Maks'] !== undefined)
+            ? filteredData.map(item => item['KLB Maks'] !== null && item['KLB Maks'] !== undefined ? item['KLB Maks'].toString() : '-').find(val => val !== '-')
+            : '-';
+          result = {data: {"Maksimum": klbMaksValue !== '-' && klbMaksValue !== undefined ? klbMaksValue.toString().replace('.', ',') : '-'}};
+        }
+        break;
+
+      case 'kdh':
+        // KDH (Koefisien Dasar Hijau)
+        if (hasMultipleJenis) {
+          const kdhData: {[key: string]: string} = {};
+          validJenisTypes.forEach(jenis => {
+            const jenisData = filteredData.find(item => item.Jenis === jenis);
+            const kdhValue = jenisData && jenisData['KDH Min (%)'] !== null && jenisData['KDH Min (%)'] !== undefined ? jenisData['KDH Min (%)'].toString() : '-';
+            if (jenis) kdhData[jenis] = kdhValue;
+          });
+          result = {data: kdhData};
+        } else if (hasPersil) {
+          const kdhWest = westSideData && westSideData['KDH Min (%)'] !== null ? westSideData['KDH Min (%)'].toString() : '-';
+          const kdhEast = eastSideData && eastSideData['KDH Min (%)'] !== null ? eastSideData['KDH Min (%)'].toString() : '-';
+          result = {data: {
+            "Persil disebelah barat jalan Nasional": kdhWest,
+            "Persil disebelah timur jalan Nasional": kdhEast
+          }};
+        } else {
+          const kdhValue = filteredData.some(item => item['KDH Min (%)'] !== null && item['KDH Min (%)'] !== undefined)
+            ? filteredData.map(item => item['KDH Min (%)'] !== null && item['KDH Min (%)'] !== undefined ? item['KDH Min (%)'].toString() : '-').find(val => val !== '-')
+            : '-';
+          result = {data: {"Minimum": kdhValue !== '-' && kdhValue !== undefined ? kdhValue.toString() : '-'}};
+        }
+        break;
+
+      case 'gsb':
+        // Garis Sempadan Bangunan
+        if (hasMultipleJenis) {
+          const gsbData: {[key: string]: any} = {};
+          validJenisTypes.forEach(jenis => {
+            const jenisData = filteredData.find(item => item.Jenis === jenis);
+            if (!jenis) return;
+            
+            gsbData[jenis] = {};
+            
+            if (dataSource === 'bsb' && jenisData) {
+              const gsbArteri = jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null && jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== undefined
+                ? jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'].toString() 
+                : '-';
+              gsbData[jenis]["a."] = `Jalan Arteri = ${gsbArteri};`;
+            } else {
+              gsbData[jenis]["a."] = "Jalan Arteri = -;";
+            }
+            
+            const gsbKolektor = jenisData && jenisData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
+              ? jenisData['Garis Sempadan Bangunan Min. (m) - Kolektor'].toString() 
+              : '-';
+            const gsbLokal = jenisData && jenisData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
+              ? jenisData['Garis Sempadan Bangunan Min. (m) - Lokal'].toString() 
+              : '-';
+            
+            gsbData[jenis]["b."] = `Jalan Kolektor = ${gsbKolektor}; dan`;
+            gsbData[jenis]["c."] = `Jalan Lokal = ${gsbLokal}.`;
+          });
+          result = {data: gsbData};
+        } else if (hasPersil) {
+          const gsbWest: any = {};
+          const gsbEast: any = {};
+          
+          if (dataSource === 'bsb') {
+            const gsbArteriWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null && westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== undefined
+              ? westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'].toString() 
+              : '-';
+            const gsbArteriEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null && eastSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== undefined
+              ? eastSideData['Garis Sempadan Bangunan Min. (m) - Arteri'].toString() 
+              : '-';
+            gsbWest["a."] = `Jalan Arteri = ${gsbArteriWest};`;
+            gsbEast["a."] = `Jalan Arteri = ${gsbArteriEast};`;
+          } else {
+            gsbWest["a."] = "Jalan Arteri = -;";
+            gsbEast["a."] = "Jalan Arteri = -;";
+          }
+          
+          const gsbKolektorWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
+            ? westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'].toString() 
+            : '-';
+          const gsbLokalWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
+            ? westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'].toString() 
+            : '-';
+          const gsbKolektorEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
+            ? eastSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'].toString() 
+            : '-';
+          const gsbLokalEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
+            ? eastSideData['Garis Sempadan Bangunan Min. (m) - Lokal'].toString() 
+            : '-';
+          
+          gsbWest["b."] = `Jalan Kolektor = ${gsbKolektorWest}; dan`;
+          gsbWest["c."] = `Jalan Lokal = ${gsbLokalWest}.`;
+          gsbEast["b."] = `Jalan Kolektor = ${gsbKolektorEast}; dan`;
+          gsbEast["c."] = `Jalan Lokal = ${gsbLokalEast}.`;
+          
+          result = {data: {
+            "Persil disebelah barat jalan Nasional": gsbWest,
+            "Persil disebelah timur jalan Nasional": gsbEast
+          }};
+        } else {
+          const gsbData: any = {};
+          
+          if (dataSource === 'bsb' && westSideData) {
+            const gsbArteri = westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null && westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== undefined
+              ? westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'].toString() 
+              : '-';
+            gsbData["a."] = `Jalan Arteri = ${gsbArteri};`;
+          } else {
+            gsbData["a."] = "Jalan Arteri = -;";
+          }
+          
+          const gsbKolektor = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
+            ? westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'].toString() 
+            : '-';
+          const gsbLokal = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
+            ? westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'].toString() 
+            : '-';
+          
+          gsbData["b."] = `Jalan Kolektor = ${gsbKolektor}; dan`;
+          gsbData["c."] = `Jalan Lokal = ${gsbLokal}.`;
+          
+          result = {data: gsbData};
+        }
+        break;
+
+      case 'ktb':
+        // Koefisien Tapak Basement
+        const ktb = filteredData.some(item => item['KTB Maks (%)'] !== null && item['KTB Maks (%)'] !== undefined)
+          ? filteredData.map(item => item['KTB Maks (%)'] !== null && item['KTB Maks (%)'] !== undefined ? item['KTB Maks (%)'].toString() : '-').find(val => val !== '-')
+          : '-';
+        result = {data: ktb !== '-' ? {"a.": `Maksimum = ${ktb}.`} : "-"};
+        break;
+
+      case 'ktgbgn':
+        // Ketinggian Bangunan
+        if (hasMultipleJenis) {
+          const ktgbgnData: {[key: string]: any} = {};
+          validJenisTypes.forEach(jenis => {
+            const jenisData = filteredData.find(item => item.Jenis === jenis);
+            if (!jenis) return;
+            
+            ktgbgnData[jenis] = {};
+            
+            if (dataSource === 'bsb' && jenisData) {
+              const tinggiArteri = jenisData['Tinggi Bangunan Maks. (m) - Arteri'] !== null && jenisData['Tinggi Bangunan Maks. (m) - Arteri'] !== undefined
+                ? jenisData['Tinggi Bangunan Maks. (m) - Arteri'].toString() 
+                : '-';
+              ktgbgnData[jenis]["a."] = `Jalan Arteri = ${tinggiArteri} m;`;
+            } else {
+              ktgbgnData[jenis]["a."] = "Jalan Arteri = - m;"; 
+            }
+            
+            const tinggiKolektor = jenisData && jenisData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
+              ? jenisData['Tinggi Bangunan Maks. (m) - Kolektor'].toString() 
+              : '-';
+            const tinggiLokal = jenisData && jenisData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
+              ? jenisData['Tinggi Bangunan Maks. (m) - Lokal'].toString() 
+              : '-';
+            
+            ktgbgnData[jenis]["b."] = `Jalan Kolektor = ${tinggiKolektor} m; dan`;
+            ktgbgnData[jenis]["c."] = `Jalan Lokal = ${tinggiLokal} m.`;
+          });
+          result = {data: ktgbgnData};
+        } else if (hasPersil) {
+          const ktgbgnWest: any = {};
+          const ktgbgnEast: any = {};
+          
+          if (dataSource === 'bsb') {
+            const tinggiArteriWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== null && westSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== undefined
+              ? westSideData['Tinggi Bangunan Maks. (m) - Arteri'].toString() 
+              : '-';
+            const tinggiArteriEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== null && eastSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== undefined
+              ? eastSideData['Tinggi Bangunan Maks. (m) - Arteri'].toString() 
+              : '-';
+            ktgbgnWest["a."] = `Jalan Arteri = ${tinggiArteriWest} m;`;
+            ktgbgnEast["a."] = `Jalan Arteri = ${tinggiArteriEast} m;`;
+          } else {
+            ktgbgnWest["a."] = "Jalan Arteri = - m;";
+            ktgbgnEast["a."] = "Jalan Arteri = - m;";
+          }
+          
+          const tinggiKolektorWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
+            ? westSideData['Tinggi Bangunan Maks. (m) - Kolektor'].toString() 
+            : '-';
+          const tinggiLokalWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
+            ? westSideData['Tinggi Bangunan Maks. (m) - Lokal'].toString() 
+            : '-';
+          const tinggiKolektorEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
+            ? eastSideData['Tinggi Bangunan Maks. (m) - Kolektor'].toString() 
+            : '-';
+          const tinggiLokalEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
+            ? eastSideData['Tinggi Bangunan Maks. (m) - Lokal'].toString() 
+            : '-';
+          
+          ktgbgnWest["b."] = `Jalan Kolektor = ${tinggiKolektorWest} m; dan`;
+          ktgbgnWest["c."] = `Jalan Lokal = ${tinggiLokalWest} m.`;
+          ktgbgnEast["b."] = `Jalan Kolektor = ${tinggiKolektorEast} m; dan`;
+          ktgbgnEast["c."] = `Jalan Lokal = ${tinggiLokalEast} m.`;
+          
+          result = {data: {
+            "Persil disebelah barat jalan Nasional": ktgbgnWest,
+            "Persil disebelah timur jalan Nasional": ktgbgnEast
+          }};
+        } else {
+          const ktgbgnData: any = {};
+          
+          if (dataSource === 'bsb' && westSideData && westSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== null && westSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== undefined) {
+            const tinggiArteri = westSideData['Tinggi Bangunan Maks. (m) - Arteri'].toString();
+            ktgbgnData["a."] = `Jalan Arteri = ${tinggiArteri} m;`;
+          } else {
+            ktgbgnData["a."] = "Jalan Arteri = - m;";
+          }
+          
+          const tinggiKolektor = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
+            ? westSideData['Tinggi Bangunan Maks. (m) - Kolektor'].toString() 
+            : '-';
+          const tinggiLokal = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
+            ? westSideData['Tinggi Bangunan Maks. (m) - Lokal'].toString() 
+            : '-';
+          
+          ktgbgnData["b."] = `Jalan Kolektor = ${tinggiKolektor} m; dan`;
+          ktgbgnData["c."] = `Jalan Lokal = ${tinggiLokal} m.`;
+          
+          result = {data: ktgbgnData};
+        }
+        break;
+
+      default:
+        result = {data: "-"};
+    }
+
+    return JSON.stringify(result, null, 2);
+  };
+
+  // Generate minified JSON for specific category
+  const generateMinifiedJsonForCategory = (category: string) => {
+    const jsonObj = JSON.parse(generateJsonForCategory(category));
+    return JSON.stringify(jsonObj);
+  };
+
+  // Copy JSON for specific category
+  const copyJsonForCategory = async (category: string) => {
+    try {
+      const jsonText = generateMinifiedJsonForCategory(category);
+      await navigator.clipboard.writeText(jsonText);
+      setCopyCategorySuccess({...copyCategorySuccess, [category]: true});
+      setTimeout(() => setCopyCategorySuccess({...copyCategorySuccess, [category]: false}), 2000);
+    } catch (err) {
+      console.error(`Failed to copy ${category} JSON: `, err);
+    }
+  };
+  
+  // State for modal preview
+  const [showJsonModal, setShowJsonModal] = useState(false);
+  const [currentJsonPreview, setCurrentJsonPreview] = useState("");
+  const [currentJsonCategory, setCurrentJsonCategory] = useState("");
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="mb-6">
@@ -825,6 +1185,221 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* JSON Format Copy Section */}
+      {filteredData.length > 0 && (
+        <div className="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Format JSON untuk Copy
+            </h3>
+          </div>
+          <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* KDB */}
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-md p-4 border">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">KDB (Koefisien Dasar Bangunan)</h4>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => {
+                    setCurrentJsonPreview(generateJsonForCategory('kdb'));
+                    setCurrentJsonCategory('KDB');
+                    setShowJsonModal(true);
+                  }}
+                  className="px-3 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex-1"
+                >
+                  Preview
+                </button>
+                <button
+                  onClick={() => copyJsonForCategory('kdb')}
+                  className={`px-3 py-2 rounded-md transition-colors flex-1 ${
+                    copyCategorySuccess['kdb'] 
+                      ? 'bg-green-600 text-white' 
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  {copyCategorySuccess['kdb'] ? '✓ Tersalin!' : 'Copy'}
+                </button>
+              </div>
+            </div>
+
+            {/* KLB */}
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-md p-4 border">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">KLB (Koefisien Lantai Bangunan)</h4>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => {
+                    setCurrentJsonPreview(generateJsonForCategory('klb'));
+                    setCurrentJsonCategory('KLB');
+                    setShowJsonModal(true);
+                  }}
+                  className="px-3 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex-1"
+                >
+                  Preview
+                </button>
+                <button
+                  onClick={() => copyJsonForCategory('klb')}
+                  className={`px-3 py-2 rounded-md transition-colors flex-1 ${
+                    copyCategorySuccess['klb'] 
+                      ? 'bg-green-600 text-white' 
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  {copyCategorySuccess['klb'] ? '✓ Tersalin!' : 'Copy'}
+                </button>
+              </div>
+            </div>
+
+            {/* KDH */}
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-md p-4 border">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">KDH (Koefisien Dasar Hijau)</h4>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => {
+                    setCurrentJsonPreview(generateJsonForCategory('kdh'));
+                    setCurrentJsonCategory('KDH');
+                    setShowJsonModal(true);
+                  }}
+                  className="px-3 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex-1"
+                >
+                  Preview
+                </button>
+                <button
+                  onClick={() => copyJsonForCategory('kdh')}
+                  className={`px-3 py-2 rounded-md transition-colors flex-1 ${
+                    copyCategorySuccess['kdh'] 
+                      ? 'bg-green-600 text-white' 
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  {copyCategorySuccess['kdh'] ? '✓ Tersalin!' : 'Copy'}
+                </button>
+              </div>
+            </div>
+
+            {/* GSB */}
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-md p-4 border">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">GSB (Garis Sempadan Bangunan)</h4>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => {
+                    setCurrentJsonPreview(generateJsonForCategory('gsb'));
+                    setCurrentJsonCategory('GSB');
+                    setShowJsonModal(true);
+                  }}
+                  className="px-3 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex-1"
+                >
+                  Preview
+                </button>
+                <button
+                  onClick={() => copyJsonForCategory('gsb')}
+                  className={`px-3 py-2 rounded-md transition-colors flex-1 ${
+                    copyCategorySuccess['gsb'] 
+                      ? 'bg-green-600 text-white' 
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  {copyCategorySuccess['gsb'] ? '✓ Tersalin!' : 'Copy'}
+                </button>
+              </div>
+            </div>
+
+            {/* KTB */}
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-md p-4 border">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">KTB (Koefisien Tapak Basement)</h4>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => {
+                    setCurrentJsonPreview(generateJsonForCategory('ktb'));
+                    setCurrentJsonCategory('KTB');
+                    setShowJsonModal(true);
+                  }}
+                  className="px-3 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex-1"
+                >
+                  Preview
+                </button>
+                <button
+                  onClick={() => copyJsonForCategory('ktb')}
+                  className={`px-3 py-2 rounded-md transition-colors flex-1 ${
+                    copyCategorySuccess['ktb'] 
+                      ? 'bg-green-600 text-white' 
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  {copyCategorySuccess['ktb'] ? '✓ Tersalin!' : 'Copy'}
+                </button>
+              </div>
+            </div>
+
+            {/* Ketinggian Bangunan */}
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-md p-4 border">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Ketinggian Bangunan</h4>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => {
+                    setCurrentJsonPreview(generateJsonForCategory('ktgbgn'));
+                    setCurrentJsonCategory('Ketinggian Bangunan');
+                    setShowJsonModal(true);
+                  }}
+                  className="px-3 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex-1"
+                >
+                  Preview
+                </button>
+                <button
+                  onClick={() => copyJsonForCategory('ktgbgn')}
+                  className={`px-3 py-2 rounded-md transition-colors flex-1 ${
+                    copyCategorySuccess['ktgbgn'] 
+                      ? 'bg-green-600 text-white' 
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  {copyCategorySuccess['ktgbgn'] ? '✓ Tersalin!' : 'Copy'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* JSON Preview Modal */}
+      {showJsonModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-3xl w-full max-h-[80vh] flex flex-col">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Preview JSON {currentJsonCategory}
+              </h3>
+              <button 
+                onClick={() => setShowJsonModal(false)}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            
+            <div className="p-4 flex-1 overflow-auto">
+              <div className="flex mb-4 space-x-2">
+                <button
+                  onClick={() => copyJsonForCategory(currentJsonCategory.toLowerCase().replace(' bangunan', ''))}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  Copy Minified JSON
+                </button>
+                <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
+                  <span className="ml-2">Format yang disalin adalah versi minified (tanpa spasi dan baris baru)</span>
+                </div>
+              </div>
+              
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-md p-4 border overflow-auto">
+                <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap font-mono">
+                  {currentJsonPreview}
+                </pre>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
