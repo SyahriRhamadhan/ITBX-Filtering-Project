@@ -167,29 +167,72 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
       eastSideData = filteredData[0] || null;
     }
 
+    // Check if there are multiple Jenis types (excluding persil and empty/null values)
+    const validJenisTypes = filteredData
+      .map(item => item.Jenis)
+      .filter(jenis => 
+        jenis && 
+        jenis !== '-' && 
+        jenis.trim() !== '' && 
+        !jenis.toLowerCase().includes('persil disebelah')
+      )
+      .filter((jenis, index, arr) => arr.indexOf(jenis) === index); // Remove duplicates
+
+    const hasMultipleJenis = validJenisTypes.length > 1;
+
     // KDB (Koefisien Dasar Bangunan)
     result += 'Koefisien Dasar Bangunan (%)\n';
-    const kdbValue = filteredData.some(item => item['KDB Maks (%)'] !== null)
-      ? filteredData.map(item => item['KDB Maks (%)'] || '-').find(val => val !== '-')
-      : '-';
-    result += `Maksimum: ${kdbValue !== '-' ? kdbValue + '%' : '-'}\n`;
+    if (hasMultipleJenis) {
+      validJenisTypes.forEach((jenis, index) => {
+        const jenisData = filteredData.find(item => item.Jenis === jenis);
+        const kdbValue = jenisData && jenisData['KDB Maks (%)'] !== null ? jenisData['KDB Maks (%)'] : '-';
+        const letter = String.fromCharCode(97 + index); // a, b, c, etc.
+        const separator = index === validJenisTypes.length - 1 ? '.' : '; dan';
+        result += `${letter}.: ${jenis} minimum ${kdbValue !== '-' ? kdbValue : '-'}${separator}\n`;
+      });
+    } else {
+      const kdbValue = filteredData.some(item => item['KDB Maks (%)'] !== null)
+        ? filteredData.map(item => item['KDB Maks (%)'] || '-').find(val => val !== '-')
+        : '-';
+      result += `Maksimum: ${kdbValue !== '-' ? kdbValue + '%' : '-'}\n`;
+    }
     result += '\n';
 
     // KLB (Koefisien Lantai Bangunan)
     result += 'Koefisien Lantai Bangunan\n';
-    const klbMaksValue = filteredData.some(item => item['KLB Maks'] !== null)
-      ? filteredData.map(item => item['KLB Maks'] || '-').find(val => val !== '-')
-      : '-';
-    result += `KLB Maksimum: ${klbMaksValue !== '-' && klbMaksValue !== undefined ? klbMaksValue.toString().replace('.', ',') : '-'}\n`;
-    result += `KLB Minimum: -\n`;
+    if (hasMultipleJenis) {
+      validJenisTypes.forEach((jenis, index) => {
+        const jenisData = filteredData.find(item => item.Jenis === jenis);
+        const klbValue = jenisData && jenisData['KLB Maks'] !== null ? jenisData['KLB Maks'].toString().replace('.', ',') : '-';
+        const letter = String.fromCharCode(97 + index); // a, b, c, etc.
+        const separator = index === validJenisTypes.length - 1 ? '.' : '; dan';
+        result += `${letter}.: ${jenis} = ${klbValue !== '-' ? klbValue : '-'}${separator}\n`;
+      });
+    } else {
+      const klbMaksValue = filteredData.some(item => item['KLB Maks'] !== null)
+        ? filteredData.map(item => item['KLB Maks'] || '-').find(val => val !== '-')
+        : '-';
+      result += `KLB Maksimum: ${klbMaksValue !== '-' && klbMaksValue !== undefined ? klbMaksValue.toString().replace('.', ',') : '-'}\n`;
+      result += `KLB Minimum: -\n`;
+    }
     result += '\n';
 
     // KDH (Koefisien Dasar Hijau)
     result += 'Koefisien Dasar Hijau (%)\n';
-    const kdhValue = filteredData.some(item => item['KDH Min (%)'] !== null)
-      ? filteredData.map(item => item['KDH Min (%)'] || '-').find(val => val !== '-')
-      : '-';
-    result += `Minimum: ${kdhValue}\n`;
+    if (hasMultipleJenis) {
+      validJenisTypes.forEach((jenis, index) => {
+        const jenisData = filteredData.find(item => item.Jenis === jenis);
+        const kdhValue = jenisData && jenisData['KDH Min (%)'] !== null ? jenisData['KDH Min (%)'] : '-';
+        const letter = String.fromCharCode(97 + index); // a, b, c, etc.
+        const separator = index === validJenisTypes.length - 1 ? '.' : '; dan';
+        result += `${letter}.: ${jenis} minimum ${kdhValue !== '-' ? kdhValue : '-'}${separator}\n`;
+      });
+    } else {
+      const kdhValue = filteredData.some(item => item['KDH Min (%)'] !== null)
+        ? filteredData.map(item => item['KDH Min (%)'] || '-').find(val => val !== '-')
+        : '-';
+      result += `Minimum: ${kdhValue}\n`;
+    }
     result += '\n';
 
     // Luas Kaveling
@@ -200,10 +243,43 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     result += `Minimum: ${luasKavling}\n`;
     result += '\n';
 
-    // Ketinggian Bangunan - Conditional format based on persil
+    // Ketinggian Bangunan - Conditional format based on persil and multiple jenis
     result += 'Ketinggian Bangunan\n';
     
-    if (hasPersil) {
+    if (hasMultipleJenis && !hasPersil) {
+      // Grouped format for multiple jenis
+      validJenisTypes.forEach((jenis, jenisIndex) => {
+        const jenisData = filteredData.find(item => item.Jenis === jenis);
+        result += `${jenis}:\n`;
+        
+        let roadIndex = 0;
+        if (dataSource === 'bsb') {
+          const tinggiArteri = jenisData && jenisData['Tinggi Bangunan Maks. (m) - Arteri'] !== null 
+            ? jenisData['Tinggi Bangunan Maks. (m) - Arteri'] 
+            : '-';
+          const letter = String.fromCharCode(97 + roadIndex);
+          result += `    ${letter}.: Jalan Arteri = ${tinggiArteri !== '-' ? tinggiArteri : '-'};\n`;
+          roadIndex++;
+        }
+        
+        const tinggiKolektor = jenisData && jenisData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
+          ? jenisData['Tinggi Bangunan Maks. (m) - Kolektor'] 
+          : '-';
+        const kolektorLetter = String.fromCharCode(97 + roadIndex);
+        result += `    ${kolektorLetter}.: Jalan Kolektor = ${tinggiKolektor !== '-' ? tinggiKolektor : '-'}; dan\n`;
+        roadIndex++;
+        
+        const tinggiLokal = jenisData && jenisData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
+          ? jenisData['Tinggi Bangunan Maks. (m) - Lokal'] 
+          : '-';
+        const lokalLetter = String.fromCharCode(97 + roadIndex);
+        result += `    ${lokalLetter}.: Jalan Lokal = ${tinggiLokal !== '-' ? tinggiLokal : '-'}.\n`;
+        
+        if (jenisIndex < validJenisTypes.length - 1) {
+          result += ' \n'; // Add space between jenis groups
+        }
+      });
+    } else if (hasPersil) {
       // Format with persil
       result += 'Persil disebelah barat jalan Nasional:\n';
       if (dataSource === 'bsb') {
@@ -262,10 +338,43 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     result += `${ktb}\n`;
     result += '\n';
 
-    // Garis Sempadan Bangunan - Conditional format based on persil
+    // Garis Sempadan Bangunan - Conditional format based on persil and multiple jenis
     result += 'Garis Sempadan Bangunan\n';
     
-    if (hasPersil) {
+    if (hasMultipleJenis && !hasPersil) {
+      // Grouped format for multiple jenis
+      validJenisTypes.forEach((jenis, jenisIndex) => {
+        const jenisData = filteredData.find(item => item.Jenis === jenis);
+        result += `${jenis}:\n`;
+        
+        let roadIndex = 0;
+        if (dataSource === 'bsb') {
+          const gsbArteri = jenisData && jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null 
+            ? jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'] 
+            : '-';
+          const letter = String.fromCharCode(97 + roadIndex);
+          result += `    ${letter}.: Jalan Arteri = ${gsbArteri !== '-' ? gsbArteri : '-'};\n`;
+          roadIndex++;
+        }
+        
+        const gsbKolektor = jenisData && jenisData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
+          ? jenisData['Garis Sempadan Bangunan Min. (m) - Kolektor'] 
+          : '-';
+        const kolektorLetter = String.fromCharCode(97 + roadIndex);
+        result += `    ${kolektorLetter}.: Jalan Kolektor = ${gsbKolektor !== '-' ? gsbKolektor : '-'}; dan\n`;
+        roadIndex++;
+        
+        const gsbLokal = jenisData && jenisData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
+          ? jenisData['Garis Sempadan Bangunan Min. (m) - Lokal'] 
+          : '-';
+        const lokalLetter = String.fromCharCode(97 + roadIndex);
+        result += `    ${lokalLetter}.: Jalan Lokal = ${gsbLokal !== '-' ? gsbLokal : '-'}.\n`;
+        
+        if (jenisIndex < validJenisTypes.length - 1) {
+          result += ' \n'; // Add space between jenis groups
+        }
+      });
+    } else if (hasPersil) {
       // Format with persil
       result += 'Persil disebelah barat jalan Nasional:\n';
       if (dataSource === 'bsb') {
@@ -318,18 +427,42 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
 
     // Jarak Bebas Samping (JBS)
     result += 'Jarak Bebas Samping (JBS)\n';
-    const jbsValue = westSideData && westSideData['Jarak Bebas Samping Min. (m)'] !== null 
-      ? `${westSideData['Jarak Bebas Samping Min. (m)']} m` 
-      : '-';
-    result += `Minimum: ${jbsValue}\n`;
+    if (hasMultipleJenis) {
+      validJenisTypes.forEach((jenis, index) => {
+        const jenisData = filteredData.find(item => item.Jenis === jenis);
+        const jbsValue = jenisData && jenisData['Jarak Bebas Samping Min. (m)'] !== null 
+          ? jenisData['Jarak Bebas Samping Min. (m)'] 
+          : '-';
+        const letter = String.fromCharCode(97 + index);
+        const separator = index === validJenisTypes.length - 1 ? '.' : '; dan';
+        result += `${letter}.: ${jenis} minimum ${jbsValue !== '-' ? jbsValue + ' m' : '-'}${separator}\n`;
+      });
+    } else {
+      const jbsValue = westSideData && westSideData['Jarak Bebas Samping Min. (m)'] !== null 
+        ? `${westSideData['Jarak Bebas Samping Min. (m)']} m` 
+        : '-';
+      result += `Minimum: ${jbsValue}\n`;
+    }
     result += '\n';
 
     // Jarak Bebas Belakang (JBB)
     result += 'Jarak Bebas Belakang (JBB)\n';
-    const jbbValue = westSideData && westSideData['Jarak Bebas Belakang Min. (m)'] !== null 
-      ? `${westSideData['Jarak Bebas Belakang Min. (m)']} m` 
-      : '-';
-    result += `Minimum: ${jbbValue}\n`;
+    if (hasMultipleJenis) {
+      validJenisTypes.forEach((jenis, index) => {
+        const jenisData = filteredData.find(item => item.Jenis === jenis);
+        const jbbValue = jenisData && jenisData['Jarak Bebas Belakang Min. (m)'] !== null 
+          ? jenisData['Jarak Bebas Belakang Min. (m)'] 
+          : '-';
+        const letter = String.fromCharCode(97 + index);
+        const separator = index === validJenisTypes.length - 1 ? '.' : '; dan';
+        result += `${letter}.: ${jenis} minimum ${jbbValue !== '-' ? jbbValue + ' m' : '-'}${separator}\n`;
+      });
+    } else {
+      const jbbValue = westSideData && westSideData['Jarak Bebas Belakang Min. (m)'] !== null 
+        ? `${westSideData['Jarak Bebas Belakang Min. (m)']} m` 
+        : '-';
+      result += `Minimum: ${jbbValue}\n`;
+    }
     result += '\n';
 
     // Lantai Bangunan
@@ -345,22 +478,56 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     result += '\n';
 
     // Tampilan Bangunan
-    const tampilanBangunan = filteredData.some(item => item['Tampilan Bangunan'])
-      ? filteredData.map(item => item['Tampilan Bangunan'] || '-').join(', ')
-      : '-';
-    if (tampilanBangunan !== '-') {
+    const tampilanBangunanData = filteredData.filter(item => item['Tampilan Bangunan'] && item['Tampilan Bangunan'] !== '-');
+    if (tampilanBangunanData.length > 0) {
       result += 'Tampilan Bangunan\n';
-      result += `${tampilanBangunan}\n`;
+      if (hasMultipleJenis) {
+        // Get unique tampilan bangunan values for each jenis
+        const jenisWithTampilan = validJenisTypes.filter(jenis => {
+          const jenisData = filteredData.find(item => item.Jenis === jenis);
+          return jenisData && jenisData['Tampilan Bangunan'] && jenisData['Tampilan Bangunan'] !== '-';
+        });
+        
+        jenisWithTampilan.forEach(jenis => {
+          const jenisData = filteredData.find(item => item.Jenis === jenis);
+          if (jenisData && jenisData['Tampilan Bangunan']) {
+            result += `${jenis}:\n`;
+            result += `${jenisData['Tampilan Bangunan']}\n`;
+          }
+        });
+      } else {
+        const tampilanBangunan = filteredData.some(item => item['Tampilan Bangunan'])
+          ? filteredData.map(item => item['Tampilan Bangunan'] || '-').join(', ')
+          : '-';
+        result += `${tampilanBangunan}\n`;
+      }
       result += '\n';
     }
 
     // Keterangan
-    const keterangan = filteredData.some(item => item['Keterangan'])
-      ? filteredData.map(item => item['Keterangan'] || '-').join(', ')
-      : '-';
-    if (keterangan !== '-') {
+    const keteranganData = filteredData.filter(item => item['Keterangan'] && item['Keterangan'] !== '-');
+    if (keteranganData.length > 0) {
       result += 'Keterangan\n';
-      result += `${keterangan}\n`;
+      if (hasMultipleJenis) {
+        // Get unique keterangan values for each jenis
+        const jenisWithKeterangan = validJenisTypes.filter(jenis => {
+          const jenisData = filteredData.find(item => item.Jenis === jenis);
+          return jenisData && jenisData['Keterangan'] && jenisData['Keterangan'] !== '-';
+        });
+        
+        jenisWithKeterangan.forEach(jenis => {
+          const jenisData = filteredData.find(item => item.Jenis === jenis);
+          if (jenisData && jenisData['Keterangan']) {
+            result += `${jenis}:\n`;
+            result += `${jenisData['Keterangan']}\n`;
+          }
+        });
+      } else {
+        const keterangan = filteredData.some(item => item['Keterangan'])
+          ? filteredData.map(item => item['Keterangan'] || '-').join(', ')
+          : '-';
+        result += `${keterangan}\n`;
+      }
     }
 
     return result;
