@@ -219,6 +219,94 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
     return result.trim();
   };
 
+  // Generate JSON format for ketentuan khusus
+  const generateJsonForCategory = (activities: KepsusActivity[]) => {
+    const result: any = {};
+    const groupedByTabel = new Map<string, Map<string, KepsusActivity[]>>();
+    
+    // Group activities by tabel first, then by kawasanType
+    activities.forEach(activity => {
+      const tabel = activity.metadata?.tabel || 'Tidak Diketahui';
+      const kawasanType = activity.metadata?.kawasanType || 'Tidak Diketahui';
+      
+      if (!groupedByTabel.has(tabel)) {
+        groupedByTabel.set(tabel, new Map());
+      }
+      
+      const kawasanMap = groupedByTabel.get(tabel)!;
+      if (!kawasanMap.has(kawasanType)) {
+        kawasanMap.set(kawasanType, []);
+      }
+      
+      kawasanMap.get(kawasanType)!.push(activity);
+    });
+
+    groupedByTabel.forEach((kawasanMap, tabel) => {
+      const formatTabelName = (name: string) => {
+        let formatted = name.replace(/TABEL\s+/i, '');
+        return capitalizeWords(formatted);
+      };
+      
+      const tabelName = `Ketentuan Khusus ${formatTabelName(tabel)}`;
+      result[tabelName] = {};
+      
+      kawasanMap.forEach((kawasanActivities, kawasanType) => {
+        const kawasanName = capitalizeWords(kawasanType);
+        result[tabelName][kawasanName] = {};
+        
+        const ketentuan = kawasanActivities[0].zones['Ketentuan'];
+        if (ketentuan) {
+          const lines = ketentuan.split(/\r?\n/).filter(line => line.trim());
+          let letterIndex = 0;
+          
+          lines.forEach((line, i) => {
+            const trimmedLine = line.trim();
+            if (trimmedLine && !trimmedLine.startsWith('(Sumber:')) {
+              const letter = String.fromCharCode(97 + letterIndex) + '.';
+              
+              let content;
+              if (trimmedLine.match(/^\d+\./)) {
+                content = trimmedLine.replace(/^\d+\.\s*/, '');
+              } else {
+                content = trimmedLine;
+              }
+              
+              // Add semicolon to all items except the last one
+              // Add 'dan' before the last item if there's more than one item
+              if (i < lines.length - 1 && letterIndex > 0) {
+                content += ';';
+              } else if (i === lines.length - 1 && letterIndex > 0) {
+                content += '.';
+              }
+              
+              result[tabelName][kawasanName][letter] = content;
+              letterIndex++;
+            }
+          });
+          
+          // Add 'dan' before the last item if there's more than one item
+          const keys = Object.keys(result[tabelName][kawasanName]);
+          if (keys.length > 1) {
+            const lastKey = keys[keys.length - 1];
+            const secondLastKey = keys[keys.length - 2];
+            const lastContent = result[tabelName][kawasanName][lastKey];
+            const secondLastContent = result[tabelName][kawasanName][secondLastKey];
+            
+            result[tabelName][kawasanName][secondLastKey] = secondLastContent.replace(/[;.]?$/, '; dan');
+          }
+        }
+      });
+    });
+    
+    return { data: result };
+  };
+
+  // Generate minified JSON for copy
+  const generateMinifiedJsonForCategory = (activities: KepsusActivity[]) => {
+    const jsonData = generateJsonForCategory(activities);
+    return JSON.stringify(jsonData);
+  };
+
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="mb-6">
@@ -465,19 +553,34 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
       <div className="mt-8 bg-white rounded-lg shadow-md p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-semibold text-gray-800">Format Copy Ketentuan</h3>
-          <button
-            onClick={() => {
-              const copyText = generateCopyFormat(filteredActivities);
-              navigator.clipboard.writeText(copyText).then(() => {
-                alert('Format ketentuan berhasil disalin ke clipboard!');
-              }).catch(() => {
-                alert('Gagal menyalin ke clipboard');
-              });
-            }}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            📋 Copy Format
-          </button>
+          <div className="flex space-x-2">
+            <button
+              onClick={() => {
+                const copyText = generateCopyFormat(filteredActivities);
+                navigator.clipboard.writeText(copyText).then(() => {
+                  alert('Format ketentuan berhasil disalin ke clipboard!');
+                }).catch(() => {
+                  alert('Gagal menyalin ke clipboard');
+                });
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              📋 Copy Format
+            </button>
+            <button
+              onClick={() => {
+                const jsonText = generateMinifiedJsonForCategory(filteredActivities);
+                navigator.clipboard.writeText(jsonText).then(() => {
+                  alert('Format JSON berhasil disalin ke clipboard!');
+                }).catch(() => {
+                  alert('Gagal menyalin ke clipboard');
+                });
+              }}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              📋 Copy JSON Format
+            </button>
+          </div>
         </div>
         
         <div className="bg-gray-50 p-4 rounded-lg max-h-96 overflow-y-auto">
