@@ -608,21 +608,22 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
           validJenisTypes.forEach(jenis => {
             const jenisData = filteredData.find(item => item.Jenis === jenis);
             const kdbValue = jenisData && jenisData['KDB Maks (%)'] !== null && jenisData['KDB Maks (%)'] !== undefined ? jenisData['KDB Maks (%)'].toString() : '-';
-            if (jenis) kdbData[jenis] = kdbValue;
+            if (jenis) kdbData[jenis] = kdbValue !== '-' ? `${kdbValue}%` : '-';
           });
           result = {data: kdbData};
         } else if (hasPersil) {
           const kdbWest = westSideData && westSideData['KDB Maks (%)'] !== null ? westSideData['KDB Maks (%)'].toString() : '-';
           const kdbEast = eastSideData && eastSideData['KDB Maks (%)'] !== null ? eastSideData['KDB Maks (%)'].toString() : '-';
           result = {data: {
-            "Persil disebelah barat jalan Nasional": kdbWest,
-            "Persil disebelah timur jalan Nasional": kdbEast
+            "Persil disebelah barat jalan Nasional Maksimum": kdbWest !== '-' ? `${kdbWest}%` : '-',
+            "Persil disebelah timur jalan Nasional Maksimum": kdbEast !== '-' ? `${kdbEast}%` : '-'
           }};
         } else {
           const kdbValue = filteredData.some(item => item['KDB Maks (%)'] !== null && item['KDB Maks (%)'] !== undefined)
             ? filteredData.map(item => item['KDB Maks (%)'] !== null && item['KDB Maks (%)'] !== undefined ? item['KDB Maks (%)'].toString() : '-').find(val => val !== '-')
             : '-';
-          result = {data: {"Maksimum": kdbValue !== '-' && kdbValue !== undefined ? kdbValue.toString() : '-'}};
+          const formattedValue = kdbValue !== '-' && kdbValue !== undefined ? `Maksimum: ${kdbValue}%` : 'Maksimum: -';
+          result = {data: formattedValue};
         }
         break;
 
@@ -633,21 +634,22 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
           validJenisTypes.forEach(jenis => {
             const jenisData = filteredData.find(item => item.Jenis === jenis);
             const klbValue = jenisData && jenisData['KLB Maks'] !== null && jenisData['KLB Maks'] !== undefined ? jenisData['KLB Maks'].toString().replace('.', ',') : '-';
-            if (jenis) klbData[jenis] = klbValue;
+            if (jenis) klbData[jenis] = klbValue !== '-' ? `${klbValue}%` : '-';
           });
           result = {data: klbData};
         } else if (hasPersil) {
           const klbWest = westSideData && westSideData['KLB Maks'] !== null ? westSideData['KLB Maks'].toString().replace('.', ',') : '-';
           const klbEast = eastSideData && eastSideData['KLB Maks'] !== null ? eastSideData['KLB Maks'].toString().replace('.', ',') : '-';
           result = {data: {
-            "Persil disebelah barat jalan Nasional": klbWest,
-            "Persil disebelah timur jalan Nasional": klbEast
+            "Persil disebelah barat jalan Nasional": `Maksimum: ${klbWest !== '-' ? klbWest + '%' : '-'}`,
+            "Persil disebelah timur jalan Nasional": `Maksimum: ${klbEast !== '-' ? klbEast + '%' : '-'}`
           }};
         } else {
           const klbMaksValue = filteredData.some(item => item['KLB Maks'] !== null && item['KLB Maks'] !== undefined)
             ? filteredData.map(item => item['KLB Maks'] !== null && item['KLB Maks'] !== undefined ? item['KLB Maks'].toString() : '-').find(val => val !== '-')
             : '-';
-          result = {data: {"Maksimum": klbMaksValue !== '-' && klbMaksValue !== undefined ? klbMaksValue.toString().replace('.', ',') : '-'}};
+          const formattedValue = klbMaksValue !== '-' && klbMaksValue !== undefined ? `Maksimum: ${klbMaksValue.toString().replace('.', ',')}%` : 'Maksimum: -';
+          result = {data: formattedValue};
         }
         break;
 
@@ -658,21 +660,22 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
           validJenisTypes.forEach(jenis => {
             const jenisData = filteredData.find(item => item.Jenis === jenis);
             const kdhValue = jenisData && jenisData['KDH Min (%)'] !== null && jenisData['KDH Min (%)'] !== undefined ? jenisData['KDH Min (%)'].toString() : '-';
-            if (jenis) kdhData[jenis] = kdhValue;
+            if (jenis) kdhData[jenis] = kdhValue !== '-' ? `${kdhValue}%` : '-';
           });
           result = {data: kdhData};
         } else if (hasPersil) {
           const kdhWest = westSideData && westSideData['KDH Min (%)'] !== null ? westSideData['KDH Min (%)'].toString() : '-';
           const kdhEast = eastSideData && eastSideData['KDH Min (%)'] !== null ? eastSideData['KDH Min (%)'].toString() : '-';
           result = {data: {
-            "Persil disebelah barat jalan Nasional": kdhWest,
-            "Persil disebelah timur jalan Nasional": kdhEast
+            "Persil disebelah barat jalan Nasional": `Minimum: ${kdhWest !== '-' ? kdhWest + '%' : '-'}`,
+            "Persil disebelah timur jalan Nasional": `Minimum: ${kdhEast !== '-' ? kdhEast + '%' : '-'}`
           }};
         } else {
           const kdhValue = filteredData.some(item => item['KDH Min (%)'] !== null && item['KDH Min (%)'] !== undefined)
             ? filteredData.map(item => item['KDH Min (%)'] !== null && item['KDH Min (%)'] !== undefined ? item['KDH Min (%)'].toString() : '-').find(val => val !== '-')
             : '-';
-          result = {data: {"Minimum": kdhValue !== '-' && kdhValue !== undefined ? kdhValue.toString() : '-'}};
+          const formattedValue = kdhValue !== '-' && kdhValue !== undefined ? `Minimum: ${kdhValue}%` : 'Minimum: -';
+          result = {data: formattedValue};
         }
         break;
 
@@ -690,9 +693,9 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
               const gsbArteri = jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null && jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== undefined
                 ? jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'].toString() 
                 : '-';
-              gsbData[jenis]["a."] = `Jalan Arteri = ${gsbArteri};`;
+              gsbData[jenis]["a."] = `Jalan Arteri Minimum = ${gsbArteri} m;`;
             } else {
-              gsbData[jenis]["a."] = "Jalan Arteri = -;";
+              gsbData[jenis]["a."] = "Jalan Arteri Minimum = - m;";
             }
             
             const gsbKolektor = jenisData && jenisData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
@@ -702,8 +705,8 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
               ? jenisData['Garis Sempadan Bangunan Min. (m) - Lokal'].toString() 
               : '-';
             
-            gsbData[jenis]["b."] = `Jalan Kolektor = ${gsbKolektor}; dan`;
-            gsbData[jenis]["c."] = `Jalan Lokal = ${gsbLokal}.`;
+            gsbData[jenis]["b."] = `Jalan Kolektor Minimum = ${gsbKolektor} m; dan`;
+            gsbData[jenis]["c."] = `Jalan Lokal Minimum = ${gsbLokal} m.`;
           });
           result = {data: gsbData};
         } else if (hasPersil) {
@@ -717,11 +720,11 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
             const gsbArteriEast = eastSideData && eastSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null && eastSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== undefined
               ? eastSideData['Garis Sempadan Bangunan Min. (m) - Arteri'].toString() 
               : '-';
-            gsbWest["a."] = `Jalan Arteri = ${gsbArteriWest};`;
-            gsbEast["a."] = `Jalan Arteri = ${gsbArteriEast};`;
+            gsbWest["a."] = `Jalan Arteri Minimum = ${gsbArteriWest} m;`;
+            gsbEast["a."] = `Jalan Arteri Minimum = ${gsbArteriEast} m;`;
           } else {
-            gsbWest["a."] = "Jalan Arteri = -;";
-            gsbEast["a."] = "Jalan Arteri = -;";
+            gsbWest["a."] = "Jalan Arteri Minimum = - m;";
+            gsbEast["a."] = "Jalan Arteri Minimum = - m;";
           }
           
           const gsbKolektorWest = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
@@ -737,10 +740,10 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
             ? eastSideData['Garis Sempadan Bangunan Min. (m) - Lokal'].toString() 
             : '-';
           
-          gsbWest["b."] = `Jalan Kolektor = ${gsbKolektorWest}; dan`;
-          gsbWest["c."] = `Jalan Lokal = ${gsbLokalWest}.`;
-          gsbEast["b."] = `Jalan Kolektor = ${gsbKolektorEast}; dan`;
-          gsbEast["c."] = `Jalan Lokal = ${gsbLokalEast}.`;
+          gsbWest["b."] = `Jalan Kolektor Minimum = ${gsbKolektorWest} m; dan`;
+          gsbWest["c."] = `Jalan Lokal Minimum = ${gsbLokalWest} m.`;
+          gsbEast["b."] = `Jalan Kolektor Minimum = ${gsbKolektorEast} m; dan`;
+          gsbEast["c."] = `Jalan Lokal Minimum = ${gsbLokalEast} m.`;
           
           result = {data: {
             "Persil disebelah barat jalan Nasional": gsbWest,
@@ -753,9 +756,9 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
             const gsbArteri = westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null && westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== undefined
               ? westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'].toString() 
               : '-';
-            gsbData["a."] = `Jalan Arteri = ${gsbArteri};`;
+            gsbData["a."] = `Jalan Arteri Minimum = ${gsbArteri} m;`;
           } else {
-            gsbData["a."] = "Jalan Arteri = -;";
+            gsbData["a."] = "Jalan Arteri Minimum = - m;";
           }
           
           const gsbKolektor = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
@@ -765,8 +768,8 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
             ? westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'].toString() 
             : '-';
           
-          gsbData["b."] = `Jalan Kolektor = ${gsbKolektor}; dan`;
-          gsbData["c."] = `Jalan Lokal = ${gsbLokal}.`;
+          gsbData["b."] = `Jalan Kolektor Minimum = ${gsbKolektor} m; dan`;
+          gsbData["c."] = `Jalan Lokal Minimum = ${gsbLokal} m.`;
           
           result = {data: gsbData};
         }
@@ -777,7 +780,7 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
         const ktb = filteredData.some(item => item['KTB Maks (%)'] !== null && item['KTB Maks (%)'] !== undefined)
           ? filteredData.map(item => item['KTB Maks (%)'] !== null && item['KTB Maks (%)'] !== undefined ? item['KTB Maks (%)'].toString() : '-').find(val => val !== '-')
           : '-';
-        result = {data: ktb !== '-' ? {"a.": `Maksimum = ${ktb}.`} : "-"};
+        result = {data: ktb !== '-' ? {"a.": `KTB Maksimum = ${ktb}%.`} : "-"};
         break;
 
       case 'ktgbgn':
@@ -794,9 +797,9 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
               const tinggiArteri = jenisData['Tinggi Bangunan Maks. (m) - Arteri'] !== null && jenisData['Tinggi Bangunan Maks. (m) - Arteri'] !== undefined
                 ? jenisData['Tinggi Bangunan Maks. (m) - Arteri'].toString() 
                 : '-';
-              ktgbgnData[jenis]["a."] = `Jalan Arteri = ${tinggiArteri} m;`;
+              ktgbgnData[jenis]["a."] = `Jalan Arteri Maksimum = ${tinggiArteri} m;`;
             } else {
-              ktgbgnData[jenis]["a."] = "Jalan Arteri = - m;"; 
+              ktgbgnData[jenis]["a."] = "Jalan Arteri Maksimum = - m;"; 
             }
             
             const tinggiKolektor = jenisData && jenisData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
@@ -806,8 +809,8 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
               ? jenisData['Tinggi Bangunan Maks. (m) - Lokal'].toString() 
               : '-';
             
-            ktgbgnData[jenis]["b."] = `Jalan Kolektor = ${tinggiKolektor} m; dan`;
-            ktgbgnData[jenis]["c."] = `Jalan Lokal = ${tinggiLokal} m.`;
+            ktgbgnData[jenis]["b."] = `Jalan Kolektor Maksimum = ${tinggiKolektor} m; dan`;
+            ktgbgnData[jenis]["c."] = `Jalan Lokal Maksimum = ${tinggiLokal} m.`;
           });
           result = {data: ktgbgnData};
         } else if (hasPersil) {
@@ -821,11 +824,11 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
             const tinggiArteriEast = eastSideData && eastSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== null && eastSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== undefined
               ? eastSideData['Tinggi Bangunan Maks. (m) - Arteri'].toString() 
               : '-';
-            ktgbgnWest["a."] = `Jalan Arteri = ${tinggiArteriWest} m;`;
-            ktgbgnEast["a."] = `Jalan Arteri = ${tinggiArteriEast} m;`;
+            ktgbgnWest["a."] = `Jalan Arteri Maksimum = ${tinggiArteriWest} m;`;
+            ktgbgnEast["a."] = `Jalan Arteri Maksimum = ${tinggiArteriEast} m;`;
           } else {
-            ktgbgnWest["a."] = "Jalan Arteri = - m;";
-            ktgbgnEast["a."] = "Jalan Arteri = - m;";
+            ktgbgnWest["a."] = "Jalan Arteri Maksimum = - m;";
+            ktgbgnEast["a."] = "Jalan Arteri Maksimum = - m;";
           }
           
           const tinggiKolektorWest = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
@@ -841,10 +844,10 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
             ? eastSideData['Tinggi Bangunan Maks. (m) - Lokal'].toString() 
             : '-';
           
-          ktgbgnWest["b."] = `Jalan Kolektor = ${tinggiKolektorWest} m; dan`;
-          ktgbgnWest["c."] = `Jalan Lokal = ${tinggiLokalWest} m.`;
-          ktgbgnEast["b."] = `Jalan Kolektor = ${tinggiKolektorEast} m; dan`;
-          ktgbgnEast["c."] = `Jalan Lokal = ${tinggiLokalEast} m.`;
+          ktgbgnWest["b."] = `Jalan Kolektor Maksimum = ${tinggiKolektorWest} m; dan`;
+          ktgbgnWest["c."] = `Jalan Lokal Maksimum = ${tinggiLokalWest} m.`;
+          ktgbgnEast["b."] = `Jalan Kolektor Maksimum = ${tinggiKolektorEast} m; dan`;
+          ktgbgnEast["c."] = `Jalan Lokal Maksimum = ${tinggiLokalEast} m.`;
           
           result = {data: {
             "Persil disebelah barat jalan Nasional": ktgbgnWest,
@@ -855,9 +858,9 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
           
           if (dataSource === 'bsb' && westSideData && westSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== null && westSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== undefined) {
             const tinggiArteri = westSideData['Tinggi Bangunan Maks. (m) - Arteri'].toString();
-            ktgbgnData["a."] = `Jalan Arteri = ${tinggiArteri} m;`;
+            ktgbgnData["a."] = `Jalan Arteri Maksimum = ${tinggiArteri} m;`;
           } else {
-            ktgbgnData["a."] = "Jalan Arteri = - m;";
+            ktgbgnData["a."] = "Jalan Arteri Maksimum = - m;";
           }
           
           const tinggiKolektor = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
@@ -867,8 +870,8 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
             ? westSideData['Tinggi Bangunan Maks. (m) - Lokal'].toString() 
             : '-';
           
-          ktgbgnData["b."] = `Jalan Kolektor = ${tinggiKolektor} m; dan`;
-          ktgbgnData["c."] = `Jalan Lokal = ${tinggiLokal} m.`;
+          ktgbgnData["b."] = `Jalan Kolektor Maksimum = ${tinggiKolektor} m; dan`;
+          ktgbgnData["c."] = `Jalan Lokal Maksimum = ${tinggiLokal} m.`;
           
           result = {data: ktgbgnData};
         }

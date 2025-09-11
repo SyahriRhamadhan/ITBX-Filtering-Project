@@ -2,6 +2,7 @@ import { useState } from "react";
 
 interface Activity {
   activity: string;
+  activityNumber?: string;
   zones: Record<string, string>;
 }
 
@@ -19,6 +20,7 @@ export default function ActivityList({
   searchTerm,
 }: ActivityListProps) {
   const [copySuccess, setCopySuccess] = useState(false);
+  const [copyJsonSuccess, setCopyJsonSuccess] = useState(false);
 
   const handleCopyList = async () => {
     try {
@@ -28,6 +30,32 @@ export default function ActivityList({
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
       console.error('Failed to copy: ', err);
+    }
+  };
+
+  const handleCopyJsonMinify = async () => {
+    try {
+      // Mengumpulkan activityNumber dari aktivitas yang difilter
+      const activityNumbers = activities
+        .map(activity => activity.activityNumber || "-")
+        .filter(num => num !== "-");
+      
+      // Mengurutkan nomor aktivitas dari terkecil ke terbesar
+      activityNumbers.sort((a, b) => {
+        // Ekstrak angka dari format "XXX-1801"
+        const numA = a.split('-')[0];
+        const numB = b.split('-')[0];
+        return numA.localeCompare(numB, undefined, {numeric: true});
+      });
+      
+      // Format JSON minify sesuai permintaan
+      const jsonData = JSON.stringify({data: activityNumbers.length > 0 ? activityNumbers : "-"});
+      
+      await navigator.clipboard.writeText(jsonData);
+      setCopyJsonSuccess(true);
+      setTimeout(() => setCopyJsonSuccess(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy JSON: ', err);
     }
   };
   if (activities.length === 0) {
@@ -75,30 +103,56 @@ export default function ActivityList({
               {activities.length} kegiatan ditemukan
             </p>
           </div>
-          <button
-            onClick={handleCopyList}
-            className={`inline-flex items-center px-3 sm:px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium transition-colors ${
-              copySuccess
-                ? 'bg-green-50 text-green-700 border-green-300'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
-            }`}
-          >
-            {copySuccess ? (
-              <>
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Tersalin!
-              </>
-            ) : (
-              <>
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>
-                Copy Daftar
-              </>
-            )}
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={handleCopyJsonMinify}
+              className={`inline-flex items-center px-3 sm:px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium transition-colors ${
+                copyJsonSuccess
+                  ? 'bg-green-50 text-green-700 border-green-300'
+                  : 'bg-white text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              {copyJsonSuccess ? (
+                <>
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  JSON Tersalin!
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                  Copy JSON Format
+                </>
+              )}
+            </button>
+            <button
+              onClick={handleCopyList}
+              className={`inline-flex items-center px-3 sm:px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium transition-colors ${
+                copySuccess
+                  ? 'bg-green-50 text-green-700 border-green-300'
+                  : 'bg-white text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              {copySuccess ? (
+                <>
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Tersalin!
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  Copy Daftar
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 

@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from 'react';
+import intensitasDataTrikora from '../data/intensitas-data-merged.json';
+import intensitasDataBsb from '../data/intensitas-data-merged-bsb.json';
 
 // Function to capitalize each word
 const capitalizeWords = (text: string): string => {
@@ -32,6 +34,8 @@ interface KepsusData {
     dataStartIndex: number;
     processedAt: string;
     headers: string[];
+    source?: string;
+    sourceFile?: string;
   };
 }
 
@@ -48,6 +52,10 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
   const [selectedTabel, setSelectedTabel] = useState('');
   const [sortBy, setSortBy] = useState<'name' | 'area'>('name');
   const [showWithoutRegulations, setShowWithoutRegulations] = useState(true);
+  const [showJsonModal, setShowJsonModal] = useState(false);
+  const [currentJsonPreview, setCurrentJsonPreview] = useState('');
+  const [copySuccess, setCopySuccess] = useState(false);
+  const [isTableExpanded, setIsTableExpanded] = useState(false);
 
   // Get unique values for filtering
   const kawasanTypes = useMemo(() => {
@@ -301,10 +309,182 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
     return { data: result };
   };
 
+  // Helper function to normalize text for matching
+  const normalize = (text: string): string => {
+    if (!text) return '';
+    return text.toLowerCase().trim().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ');
+  };
+
+  // Get intensitas data based on zona and subzona
+  const getIntensitasData = (zona?: string, subZona?: string) => {
+    // Determine which dataset to use based on source
+    const isBsb = data.metadata?.source === 'bsb' || 
+                  data.metadata?.sourceFile?.includes('bsb') ||
+                  window.location.pathname.includes('bsb');
+    
+    const intensitasData = isBsb ? intensitasDataBsb : intensitasDataTrikora;
+    const rows = intensitasData.data || [];
+    
+    if (rows.length === 0) return null;
+    
+    const nz = zona ? normalize(zona) : '';
+    const ns = subZona ? normalize(subZona) : '';
+    
+    if (nz || ns) {
+      // Special handling for perumahan activities - prioritize exact subzona match
+      if (ns && (ns.includes('perumahan') || ns.includes('kepadatan'))) {
+        // 1) exact match subzona for perumahan
+        const exactSub = rows.find((it: any) => normalize(it.SubZona) === ns);
+        if (exactSub) return exactSub;
+        
+        // 2) contains match for specific kepadatan type
+        if (ns.includes('kepadatan tinggi')) {
+          const tinggiMatch = rows.find((it: any) => normalize(it.SubZona).includes('kepadatan tinggi'));
+          if (tinggiMatch) return tinggiMatch;
+        } else if (ns.includes('kepadatan sedang')) {
+          const sedangMatch = rows.find((it: any) => normalize(it.SubZona).includes('kepadatan sedang'));
+          if (sedangMatch) return sedangMatch;
+        } else if (ns.includes('kepadatan rendah')) {
+          const rendahMatch = rows.find((it: any) => normalize(it.SubZona).includes('kepadatan rendah'));
+          if (rendahMatch) return rendahMatch;
+        }
+      }
+      
+      // Standard matching logic for non-perumahan or fallback
+      // 1) exact match zona + subzona
+      if (nz && ns) {
+        const exactBoth = rows.find((it: any) => normalize(it.Zona) === nz && normalize(it.SubZona) === ns);
+        if (exactBoth) return exactBoth;
+      }
+      
+      // 2) exact match subzona saja
+      if (ns) {
+        const exactSub = rows.find((it: any) => normalize(it.SubZona) === ns);
+        if (exactSub) return exactSub;
+      }
+      
+      // 3) exact match zona saja
+      if (nz) {
+        const exactZona = rows.find((it: any) => normalize(it.Zona) === nz);
+        if (exactZona) return exactZona;
+      }
+      
+      // 4) contains (longgar) zona + subzona
+      if (nz && ns) {
+        const looseBoth = rows.find((it: any) => normalize(it.Zona).includes(nz) && normalize(it.SubZona).includes(ns));
+        if (looseBoth) return looseBoth;
+      }
+      
+      // 5) contains subzona saja (but avoid wrong perumahan matches)
+      if (ns && !ns.includes('perumahan')) {
+        const looseSub = rows.find((it: any) => normalize(it.SubZona).includes(ns));
+        if (looseSub) return looseSub;
+      }
+    }
+    return null;
+  };
+
   // Generate minified JSON for copy
   const generateMinifiedJsonForCategory = (activities: KepsusActivity[]) => {
     const jsonData = generateJsonForCategory(activities);
-    return JSON.stringify(jsonData);
+    
+    // Try to get intensitas data from the first activity's zona/subzona
+    let intensitasData = null;
+    if (activities.length > 0) {
+      const firstActivity = activities[0];
+      const zonaGuess = firstActivity.metadata?.kawasanType?.trim() ?? '';
+      const subGuess = firstActivity.activity?.trim() ?? '';
+      
+      // Try multiple fallback strategies
+      intensitasData = 
+        getIntensitasData(zonaGuess, subGuess) ||
+        getIntensitasData(zonaGuess) ||
+        getIntensitasData('', subGuess);
+        
+      // Debug log to check what we found
+      console.log('Cari intensitas:', { zona: zonaGuess, subZona: subGuess, found: intensitasData });
+    }
+    
+    // Add additional data fields from intensitas data or set to null
+    const additionalData = {
+      'KTB Maks (%)': intensitasData?.['KTB Maks (%)'] || null,
+      'Luas Kavling Min (m2)': intensitasData?.['Luas Kavling Min (m2)'] || null,
+      'Lantai Bangunan Maks. - Arteri': (intensitasData as any)?.['Lantai Bangunan Maks. - Arteri'] || null,
+      'Lantai Bangunan Maks. - Kolektor': intensitasData?.['Lantai Bangunan Maks. - Kolektor'] || null,
+      'Lantai Bangunan Maks. - Lokal': intensitasData?.['Lantai Bangunan Maks. - Lokal'] || null,
+      'Tinggi Bangunan Maks. (m) - Arteri': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Arteri'] || null,
+      'Tinggi Bangunan Maks. (m) - Kolektor': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Kolektor'] || null,
+      'Tinggi Bangunan Maks. (m) - Lokal': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Lokal'] || null,
+      'Jarak Bebas Samping Min. (m)': intensitasData?.['Jarak Bebas Samping Min. (m)'] || null,
+      'Jarak Bebas Belakang Min. (m)': intensitasData?.['Jarak Bebas Belakang Min. (m)'] || null,
+      'Tampilan Bangunan': intensitasData?.['Tampilan Bangunan'] || null,
+      'Keterangan': intensitasData?.['Keterangan'] || null,
+    };
+    
+    // Merge the original data with additional fields
+    const finalData = {
+      ...jsonData,
+      ...additionalData,
+    };
+    
+    return JSON.stringify(finalData);
+  };
+
+  // Generate formatted JSON for preview
+  const generateJsonForPreview = (activities: KepsusActivity[]) => {
+    const jsonData = generateJsonForCategory(activities);
+    
+    // Try to get intensitas data from the first activity's zona/subzona
+    let intensitasData = null;
+    if (activities.length > 0) {
+      const firstActivity = activities[0];
+      const zonaGuess = firstActivity.metadata?.kawasanType?.trim() ?? '';
+      const subGuess = firstActivity.activity?.trim() ?? '';
+      
+      // Try multiple fallback strategies
+      intensitasData = 
+        getIntensitasData(zonaGuess, subGuess) ||
+        getIntensitasData(zonaGuess) ||
+        getIntensitasData('', subGuess);
+        
+      // Debug log to check what we found
+      console.log('Cari intensitas (preview):', { zona: zonaGuess, subZona: subGuess, found: intensitasData });
+    }
+    
+    // Add additional data fields from intensitas data or set to null
+    const additionalData = {
+      'KTB Maks (%)': intensitasData?.['KTB Maks (%)'] || null,
+      'Luas Kavling Min (m2)': intensitasData?.['Luas Kavling Min (m2)'] || null,
+      'Lantai Bangunan Maks. - Arteri': (intensitasData as any)?.['Lantai Bangunan Maks. - Arteri'] || null,
+      'Lantai Bangunan Maks. - Kolektor': intensitasData?.['Lantai Bangunan Maks. - Kolektor'] || null,
+      'Lantai Bangunan Maks. - Lokal': intensitasData?.['Lantai Bangunan Maks. - Lokal'] || null,
+      'Tinggi Bangunan Maks. (m) - Arteri': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Arteri'] || null,
+      'Tinggi Bangunan Maks. (m) - Kolektor': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Kolektor'] || null,
+      'Tinggi Bangunan Maks. (m) - Lokal': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Lokal'] || null,
+      'Jarak Bebas Samping Min. (m)': intensitasData?.['Jarak Bebas Samping Min. (m)'] || null,
+      'Jarak Bebas Belakang Min. (m)': intensitasData?.['Jarak Bebas Belakang Min. (m)'] || null,
+      'Tampilan Bangunan': intensitasData?.['Tampilan Bangunan'] || null,
+      'Keterangan': intensitasData?.['Keterangan'] || null,
+    };
+    
+    // Merge the original data with additional fields
+    const finalData = {
+      ...jsonData,
+      ...additionalData,
+    };
+    
+    return JSON.stringify(finalData, null, 2);
+  };
+
+  // Copy JSON data to clipboard
+  const copyJsonData = (activities: KepsusActivity[]) => {
+    const jsonText = generateMinifiedJsonForCategory(activities);
+    navigator.clipboard.writeText(jsonText).then(() => {
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    }).catch(() => {
+      alert('Gagal menyalin ke clipboard');
+    });
   };
 
   return (
@@ -473,79 +653,105 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
 
       {/* Results - Table Format */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="flex justify-between items-center p-4 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-800">Tabel Data Ketentuan Khusus</h3>
+          <button
+            onClick={() => setIsTableExpanded(!isTableExpanded)}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {isTableExpanded ? (
+              <>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                </svg>
+                Tutup Tabel
+              </>
+            ) : (
+              <>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+                Buka Tabel
+              </>
+            )}
+          </button>
+        </div>
+        
         {filteredActivities.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">Tidak ada data yang sesuai dengan filter.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Tabel
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Sub Kawasan
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Nama Sub-Zona
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Kode SWP
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Kode Blok
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Luas (Ha)
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Ketentuan
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredActivities.map((activity, index) => (
-                  <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {capitalizeWords(activity.metadata?.tabel || 'TABEL KETENTUAN KHUSUS')}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {capitalizeWords(activity.metadata?.kawasanType || '-')}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {activity.activity}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {activity.metadata?.kodeSWP || '-'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {activity.metadata?.kodeBlok || '-'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {activity.zones['Luas (Ha)']}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-900 max-w-md">
-                      <div className="max-h-32 overflow-y-auto">
-                        {activity.zones['Ketentuan'] ? (
-                          <div className="space-y-1">
-                            {activity.zones['Ketentuan'].split(/\r?\n/).map((line, lineIndex) => (
-                              <p key={lineIndex} className="text-xs leading-relaxed">
-                                {line.trim()}
-                              </p>
-                            ))}
-                          </div>
-                        ) : (
-                          <span className="text-gray-400 italic">Tidak ada ketentuan</span>
-                        )}
-                      </div>
-                    </td>
+          isTableExpanded && (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Tabel
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Sub Kawasan
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Nama Sub-Zona
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Kode SWP
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Kode Blok
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Luas (Ha)
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Ketentuan
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredActivities.map((activity, index) => (
+                    <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {capitalizeWords(activity.metadata?.tabel || 'TABEL KETENTUAN KHUSUS')}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {capitalizeWords(activity.metadata?.kawasanType || '-')}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {activity.activity}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {activity.metadata?.kodeSWP || '-'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {activity.metadata?.kodeBlok || '-'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {activity.zones['Luas (Ha)']}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-900 max-w-md">
+                        <div className="max-h-32 overflow-y-auto">
+                          {activity.zones['Ketentuan'] ? (
+                            <div className="space-y-1">
+                              {activity.zones['Ketentuan'].split(/\r?\n/).map((line, lineIndex) => (
+                                <p key={lineIndex} className="text-xs leading-relaxed">
+                                  {line.trim()}
+                                </p>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className="text-gray-400 italic">Tidak ada ketentuan</span>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
         )}
       </div>
 
@@ -569,16 +775,23 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
             </button>
             <button
               onClick={() => {
-                const jsonText = generateMinifiedJsonForCategory(filteredActivities);
-                navigator.clipboard.writeText(jsonText).then(() => {
-                  alert('Format JSON berhasil disalin ke clipboard!');
-                }).catch(() => {
-                  alert('Gagal menyalin ke clipboard');
-                });
+                const jsonPreview = generateJsonForPreview(filteredActivities);
+                setCurrentJsonPreview(jsonPreview);
+                setShowJsonModal(true);
               }}
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
-              📋 Copy JSON Format
+              👁️ Preview JSON
+            </button>
+            <button
+              onClick={() => copyJsonData(filteredActivities)}
+              className={`px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 ${
+                copySuccess
+                  ? 'bg-green-600 '
+                  : 'bg-green-600  hover:bg-green-700'
+              }`}
+            >
+              {copySuccess ? '✓ Tersalin!' : '📋 Copy JSON Format'}
             </button>
           </div>
         </div>
@@ -612,6 +825,45 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
           </div>
         </div>
       </div>
+
+      {/* JSON Preview Modal */}
+      {showJsonModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div className="flex justify-between items-center p-4 border-b">
+              <h3 className="text-lg font-semibold text-gray-800">Preview JSON Ketentuan Khusus</h3>
+              <button
+                onClick={() => setShowJsonModal(false)}
+                className="text-gray-500 hover:text-gray-700 text-xl font-bold"
+              >
+                ×
+              </button>
+            </div>
+            <div className="p-4">
+              <div className="mb-4 flex gap-2">
+                <button
+                  onClick={() => copyJsonData(filteredActivities)}
+                  className={`px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    copySuccess
+                      ? 'bg-green-600 text-white'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  {copySuccess ? '✓ Tersalin!' : '📋 Copy Minified JSON'}
+                </button>
+                <div className="text-sm text-gray-600 flex items-center">
+                  Format minified (tanpa spasi) untuk penggunaan dalam aplikasi
+                </div>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-lg max-h-96 overflow-y-auto">
+                <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono">
+                  {currentJsonPreview}
+                </pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
