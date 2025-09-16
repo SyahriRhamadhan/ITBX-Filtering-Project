@@ -261,6 +261,9 @@ export default function FilterSidebar({
     {}
   );
 
+  // State untuk global copy success
+  const [globalCopySuccess, setGlobalCopySuccess] = useState<boolean>(false);
+
   // Function untuk filter activities berdasarkan kategori
   const getActivitiesByCategory = (
     category: "diizinkan" | "terbatas" | "bersyarat" | "terbatas_bersyarat"
@@ -345,6 +348,43 @@ export default function FilterSidebar({
       }, 2000);
     } catch (err) {
       console.error("Failed to copy JSON: ", err);
+    }
+  };
+
+  // Generate global concatenated JSON for all categories with tab delimiters for Excel
+  const generateGlobalConcatenatedJson = () => {
+    const categories: ("diizinkan" | "terbatas" | "bersyarat" | "terbatas_bersyarat")[] = 
+      ['diizinkan', 'terbatas', 'bersyarat', 'terbatas_bersyarat'];
+    
+    const jsonStrings = categories.map(category => {
+      const activities = getActivitiesByCategory(category);
+      const activityNumbers = activities
+        .map((activity) => activity.activityNumber || "-")
+        .filter((num) => num !== "-");
+      
+      activityNumbers.sort((a, b) => {
+        const numA = a.split("-")[0];
+        const numB = b.split("-")[0];
+        return numA.localeCompare(numB, undefined, { numeric: true });
+      });
+
+      return JSON.stringify({
+        data: activityNumbers.length > 0 ? activityNumbers : "-",
+      });
+    });
+    
+    return jsonStrings.join('\t'); // Use tab delimiter for Excel columns
+  };
+
+  // Copy all categories as concatenated JSON string
+  const copyGlobalJson = async () => {
+    try {
+      const globalJsonText = generateGlobalConcatenatedJson();
+      await navigator.clipboard.writeText(globalJsonText);
+      setGlobalCopySuccess(true);
+      setTimeout(() => setGlobalCopySuccess(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy global JSON: ', err);
     }
   };
 
@@ -582,6 +622,56 @@ export default function FilterSidebar({
             <h3 className="text-sm sm:text-base md:text-base lg:text-lg font-medium text-gray-700">
               Copy JSON Berdasarkan Kategori
             </h3>
+            {/* Global Copy Button */}
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <button
+                onClick={copyGlobalJson}
+                className={`w-full inline-flex items-center justify-center px-4 py-3 border rounded-md shadow-sm text-sm font-medium transition-colors ${
+                  globalCopySuccess
+                    ? "bg-blue-100 text-blue-700 border-blue-400"
+                    : "bg-blue-600 text-white border-blue-600 hover:bg-blue-700"
+                }`}
+              >
+                {globalCopySuccess ? (
+                  <>
+                    <svg
+                      className="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    Semua Kategori Tersalin!
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      className="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    Copy Semua Kategori ke Excel
+                  </>
+                )}
+              </button>
+              <p className="text-xs text-gray-500 mt-2 text-center">
+                Menyalin semua kategori dengan tab delimiter untuk Excel
+              </p>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {/* Diizinkan (I) */}
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
@@ -820,6 +910,8 @@ export default function FilterSidebar({
                 </button>
               </div>
             </div>
+
+            
           </div>
         )}
         {selectedZone && activeRegulationCodes.length > 0 && (

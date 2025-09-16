@@ -342,7 +342,6 @@ export default function RDTRFilter() {
                     selectedRegulation={selectedRegulation}
                     selectedRegulations={selectedRegulations}
                     availableRegulationsForZone={availableRegulationsForZone}
-                    onZoneChange={() => setIsSidebarOpen(false)}
                   />
                 </div>
               </div>

@@ -57,6 +57,7 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
   const [showPreview, setShowPreview] = useState<boolean>(false);
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
   const [copyCategorySuccess, setCopyCategorySuccess] = useState<{[key: string]: boolean}>({});
+  const [globalCopySuccess, setGlobalCopySuccess] = useState<boolean>(false);
 
   const data = useMemo(() => {
     return dataSource === 'bsb' 
@@ -982,6 +983,25 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
       console.error(`Failed to copy ${category} JSON: `, err);
     }
   };
+
+  // Generate global concatenated JSON for all categories with tab delimiters for Excel
+  const generateGlobalConcatenatedJson = () => {
+    const categories = ['kdb', 'klb', 'kdh', 'gsb', 'luas', 'ktgbgn'];
+    const jsonStrings = categories.map(category => generateMinifiedJsonForCategory(category));
+    return jsonStrings.join('\t'); // Use tab delimiter for Excel columns
+  };
+
+  // Copy all categories as concatenated JSON string
+  const copyGlobalJson = async () => {
+    try {
+      const globalJsonText = generateGlobalConcatenatedJson();
+      await navigator.clipboard.writeText(globalJsonText);
+      setGlobalCopySuccess(true);
+      setTimeout(() => setGlobalCopySuccess(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy global JSON: ', err);
+    }
+  };
   
   // State for modal preview
   const [showJsonModal, setShowJsonModal] = useState(false);
@@ -1276,9 +1296,24 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
       {filteredData.length > 0 && (
         <div className="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
           <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Format JSON untuk Copy
-            </h3>
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Format JSON untuk Copy
+              </h3>
+              <button
+                onClick={copyGlobalJson}
+                className={`px-4 py-2 rounded-md transition-colors ${
+                  globalCopySuccess 
+                    ? 'bg-green-600 text-white' 
+                    : 'bg-orange-600 text-white hover:bg-orange-700'
+                }`}
+              >
+                {globalCopySuccess ? '✓ Global Tersalin!' : 'Copy Semua ke Excel'}
+              </button>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+              Gunakan "Copy Semua ke Excel" untuk menyalin semua kategori dalam format yang siap di-paste ke Excel
+            </p>
           </div>
           <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* KDB */}
