@@ -179,17 +179,28 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
       )
       .filter((jenis, index, arr) => arr.indexOf(jenis) === index); // Remove duplicates
 
-    const hasMultipleJenis = validJenisTypes.length > 1;
+    // Also include all non-persil Jenis types for comprehensive coverage
+    const allNonPersilJenis = filteredData
+      .map(item => item.Jenis)
+      .filter(jenis => 
+        jenis && 
+        jenis !== '-' && 
+        jenis.trim() !== '' && 
+        !jenis.toLowerCase().includes('persil disebelah')
+      )
+      .filter((jenis, index, arr) => arr.indexOf(jenis) === index); // Remove duplicates
+
+    const hasMultipleJenis = allNonPersilJenis.length > 1;
 
     // KDB (Koefisien Dasar Bangunan)
     result += 'Koefisien Dasar Bangunan (%)\n';
     if (hasMultipleJenis) {
-      validJenisTypes.forEach((jenis, index) => {
+      allNonPersilJenis.forEach((jenis, index) => {
         const jenisData = filteredData.find(item => item.Jenis === jenis);
         const kdbValue = jenisData && jenisData['KDB Maks (%)'] !== null ? jenisData['KDB Maks (%)'] : '-';
         const letter = String.fromCharCode(97 + index); // a, b, c, etc.
-        const separator = index === validJenisTypes.length - 1 ? '.' : '; dan';
-        result += `${letter}.: ${jenis} minimum ${kdbValue !== '-' ? kdbValue : '-'}${separator}\n`;
+        const separator = index === allNonPersilJenis.length - 1 ? '.' : '; dan';
+        result += `${letter}.: ${jenis} maksimum ${kdbValue !== '-' ? kdbValue + '%' : '-'}${separator}\n`;
       });
     } else {
       const kdbValue = filteredData.some(item => item['KDB Maks (%)'] !== null)
@@ -202,11 +213,11 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     // KLB (Koefisien Lantai Bangunan)
     result += 'Koefisien Lantai Bangunan\n';
     if (hasMultipleJenis) {
-      validJenisTypes.forEach((jenis, index) => {
+      allNonPersilJenis.forEach((jenis, index) => {
         const jenisData = filteredData.find(item => item.Jenis === jenis);
         const klbValue = jenisData && jenisData['KLB Maks'] !== null ? jenisData['KLB Maks'].toString().replace('.', ',') : '-';
         const letter = String.fromCharCode(97 + index); // a, b, c, etc.
-        const separator = index === validJenisTypes.length - 1 ? '.' : '; dan';
+        const separator = index === allNonPersilJenis.length - 1 ? '.' : '; dan';
         result += `${letter}.: ${jenis} = ${klbValue !== '-' ? klbValue : '-'}${separator}\n`;
       });
     } else {
@@ -221,12 +232,12 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     // KDH (Koefisien Dasar Hijau)
     result += 'Koefisien Dasar Hijau (%)\n';
     if (hasMultipleJenis) {
-      validJenisTypes.forEach((jenis, index) => {
+      allNonPersilJenis.forEach((jenis, index) => {
         const jenisData = filteredData.find(item => item.Jenis === jenis);
         const kdhValue = jenisData && jenisData['KDH Min (%)'] !== null ? jenisData['KDH Min (%)'] : '-';
         const letter = String.fromCharCode(97 + index); // a, b, c, etc.
-        const separator = index === validJenisTypes.length - 1 ? '.' : '; dan';
-        result += `${letter}.: ${jenis} minimum ${kdhValue !== '-' ? kdhValue : '-'}${separator}\n`;
+        const separator = index === allNonPersilJenis.length - 1 ? '.' : '; dan';
+        result += `${letter}.: ${jenis} minimum ${kdhValue !== '-' ? kdhValue + '%' : '-'}${separator}\n`;
       });
     } else {
       const kdhValue = filteredData.some(item => item['KDH Min (%)'] !== null)
@@ -249,7 +260,7 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     
     if (hasMultipleJenis && !hasPersil) {
       // Grouped format for multiple jenis
-      validJenisTypes.forEach((jenis, jenisIndex) => {
+      allNonPersilJenis.forEach((jenis, jenisIndex) => {
         const jenisData = filteredData.find(item => item.Jenis === jenis);
         result += `${jenis}:\n`;
         
@@ -276,7 +287,7 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
         const lokalLetter = String.fromCharCode(97 + roadIndex);
         result += `    ${lokalLetter}.: Jalan Lokal = ${tinggiLokal !== '-' ? tinggiLokal : '-'}.\n`;
         
-        if (jenisIndex < validJenisTypes.length - 1) {
+        if (jenisIndex < allNonPersilJenis.length - 1) {
           result += ' \n'; // Add space between jenis groups
         }
       });
@@ -344,7 +355,7 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     
     if (hasMultipleJenis && !hasPersil) {
       // Grouped format for multiple jenis
-      validJenisTypes.forEach((jenis, jenisIndex) => {
+      allNonPersilJenis.forEach((jenis, jenisIndex) => {
         const jenisData = filteredData.find(item => item.Jenis === jenis);
         result += `${jenis}:\n`;
         
@@ -371,7 +382,7 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
         const lokalLetter = String.fromCharCode(97 + roadIndex);
         result += `    ${lokalLetter}.: Jalan Lokal = ${gsbLokal !== '-' ? gsbLokal : '-'}.\n`;
         
-        if (jenisIndex < validJenisTypes.length - 1) {
+        if (jenisIndex < allNonPersilJenis.length - 1) {
           result += ' \n'; // Add space between jenis groups
         }
       });
@@ -429,13 +440,13 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     // Jarak Bebas Samping (JBS)
     result += 'Jarak Bebas Samping (JBS)\n';
     if (hasMultipleJenis) {
-      validJenisTypes.forEach((jenis, index) => {
+      allNonPersilJenis.forEach((jenis, index) => {
         const jenisData = filteredData.find(item => item.Jenis === jenis);
         const jbsValue = jenisData && jenisData['Jarak Bebas Samping Min. (m)'] !== null 
           ? jenisData['Jarak Bebas Samping Min. (m)'] 
           : '-';
         const letter = String.fromCharCode(97 + index);
-        const separator = index === validJenisTypes.length - 1 ? '.' : '; dan';
+        const separator = index === allNonPersilJenis.length - 1 ? '.' : '; dan';
         result += `${letter}.: ${jenis} minimum ${jbsValue !== '-' ? jbsValue + ' m' : '-'}${separator}\n`;
       });
     } else {
@@ -449,13 +460,13 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
     // Jarak Bebas Belakang (JBB)
     result += 'Jarak Bebas Belakang (JBB)\n';
     if (hasMultipleJenis) {
-      validJenisTypes.forEach((jenis, index) => {
+      allNonPersilJenis.forEach((jenis, index) => {
         const jenisData = filteredData.find(item => item.Jenis === jenis);
         const jbbValue = jenisData && jenisData['Jarak Bebas Belakang Min. (m)'] !== null 
           ? jenisData['Jarak Bebas Belakang Min. (m)'] 
           : '-';
         const letter = String.fromCharCode(97 + index);
-        const separator = index === validJenisTypes.length - 1 ? '.' : '; dan';
+        const separator = index === allNonPersilJenis.length - 1 ? '.' : '; dan';
         result += `${letter}.: ${jenis} minimum ${jbbValue !== '-' ? jbbValue + ' m' : '-'}${separator}\n`;
       });
     } else {
@@ -484,7 +495,7 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
       result += 'Tampilan Bangunan\n';
       if (hasMultipleJenis) {
         // Get unique tampilan bangunan values for each jenis
-        const jenisWithTampilan = validJenisTypes.filter(jenis => {
+        const jenisWithTampilan = allNonPersilJenis.filter(jenis => {
           const jenisData = filteredData.find(item => item.Jenis === jenis);
           return jenisData && jenisData['Tampilan Bangunan'] && jenisData['Tampilan Bangunan'] !== '-';
         });
@@ -511,7 +522,7 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
       result += 'Keterangan\n';
       if (hasMultipleJenis) {
         // Get unique keterangan values for each jenis
-        const jenisWithKeterangan = validJenisTypes.filter(jenis => {
+        const jenisWithKeterangan = allNonPersilJenis.filter(jenis => {
           const jenisData = filteredData.find(item => item.Jenis === jenis);
           return jenisData && jenisData['Keterangan'] && jenisData['Keterangan'] !== '-';
         });
@@ -596,80 +607,118 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
       )
       .filter((jenis, index, arr) => arr.indexOf(jenis) === index); // Remove duplicates
 
-    const hasMultipleJenis = validJenisTypes.length > 1;
+    // Get all non-persil Jenis types (including those that might not be in validJenisTypes)
+    const allNonPersilJenis = filteredData
+      .map(item => item.Jenis)
+      .filter(jenis => 
+        jenis && 
+        jenis !== '-' && 
+        jenis.trim() !== '' && 
+        !jenis.toLowerCase().includes('persil disebelah')
+      )
+      .filter((jenis, index, arr) => arr.indexOf(jenis) === index); // Remove duplicates
+
+    // Debug logging
+    console.log('DEBUG generateCopyTextJSON:', {
+      selectedZona,
+      selectedSubZona,
+      selectedJenis,
+      category,
+      filteredDataLength: filteredData.length,
+      allJenisTypes: filteredData.map(item => item.Jenis),
+      allNonPersilJenis,
+      hasPersil
+    });
+
+    const hasMultipleJenis = allNonPersilJenis.length > 1;
 
     let result: any = {};
 
     switch(category) {
       case 'kdb':
         // KDB (Koefisien Dasar Bangunan)
-        if (hasMultipleJenis) {
-          const kdbData: {[key: string]: string} = {};
-          validJenisTypes.forEach(jenis => {
-            const jenisData = filteredData.find(item => item.Jenis === jenis);
-            const kdbValue = jenisData && jenisData['KDB Maks (%)'] !== null && jenisData['KDB Maks (%)'] !== undefined ? jenisData['KDB Maks (%)'].toString() : '-';
-            if (jenis) kdbData[jenis] = kdbValue !== '-' ? `${kdbValue}%` : '-';
-          });
-          result = {data: kdbData};
-        } else if (hasPersil) {
+        const kdbData: {[key: string]: string} = {};
+        
+        // Add non-persil jenis types
+        allNonPersilJenis.forEach(jenis => {
+          const jenisData = filteredData.find(item => item.Jenis === jenis);
+          const kdbValue = jenisData && jenisData['KDB Maks (%)'] !== null && jenisData['KDB Maks (%)'] !== undefined ? jenisData['KDB Maks (%)'].toString() : '-';
+          if (jenis) kdbData[`${jenis} Maksimum`] = kdbValue !== '-' ? `${kdbValue}%` : '-';
+        });
+        
+        // Add persil data if exists
+        if (hasPersil) {
           const kdbWest = westSideData && westSideData['KDB Maks (%)'] !== null ? westSideData['KDB Maks (%)'].toString() : '-';
           const kdbEast = eastSideData && eastSideData['KDB Maks (%)'] !== null ? eastSideData['KDB Maks (%)'].toString() : '-';
-          result = {data: {
-            "Persil disebelah barat jalan Nasional Maksimum": kdbWest !== '-' ? `${kdbWest}%` : '-',
-            "Persil disebelah timur jalan Nasional Maksimum": kdbEast !== '-' ? `${kdbEast}%` : '-'
-          }};
-        } else {
+          kdbData["Persil disebelah barat jalan Nasional Maksimum"] = kdbWest !== '-' ? `${kdbWest}%` : '-';
+          kdbData["Persil disebelah timur jalan Nasional Maksimum"] = kdbEast !== '-' ? `${kdbEast}%` : '-';
+        }
+        
+        // If no specific data, use general format
+        if (Object.keys(kdbData).length === 0) {
           const kdbValue = filteredData.some(item => item['KDB Maks (%)'] !== null && item['KDB Maks (%)'] !== undefined)
             ? filteredData.map(item => item['KDB Maks (%)'] !== null && item['KDB Maks (%)'] !== undefined ? item['KDB Maks (%)'].toString() : '-').find(val => val !== '-')
             : '-';
           const formattedValue = kdbValue !== '-' && kdbValue !== undefined ? `Maksimum: ${kdbValue}%` : 'Maksimum: -';
           result = {data: formattedValue};
+        } else {
+          result = {data: kdbData};
         }
         break;
 
       case 'klb':
         // KLB (Koefisien Lantai Bangunan)
-        if (hasMultipleJenis) {
-          const klbData: {[key: string]: string} = {};
-          validJenisTypes.forEach(jenis => {
-            const jenisData = filteredData.find(item => item.Jenis === jenis);
-            const klbValue = jenisData && jenisData['KLB Maks'] !== null && jenisData['KLB Maks'] !== undefined ? jenisData['KLB Maks'].toString().replace('.', ',') : '-';
-            if (jenis) klbData[jenis] = klbValue !== '-' ? `${klbValue}%` : '-';
-          });
-          result = {data: klbData};
-        } else if (hasPersil) {
+        const klbData: {[key: string]: string} = {};
+        
+        // Add non-persil jenis types
+        allNonPersilJenis.forEach(jenis => {
+          const jenisData = filteredData.find(item => item.Jenis === jenis);
+          const klbValue = jenisData && jenisData['KLB Maks'] !== null && jenisData['KLB Maks'] !== undefined ? jenisData['KLB Maks'].toString().replace('.', ',') : '-';
+          if (jenis) klbData[jenis] = klbValue !== '-' ? `Maksimum: ${klbValue}%` : 'Maksimum: -';
+        });
+        
+        // Add persil data if exists
+        if (hasPersil) {
           const klbWest = westSideData && westSideData['KLB Maks'] !== null ? westSideData['KLB Maks'].toString().replace('.', ',') : '-';
           const klbEast = eastSideData && eastSideData['KLB Maks'] !== null ? eastSideData['KLB Maks'].toString().replace('.', ',') : '-';
-          result = {data: {
-            "Persil disebelah barat jalan Nasional": `Maksimum: ${klbWest !== '-' ? klbWest + '%' : '-'}`,
-            "Persil disebelah timur jalan Nasional": `Maksimum: ${klbEast !== '-' ? klbEast + '%' : '-'}`
-          }};
-        } else {
+          klbData["Persil disebelah barat jalan Nasional"] = `Maksimum: ${klbWest !== '-' ? klbWest + '%' : '-'}`;
+          klbData["Persil disebelah timur jalan Nasional"] = `Maksimum: ${klbEast !== '-' ? klbEast + '%' : '-'}`;
+        }
+        
+        // If no specific data, use general format
+        if (Object.keys(klbData).length === 0) {
           const klbMaksValue = filteredData.some(item => item['KLB Maks'] !== null && item['KLB Maks'] !== undefined)
             ? filteredData.map(item => item['KLB Maks'] !== null && item['KLB Maks'] !== undefined ? item['KLB Maks'].toString() : '-').find(val => val !== '-')
             : '-';
           const formattedValue = klbMaksValue !== '-' && klbMaksValue !== undefined ? `Maksimum: ${klbMaksValue.toString().replace('.', ',')}%` : 'Maksimum: -';
           result = {data: formattedValue};
+        } else {
+          result = {data: klbData};
         }
         break;
 
       case 'kdh':
-        // KDH (Koefisien Dasar Hijau)
-        if (hasMultipleJenis) {
-          const kdhData: {[key: string]: string} = {};
-          validJenisTypes.forEach(jenis => {
-            const jenisData = filteredData.find(item => item.Jenis === jenis);
-            const kdhValue = jenisData && jenisData['KDH Min (%)'] !== null && jenisData['KDH Min (%)'] !== undefined ? jenisData['KDH Min (%)'].toString() : '-';
-            if (jenis) kdhData[jenis] = kdhValue !== '-' ? `${kdhValue}%` : '-';
-          });
-          result = {data: kdhData};
-        } else if (hasPersil) {
+        // KDH (Koefisien Dasar Hijau) - Tampilkan jenis non-persil dulu, lalu persil jika ada
+        const kdhData: {[key: string]: string} = {};
+        
+        // Tambahkan jenis non-persil terlebih dahulu
+        allNonPersilJenis.forEach(jenis => {
+          const jenisData = filteredData.find(item => item.Jenis === jenis);
+          const kdhValue = jenisData && jenisData['KDH Min (%)'] !== null && jenisData['KDH Min (%)'] !== undefined ? jenisData['KDH Min (%)'].toString() : '-';
+          if (jenis) kdhData[jenis] = kdhValue !== '-' ? `Minimum: ${kdhValue}%` : 'Minimum: -';
+        });
+        
+        // Tambahkan data persil jika ada
+        if (hasPersil) {
           const kdhWest = westSideData && westSideData['KDH Min (%)'] !== null ? westSideData['KDH Min (%)'].toString() : '-';
           const kdhEast = eastSideData && eastSideData['KDH Min (%)'] !== null ? eastSideData['KDH Min (%)'].toString() : '-';
-          result = {data: {
-            "Persil disebelah barat jalan Nasional": `Minimum: ${kdhWest !== '-' ? kdhWest + '%' : '-'}`,
-            "Persil disebelah timur jalan Nasional": `Minimum: ${kdhEast !== '-' ? kdhEast + '%' : '-'}`
-          }};
+          kdhData["Persil disebelah barat jalan Nasional"] = `Minimum: ${kdhWest !== '-' ? kdhWest + '%' : '-'}`;
+          kdhData["Persil disebelah timur jalan Nasional"] = `Minimum: ${kdhEast !== '-' ? kdhEast + '%' : '-'}`;
+        }
+        
+        // Set hasil berdasarkan apakah ada data atau tidak
+        if (Object.keys(kdhData).length > 0) {
+          result = {data: kdhData};
         } else {
           const kdhValue = filteredData.some(item => item['KDH Min (%)'] !== null && item['KDH Min (%)'] !== undefined)
             ? filteredData.map(item => item['KDH Min (%)'] !== null && item['KDH Min (%)'] !== undefined ? item['KDH Min (%)'].toString() : '-').find(val => val !== '-')
@@ -680,36 +729,38 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
         break;
 
       case 'gsb':
-        // Garis Sempadan Bangunan
-        if (hasMultipleJenis) {
-          const gsbData: {[key: string]: any} = {};
-          validJenisTypes.forEach(jenis => {
-            const jenisData = filteredData.find(item => item.Jenis === jenis);
-            if (!jenis) return;
-            
-            gsbData[jenis] = {};
-            
-            if (dataSource === 'bsb' && jenisData) {
-              const gsbArteri = jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null && jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== undefined
-                ? jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'].toString() 
-                : '-';
-              gsbData[jenis]["a."] = `Jalan Arteri Minimum = ${gsbArteri} m;`;
-            } else {
-              gsbData[jenis]["a."] = "Jalan Arteri Minimum = - m;";
-            }
-            
-            const gsbKolektor = jenisData && jenisData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
-              ? jenisData['Garis Sempadan Bangunan Min. (m) - Kolektor'].toString() 
+        // Garis Sempadan Bangunan - Tampilkan jenis non-persil dulu, lalu persil jika ada
+        const gsbData: {[key: string]: any} = {};
+        
+        // Tambahkan jenis non-persil terlebih dahulu
+        allNonPersilJenis.forEach(jenis => {
+          const jenisData = filteredData.find(item => item.Jenis === jenis);
+          if (!jenis) return;
+          
+          gsbData[jenis] = {};
+          
+          if (dataSource === 'bsb' && jenisData) {
+            const gsbArteri = jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null && jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== undefined
+              ? jenisData['Garis Sempadan Bangunan Min. (m) - Arteri'].toString() 
               : '-';
-            const gsbLokal = jenisData && jenisData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
-              ? jenisData['Garis Sempadan Bangunan Min. (m) - Lokal'].toString() 
-              : '-';
-            
-            gsbData[jenis]["b."] = `Jalan Kolektor Minimum = ${gsbKolektor} m; dan`;
-            gsbData[jenis]["c."] = `Jalan Lokal Minimum = ${gsbLokal} m.`;
-          });
-          result = {data: gsbData};
-        } else if (hasPersil) {
+            gsbData[jenis]["a."] = `Jalan Arteri Minimum = ${gsbArteri} m;`;
+          } else {
+            gsbData[jenis]["a."] = "Jalan Arteri Minimum = - m;";
+          }
+          
+          const gsbKolektor = jenisData && jenisData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
+            ? jenisData['Garis Sempadan Bangunan Min. (m) - Kolektor'].toString() 
+            : '-';
+          const gsbLokal = jenisData && jenisData['Garis Sempadan Bangunan Min. (m) - Lokal'] !== null 
+            ? jenisData['Garis Sempadan Bangunan Min. (m) - Lokal'].toString() 
+            : '-';
+          
+          gsbData[jenis]["b."] = `Jalan Kolektor Minimum = ${gsbKolektor} m; dan`;
+          gsbData[jenis]["c."] = `Jalan Lokal Minimum = ${gsbLokal} m.`;
+        });
+        
+        // Tambahkan data persil jika ada
+        if (hasPersil) {
           const gsbWest: any = {};
           const gsbEast: any = {};
           
@@ -745,20 +796,23 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
           gsbEast["b."] = `Jalan Kolektor Minimum = ${gsbKolektorEast} m; dan`;
           gsbEast["c."] = `Jalan Lokal Minimum = ${gsbLokalEast} m.`;
           
-          result = {data: {
-            "Persil disebelah barat jalan Nasional": gsbWest,
-            "Persil disebelah timur jalan Nasional": gsbEast
-          }};
+          gsbData["Persil disebelah barat jalan Nasional"] = gsbWest;
+          gsbData["Persil disebelah timur jalan Nasional"] = gsbEast;
+        }
+        
+        // Set hasil berdasarkan apakah ada data atau tidak
+        if (Object.keys(gsbData).length > 0) {
+          result = {data: gsbData};
         } else {
-          const gsbData: any = {};
+          const gsbDataDefault: any = {};
           
           if (dataSource === 'bsb' && westSideData) {
             const gsbArteri = westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== null && westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'] !== undefined
               ? westSideData['Garis Sempadan Bangunan Min. (m) - Arteri'].toString() 
               : '-';
-            gsbData["a."] = `Jalan Arteri Minimum = ${gsbArteri} m;`;
+            gsbDataDefault["a."] = `Jalan Arteri Minimum = ${gsbArteri} m;`;
           } else {
-            gsbData["a."] = "Jalan Arteri Minimum = - m;";
+            gsbDataDefault["a."] = "Jalan Arteri Minimum = - m;";
           }
           
           const gsbKolektor = westSideData && westSideData['Garis Sempadan Bangunan Min. (m) - Kolektor'] !== null 
@@ -768,52 +822,76 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
             ? westSideData['Garis Sempadan Bangunan Min. (m) - Lokal'].toString() 
             : '-';
           
-          gsbData["b."] = `Jalan Kolektor Minimum = ${gsbKolektor} m; dan`;
-          gsbData["c."] = `Jalan Lokal Minimum = ${gsbLokal} m.`;
+          gsbDataDefault["b."] = `Jalan Kolektor Minimum = ${gsbKolektor} m; dan`;
+          gsbDataDefault["c."] = `Jalan Lokal Minimum = ${gsbLokal} m.`;
           
-          result = {data: gsbData};
+          result = {data: gsbDataDefault};
         }
         break;
 
       case 'ktb':
-        // Koefisien Tapak Basement
-        const ktb = filteredData.some(item => item['KTB Maks (%)'] !== null && item['KTB Maks (%)'] !== undefined)
-          ? filteredData.map(item => item['KTB Maks (%)'] !== null && item['KTB Maks (%)'] !== undefined ? item['KTB Maks (%)'].toString() : '-').find(val => val !== '-')
-          : '-';
-        result = {data: ktb !== '-' ? {"a.": `KTB Maksimum = ${ktb}%.`} : "-"};
+        // Koefisien Tapak Basement - Tampilkan jenis non-persil dulu, lalu persil jika ada
+        const ktbData: {[key: string]: string} = {};
+        
+        // Tambahkan jenis non-persil terlebih dahulu
+        allNonPersilJenis.forEach(jenis => {
+          const jenisData = filteredData.find(item => item.Jenis === jenis);
+          const ktbValue = jenisData && jenisData['KTB Maks (%)'] !== null && jenisData['KTB Maks (%)'] !== undefined ? jenisData['KTB Maks (%)'].toString() : '-';
+          if (jenis) ktbData[jenis] = ktbValue !== '-' ? `KTB Maksimum = ${ktbValue}%.` : 'KTB Maksimum = -.';
+        });
+        
+        // Tambahkan data persil jika ada
+        if (hasPersil) {
+          const ktbWest = westSideData && westSideData['KTB Maks (%)'] !== null ? westSideData['KTB Maks (%)'].toString() : '-';
+          const ktbEast = eastSideData && eastSideData['KTB Maks (%)'] !== null ? eastSideData['KTB Maks (%)'].toString() : '-';
+          ktbData["Persil disebelah barat jalan Nasional"] = `KTB Maksimum = ${ktbWest !== '-' ? ktbWest + '%' : '-'}.`;
+          ktbData["Persil disebelah timur jalan Nasional"] = `KTB Maksimum = ${ktbEast !== '-' ? ktbEast + '%' : '-'}.`;
+        }
+        
+        // Set hasil berdasarkan apakah ada data atau tidak
+        if (Object.keys(ktbData).length > 0) {
+          result = {data: ktbData};
+        } else {
+          const ktb = filteredData.some(item => item['KTB Maks (%)'] !== null && item['KTB Maks (%)'] !== undefined)
+            ? filteredData.map(item => item['KTB Maks (%)'] !== null && item['KTB Maks (%)'] !== undefined ? item['KTB Maks (%)'].toString() : '-').find(val => val !== '-')
+            : '-';
+          result = {data: ktb !== '-' ? {"a.": `KTB Maksimum = ${ktb}%.`} : "-"};
+        }
         break;
 
       case 'ktgbgn':
-        // Ketinggian Bangunan
-        if (hasMultipleJenis) {
-          const ktgbgnData: {[key: string]: any} = {};
-          validJenisTypes.forEach(jenis => {
-            const jenisData = filteredData.find(item => item.Jenis === jenis);
-            if (!jenis) return;
-            
-            ktgbgnData[jenis] = {};
-            
-            if (dataSource === 'bsb' && jenisData) {
-              const tinggiArteri = jenisData['Tinggi Bangunan Maks. (m) - Arteri'] !== null && jenisData['Tinggi Bangunan Maks. (m) - Arteri'] !== undefined
-                ? jenisData['Tinggi Bangunan Maks. (m) - Arteri'].toString() 
-                : '-';
-              ktgbgnData[jenis]["a."] = `Jalan Arteri Maksimum = ${tinggiArteri} m;`;
-            } else {
-              ktgbgnData[jenis]["a."] = "Jalan Arteri Maksimum = - m;"; 
-            }
-            
-            const tinggiKolektor = jenisData && jenisData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
-              ? jenisData['Tinggi Bangunan Maks. (m) - Kolektor'].toString() 
+        // Ketinggian Bangunan - Tampilkan jenis non-persil dulu, lalu persil jika ada
+        const ktgbgnData: {[key: string]: any} = {};
+        
+        // Tambahkan jenis non-persil terlebih dahulu
+        allNonPersilJenis.forEach(jenis => {
+          const jenisData = filteredData.find(item => item.Jenis === jenis);
+          if (!jenis) return;
+          
+          ktgbgnData[jenis] = {};
+          
+          if (dataSource === 'bsb' && jenisData) {
+            const tinggiArteri = jenisData['Tinggi Bangunan Maks. (m) - Arteri'] !== null && jenisData['Tinggi Bangunan Maks. (m) - Arteri'] !== undefined
+              ? jenisData['Tinggi Bangunan Maks. (m) - Arteri'].toString() 
               : '-';
-            const tinggiLokal = jenisData && jenisData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
-              ? jenisData['Tinggi Bangunan Maks. (m) - Lokal'].toString() 
-              : '-';
-            
-            ktgbgnData[jenis]["b."] = `Jalan Kolektor Maksimum = ${tinggiKolektor} m; dan`;
-            ktgbgnData[jenis]["c."] = `Jalan Lokal Maksimum = ${tinggiLokal} m.`;
-          });
-          result = {data: ktgbgnData};
-        } else if (hasPersil) {
+            ktgbgnData[jenis]["a."] = `Jalan Arteri Maksimum = ${tinggiArteri} m;`;
+          } else {
+            ktgbgnData[jenis]["a."] = "Jalan Arteri Maksimum = - m;"; 
+          }
+          
+          const tinggiKolektor = jenisData && jenisData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
+            ? jenisData['Tinggi Bangunan Maks. (m) - Kolektor'].toString() 
+            : '-';
+          const tinggiLokal = jenisData && jenisData['Tinggi Bangunan Maks. (m) - Lokal'] !== null 
+            ? jenisData['Tinggi Bangunan Maks. (m) - Lokal'].toString() 
+            : '-';
+          
+          ktgbgnData[jenis]["b."] = `Jalan Kolektor Maksimum = ${tinggiKolektor} m; dan`;
+          ktgbgnData[jenis]["c."] = `Jalan Lokal Maksimum = ${tinggiLokal} m.`;
+        });
+        
+        // Tambahkan data persil jika ada
+        if (hasPersil) {
           const ktgbgnWest: any = {};
           const ktgbgnEast: any = {};
           
@@ -849,18 +927,21 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
           ktgbgnEast["b."] = `Jalan Kolektor Maksimum = ${tinggiKolektorEast} m; dan`;
           ktgbgnEast["c."] = `Jalan Lokal Maksimum = ${tinggiLokalEast} m.`;
           
-          result = {data: {
-            "Persil disebelah barat jalan Nasional": ktgbgnWest,
-            "Persil disebelah timur jalan Nasional": ktgbgnEast
-          }};
+          ktgbgnData["Persil disebelah barat jalan Nasional"] = ktgbgnWest;
+          ktgbgnData["Persil disebelah timur jalan Nasional"] = ktgbgnEast;
+        }
+        
+        // Set hasil berdasarkan apakah ada data atau tidak
+        if (Object.keys(ktgbgnData).length > 0) {
+          result = {data: ktgbgnData};
         } else {
-          const ktgbgnData: any = {};
+          const ktgbgnDataDefault: any = {};
           
           if (dataSource === 'bsb' && westSideData && westSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== null && westSideData['Tinggi Bangunan Maks. (m) - Arteri'] !== undefined) {
             const tinggiArteri = westSideData['Tinggi Bangunan Maks. (m) - Arteri'].toString();
-            ktgbgnData["a."] = `Jalan Arteri Maksimum = ${tinggiArteri} m;`;
+            ktgbgnDataDefault["a."] = `Jalan Arteri Maksimum = ${tinggiArteri} m;`;
           } else {
-            ktgbgnData["a."] = "Jalan Arteri Maksimum = - m;";
+            ktgbgnDataDefault["a."] = "Jalan Arteri Maksimum = - m;";
           }
           
           const tinggiKolektor = westSideData && westSideData['Tinggi Bangunan Maks. (m) - Kolektor'] !== null 
@@ -870,10 +951,10 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({ dataSource = 'triko
             ? westSideData['Tinggi Bangunan Maks. (m) - Lokal'].toString() 
             : '-';
           
-          ktgbgnData["b."] = `Jalan Kolektor Maksimum = ${tinggiKolektor} m; dan`;
-          ktgbgnData["c."] = `Jalan Lokal Maksimum = ${tinggiLokal} m.`;
+          ktgbgnDataDefault["b."] = `Jalan Kolektor Maksimum = ${tinggiKolektor} m; dan`;
+          ktgbgnDataDefault["c."] = `Jalan Lokal Maksimum = ${tinggiLokal} m.`;
           
-          result = {data: ktgbgnData};
+          result = {data: ktgbgnDataDefault};
         }
         break;
 

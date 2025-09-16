@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "@remix-run/react";
 
 interface Activity {
   activity: string;
+  activityNumber?: string;
   zones: Record<string, string>;
 }
 
@@ -38,12 +39,12 @@ export default function FilterSidebar({
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const zoneInputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  
+
   // State untuk modal regulation combinations
   const [isRegulationModalOpen, setIsRegulationModalOpen] = useState(false);
 
   // Filter zones berdasarkan search term
-  const filteredZones = data.zones.filter(zone =>
+  const filteredZones = data.zones.filter((zone) =>
     zone.toLowerCase().includes(zoneSearchTerm.toLowerCase())
   );
 
@@ -55,15 +56,18 @@ export default function FilterSidebar({
   // Handle click outside untuk menutup dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsZoneDropdownOpen(false);
         setHighlightedIndex(-1);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -88,7 +92,7 @@ export default function FilterSidebar({
     setZoneSearchTerm(value);
     setIsZoneDropdownOpen(true);
     setHighlightedIndex(-1);
-    
+
     // Jika input kosong, reset zona
     if (!value.trim()) {
       handleZoneChange("");
@@ -111,26 +115,26 @@ export default function FilterSidebar({
 
   const handleZoneInputKeyDown = (e: React.KeyboardEvent) => {
     if (!isZoneDropdownOpen) {
-      if (e.key === 'ArrowDown' || e.key === 'Enter') {
+      if (e.key === "ArrowDown" || e.key === "Enter") {
         setIsZoneDropdownOpen(true);
         return;
       }
     }
 
     switch (e.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
-        setHighlightedIndex(prev => 
+        setHighlightedIndex((prev) =>
           prev < filteredZones.length - 1 ? prev + 1 : 0
         );
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         e.preventDefault();
-        setHighlightedIndex(prev => 
+        setHighlightedIndex((prev) =>
           prev > 0 ? prev - 1 : filteredZones.length - 1
         );
         break;
-      case 'Enter':
+      case "Enter":
         e.preventDefault();
         if (highlightedIndex >= 0 && filteredZones[highlightedIndex]) {
           handleZoneSelect(filteredZones[highlightedIndex]);
@@ -138,7 +142,7 @@ export default function FilterSidebar({
           handleZoneSelect(filteredZones[0]);
         }
         break;
-      case 'Escape':
+      case "Escape":
         setIsZoneDropdownOpen(false);
         setHighlightedIndex(-1);
         zoneInputRef.current?.blur();
@@ -162,28 +166,28 @@ export default function FilterSidebar({
   const handleRegulationCodeToggle = (code: string) => {
     const newSearchParams = new URLSearchParams(searchParams);
     let newSelectedRegulations = [...selectedRegulations];
-    
+
     if (newSelectedRegulations.includes(code)) {
       // Remove code if already selected
-      newSelectedRegulations = newSelectedRegulations.filter(r => r !== code);
+      newSelectedRegulations = newSelectedRegulations.filter((r) => r !== code);
     } else {
       // Add code if not selected
       newSelectedRegulations.push(code);
     }
-    
+
     // Remove duplicates and ensure clean array
     newSelectedRegulations = [...new Set(newSelectedRegulations)];
-    
+
     // Update URL params
     if (newSelectedRegulations.length > 0) {
       newSearchParams.set("regulations", newSelectedRegulations.join(";"));
     } else {
       newSearchParams.delete("regulations");
     }
-    
+
     // Clear single regulation selection when using multi-select
     newSearchParams.delete("regulation");
-    
+
     navigate(`?${newSearchParams.toString()}`);
   };
 
@@ -191,7 +195,7 @@ export default function FilterSidebar({
   const handleSelectAllRegulations = () => {
     const newSearchParams = new URLSearchParams(searchParams);
     const allCombinations = getAvailableCombinations();
-    
+
     if (selectedRegulations.length === allCombinations.length) {
       // Clear all if all are selected
       newSearchParams.delete("regulations");
@@ -199,10 +203,10 @@ export default function FilterSidebar({
       // Select all if not all are selected
       newSearchParams.set("regulations", allCombinations.join(";"));
     }
-    
+
     // Clear single regulation selection
     newSearchParams.delete("regulation");
-    
+
     navigate(`?${newSearchParams.toString()}`);
   };
 
@@ -246,17 +250,112 @@ export default function FilterSidebar({
 
   const activeRegulationCodes = getActiveRegulationCodes();
   const availableCombinations = getAvailableCombinations();
-  
+
   // Filter selectedRegulations to only include valid combinations for current zone
-  const validSelectedRegulations = selectedRegulations.filter(reg => 
+  const validSelectedRegulations = selectedRegulations.filter((reg) =>
     availableCombinations.includes(reg)
   );
+
+  // State untuk copy success untuk setiap kategori
+  const [copySuccess, setCopySuccess] = useState<{ [key: string]: boolean }>(
+    {}
+  );
+
+  // Function untuk filter activities berdasarkan kategori
+  const getActivitiesByCategory = (
+    category: "diizinkan" | "terbatas" | "bersyarat" | "terbatas_bersyarat"
+  ) => {
+    if (!selectedZone) return [];
+
+    return data.activities.filter((activity) => {
+      const zoneData = activity.zones[selectedZone];
+      if (!zoneData) return false;
+
+      const codes = zoneData
+        .split(",")
+        .map((code) => code.trim())
+        .filter((code) => code !== "");
+
+      switch (category) {
+        case "diizinkan":
+          // Hanya kode I
+          return codes.includes("I");
+
+        case "terbatas":
+          // Kombinasi T1, T2, T3 (tanpa B)
+          const hasT = codes.some((code) => ["T1", "T2", "T3"].includes(code));
+          const hasB = codes.some((code) => ["B1", "B2", "B3"].includes(code));
+          return hasT && !hasB;
+
+        case "bersyarat":
+          // Kombinasi B1, B2, B3 (tanpa T)
+          const hasBOnly = codes.some((code) =>
+            ["B1", "B2", "B3"].includes(code)
+          );
+          const hasTOnly = codes.some((code) =>
+            ["T1", "T2", "T3"].includes(code)
+          );
+          return hasBOnly && !hasTOnly;
+
+        case "terbatas_bersyarat":
+          // Kombinasi T1,T2,T3 DENGAN B1,B2,B3
+          const hasTCombined = codes.some((code) =>
+            ["T1", "T2", "T3"].includes(code)
+          );
+          const hasBCombined = codes.some((code) =>
+            ["B1", "B2", "B3"].includes(code)
+          );
+          return hasTCombined && hasBCombined;
+
+        default:
+          return false;
+      }
+    });
+  };
+
+  // Function untuk copy JSON berdasarkan kategori
+  const handleCopyJsonByCategory = async (
+    category: "diizinkan" | "terbatas" | "bersyarat" | "terbatas_bersyarat"
+  ) => {
+    try {
+      const activities = getActivitiesByCategory(category);
+
+      // Mengumpulkan activityNumber dari aktivitas yang difilter
+      const activityNumbers = activities
+        .map((activity) => activity.activityNumber || "-")
+        .filter((num) => num !== "-");
+
+      // Mengurutkan nomor aktivitas dari terkecil ke terbesar
+      activityNumbers.sort((a, b) => {
+        // Ekstrak angka dari format "XXX-1801"
+        const numA = a.split("-")[0];
+        const numB = b.split("-")[0];
+        return numA.localeCompare(numB, undefined, { numeric: true });
+      });
+
+      // Format JSON minify sesuai permintaan
+      const jsonData = JSON.stringify({
+        data: activityNumbers.length > 0 ? activityNumbers : "-",
+      });
+
+      await navigator.clipboard.writeText(jsonData);
+      setCopySuccess((prev) => ({ ...prev, [category]: true }));
+      setTimeout(() => {
+        setCopySuccess((prev) => ({ ...prev, [category]: false }));
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy JSON: ", err);
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm border">
       <div className="p-3 sm:p-4 md:p-5 lg:p-6 space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6">
         {/* Zone Selection */}
-        <div className="space-y-2 sm:space-y-2.5 md:space-y-3" ref={dropdownRef}>
+        <div
+          className="space-y-2 sm:space-y-2.5 md:space-y-3"
+          ref={dropdownRef}
+        >
           <label className="block text-sm sm:text-base md:text-base lg:text-lg font-medium text-gray-700">
             Pilih Zona
           </label>
@@ -271,7 +370,7 @@ export default function FilterSidebar({
               placeholder="Ketik untuk mencari zona..."
               className="w-full px-3 sm:px-3.5 md:px-4 lg:px-4 py-2 sm:py-2.5 md:py-3 lg:py-3 text-sm sm:text-base md:text-base lg:text-lg text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400 pr-16"
             />
-            
+
             {/* Clear Button */}
             {selectedZone && (
               <button
@@ -280,25 +379,42 @@ export default function FilterSidebar({
                 className="absolute inset-y-0 right-8 flex items-center pr-1 text-gray-400 hover:text-red-500 transition-colors"
                 title="Hapus zona"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             )}
-            
+
             {/* Dropdown Arrow */}
             <button
               type="button"
               onClick={() => setIsZoneDropdownOpen(!isZoneDropdownOpen)}
               className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
             >
-              <svg 
-                className={`w-4 h-4 transition-transform duration-200 ${isZoneDropdownOpen ? 'rotate-180' : ''}`} 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className={`w-4 h-4 transition-transform duration-200 ${
+                  isZoneDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </button>
 
@@ -318,11 +434,11 @@ export default function FilterSidebar({
                         type="button"
                         onClick={() => handleZoneSelect(zone)}
                         className={`w-full text-left px-3 py-2 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors ${
-                          index === highlightedIndex 
-                            ? 'bg-blue-100 text-blue-700' 
-                            : selectedZone === zone 
-                            ? 'bg-blue-50 text-blue-700 font-medium'
-                            : 'text-gray-900'
+                          index === highlightedIndex
+                            ? "bg-blue-100 text-blue-700"
+                            : selectedZone === zone
+                            ? "bg-blue-50 text-blue-700 font-medium"
+                            : "text-gray-900"
                         }`}
                       >
                         {zone}
@@ -331,19 +447,25 @@ export default function FilterSidebar({
                   </>
                 ) : (
                   <div className="px-3 py-2 text-sm text-gray-500 text-center">
-                    {zoneSearchTerm ? 'Tidak ada zona yang ditemukan' : 'Mulai ketik untuk mencari zona'}
+                    {zoneSearchTerm
+                      ? "Tidak ada zona yang ditemukan"
+                      : "Mulai ketik untuk mencari zona"}
                   </div>
                 )}
               </div>
             )}
           </div>
-          
+
           {/* Helper text */}
           <div className="text-xs text-gray-500">
             {selectedZone ? (
-              <span className="text-green-600">✓ Zona terpilih: {selectedZone}</span>
+              <span className="text-green-600">
+                ✓ Zona terpilih: {selectedZone}
+              </span>
             ) : (
-              <span>Ketik nama zona atau klik panah untuk melihat semua opsi</span>
+              <span>
+                Ketik nama zona atau klik panah untuk melihat semua opsi
+              </span>
             )}
           </div>
         </div>
@@ -360,7 +482,10 @@ export default function FilterSidebar({
                   onClick={handleSelectAllRegulations}
                   className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 font-medium"
                 >
-                  {validSelectedRegulations.length === availableCombinations.length ? 'Hapus Semua' : 'Pilih Semua'}
+                  {validSelectedRegulations.length ===
+                  availableCombinations.length
+                    ? "Hapus Semua"
+                    : "Pilih Semua"}
                 </button>
                 {validSelectedRegulations.length > 0 && (
                   <button
@@ -409,13 +534,22 @@ export default function FilterSidebar({
               >
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-700">
-                    {validSelectedRegulations.length > 0 
+                    {validSelectedRegulations.length > 0
                       ? `${validSelectedRegulations.length} kombinasi terpilih`
-                      : 'Klik untuk memilih kombinasi kode'
-                    }
+                      : "Klik untuk memilih kombinasi kode"}
                   </span>
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <svg
+                    className="w-5 h-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </div>
               </button>
@@ -424,7 +558,9 @@ export default function FilterSidebar({
             {/* Selected regulations summary */}
             {validSelectedRegulations.length > 0 && (
               <div className="text-xs sm:text-sm text-gray-600 bg-blue-50 p-2 rounded-md">
-                <span className="font-medium">Kode terpilih ({validSelectedRegulations.length}):</span>{" "}
+                <span className="font-medium">
+                  Kode terpilih ({validSelectedRegulations.length}):
+                </span>{" "}
                 {validSelectedRegulations.join(", ")}
               </div>
             )}
@@ -440,6 +576,252 @@ export default function FilterSidebar({
         )}
 
         {/* Active Regulation Codes Legend - Only show if zone is selected */}
+        {/* 4 Category Cards untuk Copy JSON - Only show if zone is selected */}
+        {selectedZone && (
+          <div className="space-y-2 sm:space-y-2.5 md:space-y-3">
+            <h3 className="text-sm sm:text-base md:text-base lg:text-lg font-medium text-gray-700">
+              Copy JSON Berdasarkan Kategori
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Diizinkan (I) */}
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-semibold text-green-800">
+                    Diizinkan
+                  </h4>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-700">
+                    I
+                  </span>
+                </div>
+                <p className="text-xs text-green-600 mb-3">
+                  {getActivitiesByCategory("diizinkan").length} kegiatan
+                </p>
+                <button
+                  onClick={() => handleCopyJsonByCategory("diizinkan")}
+                  className={`w-full inline-flex items-center justify-center px-3 py-2 border border-green-300 rounded-md shadow-sm text-sm font-medium transition-colors ${
+                    copySuccess.diizinkan
+                      ? "bg-green-100 text-green-700 border-green-400"
+                      : "bg-white text-green-700 hover:bg-green-50"
+                  }`}
+                >
+                  {copySuccess.diizinkan ? (
+                    <>
+                      <svg
+                        className="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      Tersalin!
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                        />
+                      </svg>
+                      Copy JSON
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Terbatas (T1,T2,T3) */}
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-semibold text-yellow-800">
+                    Terbatas
+                  </h4>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-700">
+                    T1,T2,T3
+                  </span>
+                </div>
+                <p className="text-xs text-yellow-600 mb-3">
+                  {getActivitiesByCategory("terbatas").length} kegiatan
+                </p>
+                <button
+                  onClick={() => handleCopyJsonByCategory("terbatas")}
+                  className={`w-full inline-flex items-center justify-center px-3 py-2 border border-yellow-300 rounded-md shadow-sm text-sm font-medium transition-colors ${
+                    copySuccess.terbatas
+                      ? "bg-yellow-100 text-yellow-700 border-yellow-400"
+                      : "bg-white text-yellow-700 hover:bg-yellow-50"
+                  }`}
+                >
+                  {copySuccess.terbatas ? (
+                    <>
+                      <svg
+                        className="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      Tersalin!
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                        />
+                      </svg>
+                      Copy JSON
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Bersyarat (B1,B2,B3) */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-semibold text-blue-800">
+                    Bersyarat
+                  </h4>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-700">
+                    B1,B2,B3
+                  </span>
+                </div>
+                <p className="text-xs text-blue-600 mb-3">
+                  {getActivitiesByCategory("bersyarat").length} kegiatan
+                </p>
+                <button
+                  onClick={() => handleCopyJsonByCategory("bersyarat")}
+                  className={`w-full inline-flex items-center justify-center px-3 py-2 border border-blue-300 rounded-md shadow-sm text-sm font-medium transition-colors ${
+                    copySuccess.bersyarat
+                      ? "bg-blue-100 text-blue-700 border-blue-400"
+                      : "bg-white text-blue-700 hover:bg-blue-50"
+                  }`}
+                >
+                  {copySuccess.bersyarat ? (
+                    <>
+                      <svg
+                        className="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      Tersalin!
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                        />
+                      </svg>
+                      Copy JSON
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Terbatas Bersyarat (T+B) */}
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-semibold text-purple-800">
+                    Terbatas Bersyarat
+                  </h4>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-purple-100 text-purple-700">
+                    T+B
+                  </span>
+                </div>
+                <p className="text-xs text-purple-600 mb-3">
+                  {getActivitiesByCategory("terbatas_bersyarat").length}{" "}
+                  kegiatan
+                </p>
+                <button
+                  onClick={() => handleCopyJsonByCategory("terbatas_bersyarat")}
+                  className={`w-full inline-flex items-center justify-center px-3 py-2 border border-purple-300 rounded-md shadow-sm text-sm font-medium transition-colors ${
+                    copySuccess.terbatas_bersyarat
+                      ? "bg-purple-100 text-purple-700 border-purple-400"
+                      : "bg-white text-purple-700 hover:bg-purple-50"
+                  }`}
+                >
+                  {copySuccess.terbatas_bersyarat ? (
+                    <>
+                      <svg
+                        className="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      Tersalin!
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                        />
+                      </svg>
+                      Copy JSON
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {selectedZone && activeRegulationCodes.length > 0 && (
           <div className="space-y-2 sm:space-y-2.5 md:space-y-3">
             <h3 className="text-sm sm:text-base md:text-base lg:text-lg font-medium text-gray-700">
@@ -516,13 +898,13 @@ export default function FilterSidebar({
           </div>
         )}
       </div>
-      
+
       {/* Regulation Combinations Modal */}
       {isRegulationModalOpen && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             {/* Background overlay */}
-            <div 
+            <div
               className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
               onClick={() => setIsRegulationModalOpen(false)}
             ></div>
@@ -536,7 +918,8 @@ export default function FilterSidebar({
                     Pilih Kombinasi Kode Regulasi
                   </h3>
                   <p className="text-sm text-gray-500 mt-1">
-                    Zona: {selectedZone} • {availableCombinations.length} kombinasi tersedia
+                    Zona: {selectedZone} • {availableCombinations.length}{" "}
+                    kombinasi tersedia
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -544,12 +927,17 @@ export default function FilterSidebar({
                     onClick={handleSelectAllRegulations}
                     className="px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 transition-colors"
                   >
-                    {validSelectedRegulations.length === availableCombinations.length ? 'Hapus Semua' : 'Pilih Semua'}
+                    {validSelectedRegulations.length ===
+                    availableCombinations.length
+                      ? "Hapus Semua"
+                      : "Pilih Semua"}
                   </button>
                   {validSelectedRegulations.length > 0 && (
                     <button
                       onClick={() => {
-                        const newSearchParams = new URLSearchParams(searchParams);
+                        const newSearchParams = new URLSearchParams(
+                          searchParams
+                        );
                         newSearchParams.delete("regulations");
                         newSearchParams.delete("regulation");
                         navigate(`?${newSearchParams.toString()}`);
@@ -563,8 +951,18 @@ export default function FilterSidebar({
                     onClick={() => setIsRegulationModalOpen(false)}
                     className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
                 </div>
@@ -579,7 +977,9 @@ export default function FilterSidebar({
                     </div>
                     <button
                       onClick={() => {
-                        const newSearchParams = new URLSearchParams(searchParams);
+                        const newSearchParams = new URLSearchParams(
+                          searchParams
+                        );
                         newSearchParams.delete("regulations");
                         newSearchParams.delete("regulation");
                         navigate(`?${newSearchParams.toString()}`);
@@ -597,12 +997,24 @@ export default function FilterSidebar({
                       >
                         <span className="truncate">{combination}</span>
                         <button
-                          onClick={() => handleRegulationCodeToggle(combination)}
+                          onClick={() =>
+                            handleRegulationCodeToggle(combination)
+                          }
                           className="text-blue-500 hover:text-blue-700 flex-shrink-0 ml-1"
                           title={`Hapus ${combination}`}
                         >
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          <svg
+                            className="w-3 h-3"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
                           </svg>
                         </button>
                       </div>
@@ -615,28 +1027,35 @@ export default function FilterSidebar({
               <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-md">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
                   {availableCombinations.map((combination, index) => {
-                    const isSelected = validSelectedRegulations.includes(combination);
-                    
+                    const isSelected =
+                      validSelectedRegulations.includes(combination);
+
                     // Get descriptions for all codes in the combination
-                    const codes = combination.split(",").map(c => c.trim());
-                    const descriptions = codes.map(code => data.regulations[code]).filter(Boolean);
-                    
+                    const codes = combination.split(",").map((c) => c.trim());
+                    const descriptions = codes
+                      .map((code) => data.regulations[code])
+                      .filter(Boolean);
+
                     return (
                       <label
                         key={combination}
                         className={`flex items-start gap-3 p-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-gray-100 ${
-                          index % 2 === 0 ? 'md:border-r' : ''
+                          index % 2 === 0 ? "md:border-r" : ""
                         }`}
                       >
                         <input
                           type="checkbox"
                           checked={isSelected}
-                          onChange={() => handleRegulationCodeToggle(combination)}
+                          onChange={() =>
+                            handleRegulationCodeToggle(combination)
+                          }
                           className="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                         />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-2">
-                            <span className="text-base font-semibold text-gray-900">{combination}</span>
+                            <span className="text-base font-semibold text-gray-900">
+                              {combination}
+                            </span>
                             {isSelected && (
                               <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
                                 Terpilih
@@ -646,27 +1065,34 @@ export default function FilterSidebar({
                           {descriptions.length > 0 && (
                             <div className="space-y-2">
                               {descriptions.map((desc, descIndex) => (
-                                <div key={descIndex} className="flex items-start gap-2">
-                                  <span className={`inline-flex items-center justify-center w-6 h-6 rounded text-xs font-bold flex-shrink-0 ${
-                                    codes[descIndex] === "I"
-                                      ? "bg-green-100 text-green-800"
-                                      : codes[descIndex] === "T1"
-                                      ? "bg-yellow-100 text-yellow-800"
-                                      : codes[descIndex] === "T2"
-                                      ? "bg-yellow-100 text-yellow-800"
-                                      : codes[descIndex] === "T3"
-                                      ? "bg-yellow-100 text-yellow-800"
-                                      : codes[descIndex] === "B1"
-                                      ? "bg-blue-100 text-blue-800"
-                                      : codes[descIndex] === "B2"
-                                      ? "bg-blue-100 text-blue-800"
-                                      : codes[descIndex] === "B3"
-                                      ? "bg-purple-100 text-purple-800"
-                                      : "bg-gray-100 text-gray-800"
-                                  }`}>
+                                <div
+                                  key={descIndex}
+                                  className="flex items-start gap-2"
+                                >
+                                  <span
+                                    className={`inline-flex items-center justify-center w-6 h-6 rounded text-xs font-bold flex-shrink-0 ${
+                                      codes[descIndex] === "I"
+                                        ? "bg-green-100 text-green-800"
+                                        : codes[descIndex] === "T1"
+                                        ? "bg-yellow-100 text-yellow-800"
+                                        : codes[descIndex] === "T2"
+                                        ? "bg-yellow-100 text-yellow-800"
+                                        : codes[descIndex] === "T3"
+                                        ? "bg-yellow-100 text-yellow-800"
+                                        : codes[descIndex] === "B1"
+                                        ? "bg-blue-100 text-blue-800"
+                                        : codes[descIndex] === "B2"
+                                        ? "bg-blue-100 text-blue-800"
+                                        : codes[descIndex] === "B3"
+                                        ? "bg-purple-100 text-purple-800"
+                                        : "bg-gray-100 text-gray-800"
+                                    }`}
+                                  >
                                     {codes[descIndex]}
                                   </span>
-                                  <span className="text-sm text-gray-600 leading-relaxed">{desc}</span>
+                                  <span className="text-sm text-gray-600 leading-relaxed">
+                                    {desc}
+                                  </span>
                                 </div>
                               ))}
                             </div>
@@ -681,7 +1107,8 @@ export default function FilterSidebar({
               {/* Modal footer */}
               <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
                 <div className="text-sm text-gray-500">
-                  {validSelectedRegulations.length} dari {availableCombinations.length} kombinasi terpilih
+                  {validSelectedRegulations.length} dari{" "}
+                  {availableCombinations.length} kombinasi terpilih
                 </div>
                 <div className="flex gap-3">
                   <button
