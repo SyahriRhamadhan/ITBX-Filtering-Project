@@ -1,0 +1,1783 @@
+{
+  "metadata": {
+    "sourceFile": "trikora.xlsx",
+    "processedAt": "2025-09-16T13:10:02.020Z",
+    "totalZones": 173,
+    "duplicatesRemoved": 271,
+    "zoneGroups": 20
+  },
+  "zoneGroups": {
+    "BA": [
+      {
+        "name": "Badan Air",
+        "kodunk": "BA.0.0.0.0.0.0",
+        "originalRow": 2
+      },
+      {
+        "name": "Badan Air",
+        "kodunk": "BA.0.0.0.0.0.1",
+        "originalRow": 8
+      }
+    ],
+    "BJ": [
+      {
+        "name": "Badan Jalan",
+        "kodunk": "BJ.0.0.0.0.0.0",
+        "originalRow": 15
+      },
+      {
+        "name": "Badan Jalan",
+        "kodunk": "BJ.0.0.0.0.0.1",
+        "originalRow": 14
+      }
+    ],
+    "CB": [
+      {
+        "name": "Cagar Budaya",
+        "kodunk": "CB.0.0.0.1.0.0",
+        "originalRow": 31
+      },
+      {
+        "name": "Cagar Budaya",
+        "kodunk": "CB.0.3.0.0.0.0",
+        "originalRow": 30
+      },
+      {
+        "name": "Cagar Budaya",
+        "kodunk": "CB.0.3.0.1.0.0",
+        "originalRow": 29
+      },
+      {
+        "name": "Cagar Budaya",
+        "kodunk": "CB.0.6.0.0.0.0",
+        "originalRow": 33
+      },
+      {
+        "name": "Cagar Budaya",
+        "kodunk": "CB.0.7.0.0.0.0",
+        "originalRow": 32
+      }
+    ],
+    "EM": [
+      {
+        "name": "Ekosistem Mangrove",
+        "kodunk": "EM.0.0.0.0.0.0",
+        "originalRow": 34
+      },
+      {
+        "name": "Ekosistem Mangrove",
+        "kodunk": "EM.0.0.0.0.0.1",
+        "originalRow": 38
+      }
+    ],
+    "HL": [
+      {
+        "name": "Hutan Lindung",
+        "kodunk": "HL.0.0.0.0.0.0",
+        "originalRow": 40
+      }
+    ],
+    "HP": [
+      {
+        "name": "Hutan Produksi Tetap",
+        "kodunk": "HP.0.0.0.0.0.0",
+        "originalRow": 45
+      },
+      {
+        "name": "Hutan Produksi Tetap",
+        "kodunk": "HP.0.0.0.0.0.1",
+        "originalRow": 44
+      },
+      {
+        "name": "Hutan Produksi Tetap",
+        "kodunk": "HP.0.2.0.0.0.0",
+        "originalRow": 43
+      },
+      {
+        "name": "Hutan Produksi Tetap",
+        "kodunk": "HP.0.2.0.0.0.1",
+        "originalRow": 41
+      }
+    ],
+    "HPK": [
+      {
+        "name": "Hutan Produksi yang dapat Dikonversi",
+        "kodunk": "HPK.0.0.0.0.0.1",
+        "originalRow": 48
+      }
+    ],
+    "RTH": [
+      {
+        "name": "Taman Kelurahan",
+        "kodunk": "RTH-4.0.0.0.0.0.0",
+        "originalRow": 424
+      },
+      {
+        "name": "Taman RW",
+        "kodunk": "RTH-5.0.0.0.0.0.0",
+        "originalRow": 432
+      },
+      {
+        "name": "Taman RW",
+        "kodunk": "RTH-5.0.0.0.0.0.1",
+        "originalRow": 431
+      },
+      {
+        "name": "Taman RT",
+        "kodunk": "RTH-6.0.0.0.0.0.0",
+        "originalRow": 425
+      },
+      {
+        "name": "Pemakaman",
+        "kodunk": "RTH-7.0.0.0.0.0.0",
+        "originalRow": 159
+      },
+      {
+        "name": "Pemakaman",
+        "kodunk": "RTH-7.0.0.0.0.0.1",
+        "originalRow": 167
+      },
+      {
+        "name": "Jalur Hijau",
+        "kodunk": "RTH-8.0.0.0.0.0.0",
+        "originalRow": 54
+      },
+      {
+        "name": "Jalur Hijau",
+        "kodunk": "RTH-8.0.0.0.0.0.1",
+        "originalRow": 53
+      }
+    ],
+    "KPI": [
+      {
+        "name": "Kawasan Peruntukan Industri",
+        "kodunk": "KPI.0.3.0.0.0.0",
+        "originalRow": 57
+      },
+      {
+        "name": "Kawasan Peruntukan Industri",
+        "kodunk": "KPI.1.3.0.0.0.0",
+        "originalRow": 58
+      }
+    ],
+    "W": [
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.0.0.0.0.0",
+        "originalRow": 68
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.0.0.1.0.0",
+        "originalRow": 67
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.0.0.1.1.0",
+        "originalRow": 66
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.0.0.2.0.0",
+        "originalRow": 97
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.1.0.0.0.0",
+        "originalRow": 62
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.1.0.1.0.0",
+        "originalRow": 61
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.2.0.0.0.0",
+        "originalRow": 114
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.3.0.0.0.0",
+        "originalRow": 65
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.3.0.0.0.1",
+        "originalRow": 136
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.3.0.1.0.0",
+        "originalRow": 64
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.3.0.1.1.0",
+        "originalRow": 63
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.3.0.2.0.0",
+        "originalRow": 88
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.5.0.0.0.0",
+        "originalRow": 60
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.5.0.1.0.0",
+        "originalRow": 59
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.5.0.2.0.0",
+        "originalRow": 107
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.6.0.0.0.0",
+        "originalRow": 110
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.0.7.0.0.0.0",
+        "originalRow": 122
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.1.0.0.1.0.0",
+        "originalRow": 155
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.1.1.0.1.0.0",
+        "originalRow": 151
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.1.3.0.0.0.0",
+        "originalRow": 143
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.1.3.0.0.0.1",
+        "originalRow": 142
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.1.3.0.1.0.0",
+        "originalRow": 140
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.1.3.0.2.0.0",
+        "originalRow": 141
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.1.5.0.0.0.0",
+        "originalRow": 150
+      },
+      {
+        "name": "Pariwisata",
+        "kodunk": "W.1.5.0.1.0.0",
+        "originalRow": 149
+      }
+    ],
+    "K": [
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.0.0.0.0.0.0",
+        "originalRow": 212
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.0.0.0.1.0.0",
+        "originalRow": 211
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.0.3.0.0.0.0",
+        "originalRow": 205
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.0.3.0.1.0.0",
+        "originalRow": 204
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.0.0.0.0.0",
+        "originalRow": 226
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.0.0.1.0.0",
+        "originalRow": 224
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.0.0.2.0.0",
+        "originalRow": 225
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.1.0.0.0.0",
+        "originalRow": 219
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.1.0.1.0.0",
+        "originalRow": 217
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.1.0.2.0.0",
+        "originalRow": 218
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.3.0.0.0.0",
+        "originalRow": 223
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.3.0.0.0.1",
+        "originalRow": 222
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.3.0.1.0.0",
+        "originalRow": 220
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.3.0.2.0.0",
+        "originalRow": 221
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.5.0.0.0.0",
+        "originalRow": 216
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.5.0.0.0.1",
+        "originalRow": 215
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.5.0.1.0.0",
+        "originalRow": 213
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala WP",
+        "kodunk": "K-2.1.5.0.2.0.0",
+        "originalRow": 214
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala SWP",
+        "kodunk": "K-3.0.0.0.0.0.0",
+        "originalRow": 174
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala SWP",
+        "kodunk": "K-3.0.0.0.1.0.0",
+        "originalRow": 186
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala SWP",
+        "kodunk": "K-3.0.1.0.1.0.0",
+        "originalRow": 182
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala SWP",
+        "kodunk": "K-3.0.3.0.0.0.0",
+        "originalRow": 171
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala SWP",
+        "kodunk": "K-3.0.3.0.1.0.0",
+        "originalRow": 170
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala SWP",
+        "kodunk": "K-3.0.3.0.2.0.0",
+        "originalRow": 177
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala SWP",
+        "kodunk": "K-3.0.5.0.0.0.0",
+        "originalRow": 181
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala SWP",
+        "kodunk": "K-3.0.5.0.1.0.0",
+        "originalRow": 179
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala SWP",
+        "kodunk": "K-3.0.5.0.2.0.0",
+        "originalRow": 175
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala SWP",
+        "kodunk": "K-3.1.3.0.0.0.0",
+        "originalRow": 203
+      },
+      {
+        "name": "Perdagangan dan Jasa Skala SWP",
+        "kodunk": "K-3.1.5.0.0.0.0",
+        "originalRow": 202
+      }
+    ],
+    "KT": [
+      {
+        "name": "Perkantoran",
+        "kodunk": "KT.0.0.0.0.0.0",
+        "originalRow": 230
+      },
+      {
+        "name": "Perkantoran",
+        "kodunk": "KT.0.3.0.0.0.0",
+        "originalRow": 228
+      },
+      {
+        "name": "Perkantoran",
+        "kodunk": "KT.0.3.0.1.0.0",
+        "originalRow": 232
+      },
+      {
+        "name": "Perkantoran",
+        "kodunk": "KT.0.3.1.0.0.0",
+        "originalRow": 227
+      },
+      {
+        "name": "Perkantoran",
+        "kodunk": "KT.0.3.1.1.0.0",
+        "originalRow": 231
+      },
+      {
+        "name": "Perkantoran",
+        "kodunk": "KT.1.0.0.1.0.0",
+        "originalRow": 239
+      },
+      {
+        "name": "Perkantoran",
+        "kodunk": "KT.1.3.0.1.0.0",
+        "originalRow": 238
+      }
+    ],
+    "P": [
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.0.0.0.0.0.0",
+        "originalRow": 246
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.0.2.0.0.0.0",
+        "originalRow": 245
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.0.3.0.0.0.0",
+        "originalRow": 244
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.0.3.0.0.0.1",
+        "originalRow": 263
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.0.4.0.0.0.0",
+        "originalRow": 241
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.0.5.0.0.0.0",
+        "originalRow": 240
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.0.5.0.0.0.1",
+        "originalRow": 261
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.0.6.0.0.0.0",
+        "originalRow": 243
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.0.7.0.0.0.0",
+        "originalRow": 242
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.1.0.0.0.0.1",
+        "originalRow": 270
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.1.1.0.0.0.1",
+        "originalRow": 275
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.1.2.0.0.0.1",
+        "originalRow": 269
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.1.3.0.0.0.0",
+        "originalRow": 273
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.1.3.0.0.0.1",
+        "originalRow": 259
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.1.5.0.0.0.1",
+        "originalRow": 258
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.1.6.0.0.0.0",
+        "originalRow": 279
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.1.6.0.0.0.1",
+        "originalRow": 267
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.1.7.0.0.0.0",
+        "originalRow": 277
+      },
+      {
+        "name": "Perkebunan",
+        "kodunk": "P-3.1.7.0.0.0.1",
+        "originalRow": 266
+      },
+      {
+        "name": "Peternakan",
+        "kodunk": "P-4.1.3.0.0.0.1",
+        "originalRow": 382
+      },
+      {
+        "name": "Peternakan",
+        "kodunk": "P-4.1.5.0.0.0.1",
+        "originalRow": 381
+      }
+    ],
+    "PS": [
+      {
+        "name": "Perlindungan Setempat",
+        "kodunk": "PS.0.0.0.0.0.0",
+        "originalRow": 285
+      },
+      {
+        "name": "Perlindungan Setempat",
+        "kodunk": "PS.0.0.0.0.0.1",
+        "originalRow": 293
+      }
+    ],
+    "HK": [
+      {
+        "name": "Pertahanan dan Keamanan",
+        "kodunk": "HK.0.3.0.1.0.0",
+        "originalRow": 298
+      }
+    ],
+    "MNL": [
+      {
+        "name": "Pertambangan Mineral Bukan Logam",
+        "kodunk": "MNL.1.3.0.0.0.0",
+        "originalRow": 300
+      },
+      {
+        "name": "Pertambangan Mineral Bukan Logam",
+        "kodunk": "MNL.1.3.0.0.0.1",
+        "originalRow": 299
+      }
+    ],
+    "R": [
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.0.3.0.0.0.0",
+        "originalRow": 363
+      },
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.0.3.0.0.0.1",
+        "originalRow": 373
+      },
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.0.3.0.1.0.0",
+        "originalRow": 371
+      },
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.0.3.0.2.0.0",
+        "originalRow": 362
+      },
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.0.5.0.0.0.0",
+        "originalRow": 370
+      },
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.0.5.0.0.0.1",
+        "originalRow": 369
+      },
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.0.5.0.2.0.0",
+        "originalRow": 361
+      },
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.1.0.0.0.0.0",
+        "originalRow": 380
+      },
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.1.1.0.0.0.0",
+        "originalRow": 377
+      },
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.1.3.0.0.0.0",
+        "originalRow": 367
+      },
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.1.3.0.0.0.1",
+        "originalRow": 366
+      },
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.1.5.0.0.0.0",
+        "originalRow": 365
+      },
+      {
+        "name": "Perumahan Kepadatan Tinggi",
+        "kodunk": "R-2.1.5.0.0.0.1",
+        "originalRow": 364
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.0.0.0.0.0.0",
+        "originalRow": 329
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.0.3.0.0.0.0",
+        "originalRow": 328
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.0.3.0.0.0.1",
+        "originalRow": 351
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.0.3.0.1.0.0",
+        "originalRow": 330
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.0.3.0.2.0.0",
+        "originalRow": 337
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.0.5.0.0.0.0",
+        "originalRow": 336
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.0.5.0.2.0.0",
+        "originalRow": 335
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.1.0.0.1.0.0",
+        "originalRow": 360
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.1.3.0.0.0.0",
+        "originalRow": 350
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.1.3.0.0.0.1",
+        "originalRow": 349
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.1.3.0.1.0.0",
+        "originalRow": 357
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.1.5.0.0.0.0",
+        "originalRow": 348
+      },
+      {
+        "name": "Perumahan Kepadatan Sedang",
+        "kodunk": "R-3.1.5.0.0.0.1",
+        "originalRow": 347
+      },
+      {
+        "name": "Perumahan Kepadatan Rendah",
+        "kodunk": "R-4.0.0.0.0.0.0",
+        "originalRow": 310
+      },
+      {
+        "name": "Perumahan Kepadatan Rendah",
+        "kodunk": "R-4.0.0.0.1.0.0",
+        "originalRow": 309
+      },
+      {
+        "name": "Perumahan Kepadatan Rendah",
+        "kodunk": "R-4.0.1.0.1.0.0",
+        "originalRow": 304
+      },
+      {
+        "name": "Perumahan Kepadatan Rendah",
+        "kodunk": "R-4.0.3.0.0.0.0",
+        "originalRow": 308
+      },
+      {
+        "name": "Perumahan Kepadatan Rendah",
+        "kodunk": "R-4.0.3.0.0.0.1",
+        "originalRow": 307
+      },
+      {
+        "name": "Perumahan Kepadatan Rendah",
+        "kodunk": "R-4.0.3.0.1.0.0",
+        "originalRow": 306
+      },
+      {
+        "name": "Perumahan Kepadatan Rendah",
+        "kodunk": "R-4.0.3.0.1.0.1",
+        "originalRow": 305
+      },
+      {
+        "name": "Perumahan Kepadatan Rendah",
+        "kodunk": "R-4.0.3.0.2.0.0",
+        "originalRow": 319
+      },
+      {
+        "name": "Perumahan Kepadatan Rendah",
+        "kodunk": "R-4.0.5.0.0.0.0",
+        "originalRow": 317
+      }
+    ],
+    "RTNH": [
+      {
+        "name": "Ruang Terbuka Non Hijau",
+        "kodunk": "RTNH.0.3.0.0.0.0",
+        "originalRow": 384
+      },
+      {
+        "name": "Ruang Terbuka Non Hijau",
+        "kodunk": "RTNH.0.3.0.0.0.1",
+        "originalRow": 383
+      },
+      {
+        "name": "Ruang Terbuka Non Hijau",
+        "kodunk": "RTNH.0.5.0.0.0.0",
+        "originalRow": 385
+      }
+    ],
+    "SPU": [
+      {
+        "name": "SPU Skala Kota",
+        "kodunk": "SPU-1.0.3.0.0.0.0",
+        "originalRow": 421
+      },
+      {
+        "name": "SPU Skala Kecamatan",
+        "kodunk": "SPU-2.0.0.0.0.0.0",
+        "originalRow": 391
+      },
+      {
+        "name": "SPU Skala Kecamatan",
+        "kodunk": "SPU-2.0.3.0.0.0.0",
+        "originalRow": 389
+      },
+      {
+        "name": "SPU Skala Kecamatan",
+        "kodunk": "SPU-2.0.3.0.1.0.0",
+        "originalRow": 387
+      },
+      {
+        "name": "SPU Skala Kecamatan",
+        "kodunk": "SPU-2.1.3.0.0.0.0",
+        "originalRow": 394
+      },
+      {
+        "name": "SPU Skala Kecamatan",
+        "kodunk": "SPU-2.1.3.1.0.0.1",
+        "originalRow": 392
+      },
+      {
+        "name": "SPU Skala Kecamatan",
+        "kodunk": "SPU-2.1.5.0.0.0.0",
+        "originalRow": 393
+      },
+      {
+        "name": "SPU Skala Kelurahan",
+        "kodunk": "SPU-3.0.0.0.0.0.0",
+        "originalRow": 404
+      },
+      {
+        "name": "SPU Skala Kelurahan",
+        "kodunk": "SPU-3.0.0.0.1.0.0",
+        "originalRow": 396
+      },
+      {
+        "name": "SPU Skala Kelurahan",
+        "kodunk": "SPU-3.0.3.0.0.0.0",
+        "originalRow": 395
+      },
+      {
+        "name": "SPU Skala Kelurahan",
+        "kodunk": "SPU-3.0.3.0.1.0.0",
+        "originalRow": 405
+      },
+      {
+        "name": "SPU Skala Kelurahan",
+        "kodunk": "SPU-3.0.5.0.0.0.0",
+        "originalRow": 408
+      },
+      {
+        "name": "SPU Skala Kelurahan",
+        "kodunk": "SPU-3.1.0.0.1.0.0",
+        "originalRow": 420
+      },
+      {
+        "name": "SPU Skala Kelurahan",
+        "kodunk": "SPU-3.1.3.0.0.0.0",
+        "originalRow": 419
+      },
+      {
+        "name": "SPU Skala Kelurahan",
+        "kodunk": "SPU-3.1.3.0.1.0.0",
+        "originalRow": 417
+      },
+      {
+        "name": "SPU Skala RW",
+        "kodunk": "SPU-4.0.0.0.0.0.0",
+        "originalRow": 423
+      },
+      {
+        "name": "SPU Skala RW",
+        "kodunk": "SPU-4.0.3.0.0.0.0",
+        "originalRow": 422
+      }
+    ],
+    "TR": [
+      {
+        "name": "Transportasi",
+        "kodunk": "TR.0.0.0.1.0.0",
+        "originalRow": 441
+      },
+      {
+        "name": "Transportasi",
+        "kodunk": "TR.0.0.0.1.0.1",
+        "originalRow": 440
+      },
+      {
+        "name": "Transportasi",
+        "kodunk": "TR.0.3.0.1.0.0",
+        "originalRow": 439
+      },
+      {
+        "name": "Transportasi",
+        "kodunk": "TR.0.3.0.1.0.1",
+        "originalRow": 438
+      }
+    ]
+  },
+  "allZones": [
+    {
+      "name": "Badan Air",
+      "kodunk": "BA.0.0.0.0.0.0",
+      "originalRow": 2
+    },
+    {
+      "name": "Badan Air",
+      "kodunk": "BA.0.0.0.0.0.1",
+      "originalRow": 8
+    },
+    {
+      "name": "Badan Jalan",
+      "kodunk": "BJ.0.0.0.0.0.0",
+      "originalRow": 15
+    },
+    {
+      "name": "Badan Jalan",
+      "kodunk": "BJ.0.0.0.0.0.1",
+      "originalRow": 14
+    },
+    {
+      "name": "Cagar Budaya",
+      "kodunk": "CB.0.0.0.1.0.0",
+      "originalRow": 31
+    },
+    {
+      "name": "Cagar Budaya",
+      "kodunk": "CB.0.3.0.0.0.0",
+      "originalRow": 30
+    },
+    {
+      "name": "Cagar Budaya",
+      "kodunk": "CB.0.3.0.1.0.0",
+      "originalRow": 29
+    },
+    {
+      "name": "Cagar Budaya",
+      "kodunk": "CB.0.6.0.0.0.0",
+      "originalRow": 33
+    },
+    {
+      "name": "Cagar Budaya",
+      "kodunk": "CB.0.7.0.0.0.0",
+      "originalRow": 32
+    },
+    {
+      "name": "Ekosistem Mangrove",
+      "kodunk": "EM.0.0.0.0.0.0",
+      "originalRow": 34
+    },
+    {
+      "name": "Ekosistem Mangrove",
+      "kodunk": "EM.0.0.0.0.0.1",
+      "originalRow": 38
+    },
+    {
+      "name": "Pertahanan dan Keamanan",
+      "kodunk": "HK.0.3.0.1.0.0",
+      "originalRow": 298
+    },
+    {
+      "name": "Hutan Lindung",
+      "kodunk": "HL.0.0.0.0.0.0",
+      "originalRow": 40
+    },
+    {
+      "name": "Hutan Produksi Tetap",
+      "kodunk": "HP.0.0.0.0.0.0",
+      "originalRow": 45
+    },
+    {
+      "name": "Hutan Produksi Tetap",
+      "kodunk": "HP.0.0.0.0.0.1",
+      "originalRow": 44
+    },
+    {
+      "name": "Hutan Produksi Tetap",
+      "kodunk": "HP.0.2.0.0.0.0",
+      "originalRow": 43
+    },
+    {
+      "name": "Hutan Produksi Tetap",
+      "kodunk": "HP.0.2.0.0.0.1",
+      "originalRow": 41
+    },
+    {
+      "name": "Hutan Produksi yang dapat Dikonversi",
+      "kodunk": "HPK.0.0.0.0.0.1",
+      "originalRow": 48
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.0.0.0.0.0.0",
+      "originalRow": 212
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.0.0.0.1.0.0",
+      "originalRow": 211
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.0.3.0.0.0.0",
+      "originalRow": 205
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.0.3.0.1.0.0",
+      "originalRow": 204
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.0.0.0.0.0",
+      "originalRow": 226
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.0.0.1.0.0",
+      "originalRow": 224
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.0.0.2.0.0",
+      "originalRow": 225
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.1.0.0.0.0",
+      "originalRow": 219
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.1.0.1.0.0",
+      "originalRow": 217
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.1.0.2.0.0",
+      "originalRow": 218
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.3.0.0.0.0",
+      "originalRow": 223
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.3.0.0.0.1",
+      "originalRow": 222
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.3.0.1.0.0",
+      "originalRow": 220
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.3.0.2.0.0",
+      "originalRow": 221
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.5.0.0.0.0",
+      "originalRow": 216
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.5.0.0.0.1",
+      "originalRow": 215
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.5.0.1.0.0",
+      "originalRow": 213
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala WP",
+      "kodunk": "K-2.1.5.0.2.0.0",
+      "originalRow": 214
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala SWP",
+      "kodunk": "K-3.0.0.0.0.0.0",
+      "originalRow": 174
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala SWP",
+      "kodunk": "K-3.0.0.0.1.0.0",
+      "originalRow": 186
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala SWP",
+      "kodunk": "K-3.0.1.0.1.0.0",
+      "originalRow": 182
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala SWP",
+      "kodunk": "K-3.0.3.0.0.0.0",
+      "originalRow": 171
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala SWP",
+      "kodunk": "K-3.0.3.0.1.0.0",
+      "originalRow": 170
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala SWP",
+      "kodunk": "K-3.0.3.0.2.0.0",
+      "originalRow": 177
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala SWP",
+      "kodunk": "K-3.0.5.0.0.0.0",
+      "originalRow": 181
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala SWP",
+      "kodunk": "K-3.0.5.0.1.0.0",
+      "originalRow": 179
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala SWP",
+      "kodunk": "K-3.0.5.0.2.0.0",
+      "originalRow": 175
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala SWP",
+      "kodunk": "K-3.1.3.0.0.0.0",
+      "originalRow": 203
+    },
+    {
+      "name": "Perdagangan dan Jasa Skala SWP",
+      "kodunk": "K-3.1.5.0.0.0.0",
+      "originalRow": 202
+    },
+    {
+      "name": "Kawasan Peruntukan Industri",
+      "kodunk": "KPI.0.3.0.0.0.0",
+      "originalRow": 57
+    },
+    {
+      "name": "Kawasan Peruntukan Industri",
+      "kodunk": "KPI.1.3.0.0.0.0",
+      "originalRow": 58
+    },
+    {
+      "name": "Perkantoran",
+      "kodunk": "KT.0.0.0.0.0.0",
+      "originalRow": 230
+    },
+    {
+      "name": "Perkantoran",
+      "kodunk": "KT.0.3.0.0.0.0",
+      "originalRow": 228
+    },
+    {
+      "name": "Perkantoran",
+      "kodunk": "KT.0.3.0.1.0.0",
+      "originalRow": 232
+    },
+    {
+      "name": "Perkantoran",
+      "kodunk": "KT.0.3.1.0.0.0",
+      "originalRow": 227
+    },
+    {
+      "name": "Perkantoran",
+      "kodunk": "KT.0.3.1.1.0.0",
+      "originalRow": 231
+    },
+    {
+      "name": "Perkantoran",
+      "kodunk": "KT.1.0.0.1.0.0",
+      "originalRow": 239
+    },
+    {
+      "name": "Perkantoran",
+      "kodunk": "KT.1.3.0.1.0.0",
+      "originalRow": 238
+    },
+    {
+      "name": "Pertambangan Mineral Bukan Logam",
+      "kodunk": "MNL.1.3.0.0.0.0",
+      "originalRow": 300
+    },
+    {
+      "name": "Pertambangan Mineral Bukan Logam",
+      "kodunk": "MNL.1.3.0.0.0.1",
+      "originalRow": 299
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.0.0.0.0.0.0",
+      "originalRow": 246
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.0.2.0.0.0.0",
+      "originalRow": 245
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.0.3.0.0.0.0",
+      "originalRow": 244
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.0.3.0.0.0.1",
+      "originalRow": 263
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.0.4.0.0.0.0",
+      "originalRow": 241
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.0.5.0.0.0.0",
+      "originalRow": 240
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.0.5.0.0.0.1",
+      "originalRow": 261
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.0.6.0.0.0.0",
+      "originalRow": 243
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.0.7.0.0.0.0",
+      "originalRow": 242
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.1.0.0.0.0.1",
+      "originalRow": 270
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.1.1.0.0.0.1",
+      "originalRow": 275
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.1.2.0.0.0.1",
+      "originalRow": 269
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.1.3.0.0.0.0",
+      "originalRow": 273
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.1.3.0.0.0.1",
+      "originalRow": 259
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.1.5.0.0.0.1",
+      "originalRow": 258
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.1.6.0.0.0.0",
+      "originalRow": 279
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.1.6.0.0.0.1",
+      "originalRow": 267
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.1.7.0.0.0.0",
+      "originalRow": 277
+    },
+    {
+      "name": "Perkebunan",
+      "kodunk": "P-3.1.7.0.0.0.1",
+      "originalRow": 266
+    },
+    {
+      "name": "Peternakan",
+      "kodunk": "P-4.1.3.0.0.0.1",
+      "originalRow": 382
+    },
+    {
+      "name": "Peternakan",
+      "kodunk": "P-4.1.5.0.0.0.1",
+      "originalRow": 381
+    },
+    {
+      "name": "Perlindungan Setempat",
+      "kodunk": "PS.0.0.0.0.0.0",
+      "originalRow": 285
+    },
+    {
+      "name": "Perlindungan Setempat",
+      "kodunk": "PS.0.0.0.0.0.1",
+      "originalRow": 293
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.0.3.0.0.0.0",
+      "originalRow": 363
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.0.3.0.0.0.1",
+      "originalRow": 373
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.0.3.0.1.0.0",
+      "originalRow": 371
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.0.3.0.2.0.0",
+      "originalRow": 362
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.0.5.0.0.0.0",
+      "originalRow": 370
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.0.5.0.0.0.1",
+      "originalRow": 369
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.0.5.0.2.0.0",
+      "originalRow": 361
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.1.0.0.0.0.0",
+      "originalRow": 380
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.1.1.0.0.0.0",
+      "originalRow": 377
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.1.3.0.0.0.0",
+      "originalRow": 367
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.1.3.0.0.0.1",
+      "originalRow": 366
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.1.5.0.0.0.0",
+      "originalRow": 365
+    },
+    {
+      "name": "Perumahan Kepadatan Tinggi",
+      "kodunk": "R-2.1.5.0.0.0.1",
+      "originalRow": 364
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.0.0.0.0.0.0",
+      "originalRow": 329
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.0.3.0.0.0.0",
+      "originalRow": 328
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.0.3.0.0.0.1",
+      "originalRow": 351
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.0.3.0.1.0.0",
+      "originalRow": 330
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.0.3.0.2.0.0",
+      "originalRow": 337
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.0.5.0.0.0.0",
+      "originalRow": 336
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.0.5.0.2.0.0",
+      "originalRow": 335
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.1.0.0.1.0.0",
+      "originalRow": 360
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.1.3.0.0.0.0",
+      "originalRow": 350
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.1.3.0.0.0.1",
+      "originalRow": 349
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.1.3.0.1.0.0",
+      "originalRow": 357
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.1.5.0.0.0.0",
+      "originalRow": 348
+    },
+    {
+      "name": "Perumahan Kepadatan Sedang",
+      "kodunk": "R-3.1.5.0.0.0.1",
+      "originalRow": 347
+    },
+    {
+      "name": "Perumahan Kepadatan Rendah",
+      "kodunk": "R-4.0.0.0.0.0.0",
+      "originalRow": 310
+    },
+    {
+      "name": "Perumahan Kepadatan Rendah",
+      "kodunk": "R-4.0.0.0.1.0.0",
+      "originalRow": 309
+    },
+    {
+      "name": "Perumahan Kepadatan Rendah",
+      "kodunk": "R-4.0.1.0.1.0.0",
+      "originalRow": 304
+    },
+    {
+      "name": "Perumahan Kepadatan Rendah",
+      "kodunk": "R-4.0.3.0.0.0.0",
+      "originalRow": 308
+    },
+    {
+      "name": "Perumahan Kepadatan Rendah",
+      "kodunk": "R-4.0.3.0.0.0.1",
+      "originalRow": 307
+    },
+    {
+      "name": "Perumahan Kepadatan Rendah",
+      "kodunk": "R-4.0.3.0.1.0.0",
+      "originalRow": 306
+    },
+    {
+      "name": "Perumahan Kepadatan Rendah",
+      "kodunk": "R-4.0.3.0.1.0.1",
+      "originalRow": 305
+    },
+    {
+      "name": "Perumahan Kepadatan Rendah",
+      "kodunk": "R-4.0.3.0.2.0.0",
+      "originalRow": 319
+    },
+    {
+      "name": "Perumahan Kepadatan Rendah",
+      "kodunk": "R-4.0.5.0.0.0.0",
+      "originalRow": 317
+    },
+    {
+      "name": "Taman Kelurahan",
+      "kodunk": "RTH-4.0.0.0.0.0.0",
+      "originalRow": 424
+    },
+    {
+      "name": "Taman RW",
+      "kodunk": "RTH-5.0.0.0.0.0.0",
+      "originalRow": 432
+    },
+    {
+      "name": "Taman RW",
+      "kodunk": "RTH-5.0.0.0.0.0.1",
+      "originalRow": 431
+    },
+    {
+      "name": "Taman RT",
+      "kodunk": "RTH-6.0.0.0.0.0.0",
+      "originalRow": 425
+    },
+    {
+      "name": "Pemakaman",
+      "kodunk": "RTH-7.0.0.0.0.0.0",
+      "originalRow": 159
+    },
+    {
+      "name": "Pemakaman",
+      "kodunk": "RTH-7.0.0.0.0.0.1",
+      "originalRow": 167
+    },
+    {
+      "name": "Jalur Hijau",
+      "kodunk": "RTH-8.0.0.0.0.0.0",
+      "originalRow": 54
+    },
+    {
+      "name": "Jalur Hijau",
+      "kodunk": "RTH-8.0.0.0.0.0.1",
+      "originalRow": 53
+    },
+    {
+      "name": "Ruang Terbuka Non Hijau",
+      "kodunk": "RTNH.0.3.0.0.0.0",
+      "originalRow": 384
+    },
+    {
+      "name": "Ruang Terbuka Non Hijau",
+      "kodunk": "RTNH.0.3.0.0.0.1",
+      "originalRow": 383
+    },
+    {
+      "name": "Ruang Terbuka Non Hijau",
+      "kodunk": "RTNH.0.5.0.0.0.0",
+      "originalRow": 385
+    },
+    {
+      "name": "SPU Skala Kota",
+      "kodunk": "SPU-1.0.3.0.0.0.0",
+      "originalRow": 421
+    },
+    {
+      "name": "SPU Skala Kecamatan",
+      "kodunk": "SPU-2.0.0.0.0.0.0",
+      "originalRow": 391
+    },
+    {
+      "name": "SPU Skala Kecamatan",
+      "kodunk": "SPU-2.0.3.0.0.0.0",
+      "originalRow": 389
+    },
+    {
+      "name": "SPU Skala Kecamatan",
+      "kodunk": "SPU-2.0.3.0.1.0.0",
+      "originalRow": 387
+    },
+    {
+      "name": "SPU Skala Kecamatan",
+      "kodunk": "SPU-2.1.3.0.0.0.0",
+      "originalRow": 394
+    },
+    {
+      "name": "SPU Skala Kecamatan",
+      "kodunk": "SPU-2.1.3.1.0.0.1",
+      "originalRow": 392
+    },
+    {
+      "name": "SPU Skala Kecamatan",
+      "kodunk": "SPU-2.1.5.0.0.0.0",
+      "originalRow": 393
+    },
+    {
+      "name": "SPU Skala Kelurahan",
+      "kodunk": "SPU-3.0.0.0.0.0.0",
+      "originalRow": 404
+    },
+    {
+      "name": "SPU Skala Kelurahan",
+      "kodunk": "SPU-3.0.0.0.1.0.0",
+      "originalRow": 396
+    },
+    {
+      "name": "SPU Skala Kelurahan",
+      "kodunk": "SPU-3.0.3.0.0.0.0",
+      "originalRow": 395
+    },
+    {
+      "name": "SPU Skala Kelurahan",
+      "kodunk": "SPU-3.0.3.0.1.0.0",
+      "originalRow": 405
+    },
+    {
+      "name": "SPU Skala Kelurahan",
+      "kodunk": "SPU-3.0.5.0.0.0.0",
+      "originalRow": 408
+    },
+    {
+      "name": "SPU Skala Kelurahan",
+      "kodunk": "SPU-3.1.0.0.1.0.0",
+      "originalRow": 420
+    },
+    {
+      "name": "SPU Skala Kelurahan",
+      "kodunk": "SPU-3.1.3.0.0.0.0",
+      "originalRow": 419
+    },
+    {
+      "name": "SPU Skala Kelurahan",
+      "kodunk": "SPU-3.1.3.0.1.0.0",
+      "originalRow": 417
+    },
+    {
+      "name": "SPU Skala RW",
+      "kodunk": "SPU-4.0.0.0.0.0.0",
+      "originalRow": 423
+    },
+    {
+      "name": "SPU Skala RW",
+      "kodunk": "SPU-4.0.3.0.0.0.0",
+      "originalRow": 422
+    },
+    {
+      "name": "Transportasi",
+      "kodunk": "TR.0.0.0.1.0.0",
+      "originalRow": 441
+    },
+    {
+      "name": "Transportasi",
+      "kodunk": "TR.0.0.0.1.0.1",
+      "originalRow": 440
+    },
+    {
+      "name": "Transportasi",
+      "kodunk": "TR.0.3.0.1.0.0",
+      "originalRow": 439
+    },
+    {
+      "name": "Transportasi",
+      "kodunk": "TR.0.3.0.1.0.1",
+      "originalRow": 438
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.0.0.0.0.0",
+      "originalRow": 68
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.0.0.1.0.0",
+      "originalRow": 67
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.0.0.1.1.0",
+      "originalRow": 66
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.0.0.2.0.0",
+      "originalRow": 97
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.1.0.0.0.0",
+      "originalRow": 62
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.1.0.1.0.0",
+      "originalRow": 61
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.2.0.0.0.0",
+      "originalRow": 114
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.3.0.0.0.0",
+      "originalRow": 65
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.3.0.0.0.1",
+      "originalRow": 136
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.3.0.1.0.0",
+      "originalRow": 64
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.3.0.1.1.0",
+      "originalRow": 63
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.3.0.2.0.0",
+      "originalRow": 88
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.5.0.0.0.0",
+      "originalRow": 60
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.5.0.1.0.0",
+      "originalRow": 59
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.5.0.2.0.0",
+      "originalRow": 107
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.6.0.0.0.0",
+      "originalRow": 110
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.0.7.0.0.0.0",
+      "originalRow": 122
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.1.0.0.1.0.0",
+      "originalRow": 155
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.1.1.0.1.0.0",
+      "originalRow": 151
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.1.3.0.0.0.0",
+      "originalRow": 143
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.1.3.0.0.0.1",
+      "originalRow": 142
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.1.3.0.1.0.0",
+      "originalRow": 140
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.1.3.0.2.0.0",
+      "originalRow": 141
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.1.5.0.0.0.0",
+      "originalRow": 150
+    },
+    {
+      "name": "Pariwisata",
+      "kodunk": "W.1.5.0.1.0.0",
+      "originalRow": 149
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+INI UNTUK TRIKORA
+I : Diizinkan			
+T : Pemanfaatan bersyarat secara terbatas					
+T1 : Terbatas dengan pembatasan intensitas 20% pembangunan pada suatu kegiatan di luar zona/sub zona di dalam sebuah kaveling/persil. 					
+T2 : Terbatas waktu pengoperasian pukul 07.00 – 24.00 untuk kegiatan di luar zona/sub zona atau sesuai dengan aturan yang berlaku 					
+T3 : Terbatas dengan jarak minimal 100 meter untuk kegiatan sejenis dalam zona					
+B : Pemanfaatan Bersyarat Tertentu					
+B1 : Diperbolehkan dengan syarat  harus memiliki bukti izin pemanfaatan beserta persetujuan dari warga/ketua Rukun Tetangga, instansi yang berwenang, serta Forum Penataan Ruang (FPR) jika dibutuhkan; 					
+B2 : Diperbolehkan dengan syarat harus menyediakan lahan parkir dan/atau ruang terbuka hijau dalam kavling/persil;					
+B3 : Diperbolehkan dengan syarat harus mempertimbangkan aspek kebersihan, kesehatan, keamanan dan ketertiban dengan menyediakan sarana dan prasarana minimal;					
+X : Pemanfaatan yang tidak diperbolehkan					
+
+
+INI UNTUK BSB
+I : Diizinkan										
+T : Pemanfaatan bersyarat secara terbatas											
+T1 : Terbatas dengan pembatasan intensitas 20% pembangunan pada suatu kegiatan di luar zona/sub zona di dalam sebuah kaveling/persil. 											
+T2 : Terbatas waktu pengoperasian pukul 07.00 - 24.00 untuk kegiatan diluar zona/sub zona atau sesuai dengan aturan yang berlaku.											
+T3 : Terbatas dengan jarak minimal 100 meter untuk kegiatan sejenis dalam zona.											
+B : Pemanfaatan Bersyarat Tertentu.											
+B1 : Diperbolehkan dengan syarat  harus memiliki bukti izin pemanfaatan beserta persetujuan dari warga/ketua Rukun Tetangga, instansi yang berwenang, serta Forum Penataan Ruang (FPR) jika dibutuhkan.											
+B2 : Diperbolehkan dengan syarat harus menyediakan lahan parkir dan/atau ruang terbuka hijau dalam kavling/persil.											
+B3 : Diperbolehkan dengan syarat harus mempertimbangkan aspek kebersihan, kesehatan, keamanan dan ketertiban dengan menyediakan sarana dan prasarana minimal.											
+X : Pemanfaatan yang tidak diperbolehkan											
