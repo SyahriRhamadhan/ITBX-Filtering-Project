@@ -54,6 +54,7 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
   const [showWithoutRegulations, setShowWithoutRegulations] = useState(true);
   const [showJsonModal, setShowJsonModal] = useState(false);
   const [currentJsonPreview, setCurrentJsonPreview] = useState('');
+  const [currentJsonCategory, setCurrentJsonCategory] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
   const [isTableExpanded, setIsTableExpanded] = useState(false);
 
@@ -252,6 +253,8 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
     groupedByTabel.forEach((kawasanMap, tabel) => {
       const formatTabelName = (name: string) => {
         let formatted = name.replace(/TABEL\s+/i, '');
+        // Remove "Ketentuan Khusus" if it already exists to avoid duplication
+        formatted = formatted.replace(/^Ketentuan\s+Khusus\s+/i, '');
         return capitalizeWords(formatted);
       };
       
@@ -405,20 +408,19 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
       console.log('Cari intensitas:', { zona: zonaGuess, subZona: subGuess, found: intensitasData });
     }
     
-    // Add additional data fields from intensitas data or set to null
+    // Add additional data fields from intensitas data or set to "-"
     const additionalData = {
-      'KTB Maks (%)': intensitasData?.['KTB Maks (%)'] || null,
-      'Luas Kavling Min (m2)': intensitasData?.['Luas Kavling Min (m2)'] || null,
-      'Lantai Bangunan Maks. - Arteri': (intensitasData as any)?.['Lantai Bangunan Maks. - Arteri'] || null,
-      'Lantai Bangunan Maks. - Kolektor': intensitasData?.['Lantai Bangunan Maks. - Kolektor'] || null,
-      'Lantai Bangunan Maks. - Lokal': intensitasData?.['Lantai Bangunan Maks. - Lokal'] || null,
-      'Tinggi Bangunan Maks. (m) - Arteri': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Arteri'] || null,
-      'Tinggi Bangunan Maks. (m) - Kolektor': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Kolektor'] || null,
-      'Tinggi Bangunan Maks. (m) - Lokal': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Lokal'] || null,
-      'Jarak Bebas Samping Min. (m)': intensitasData?.['Jarak Bebas Samping Min. (m)'] || null,
-      'Jarak Bebas Belakang Min. (m)': intensitasData?.['Jarak Bebas Belakang Min. (m)'] || null,
-      'Tampilan Bangunan': intensitasData?.['Tampilan Bangunan'] || null,
-      'Keterangan': intensitasData?.['Keterangan'] || null,
+      'Luas Kavling Min (m2)': intensitasData?.['Luas Kavling Min (m2)'] || "-",
+      'Lantai Bangunan Maks. - Arteri': (intensitasData as any)?.['Lantai Bangunan Maks. - Arteri'] || "-",
+      'Lantai Bangunan Maks. - Kolektor': intensitasData?.['Lantai Bangunan Maks. - Kolektor'] || "-",
+      'Lantai Bangunan Maks. - Lokal': intensitasData?.['Lantai Bangunan Maks. - Lokal'] || "-",
+      'Tinggi Bangunan Maks. (m) - Arteri': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Arteri'] || "-",
+      'Tinggi Bangunan Maks. (m) - Kolektor': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Kolektor'] || "-",
+      'Tinggi Bangunan Maks. (m) - Lokal': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Lokal'] || "-",
+      'Jarak Bebas Samping Min. (m)': intensitasData?.['Jarak Bebas Samping Min. (m)'] || "-",
+      'Jarak Bebas Belakang Min. (m)': intensitasData?.['Jarak Bebas Belakang Min. (m)'] || "-",
+      'Tampilan Bangunan': intensitasData?.['Tampilan Bangunan'] || "-",
+      'Keterangan': intensitasData?.['Keterangan'] || "-",
     };
     
     // Merge the original data with additional fields
@@ -451,20 +453,20 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
       console.log('Cari intensitas (preview):', { zona: zonaGuess, subZona: subGuess, found: intensitasData });
     }
     
-    // Add additional data fields from intensitas data or set to null
+    // Add additional data fields from intensitas data or set to "-"
     const additionalData = {
-      'KTB Maks (%)': intensitasData?.['KTB Maks (%)'] || null,
-      'Luas Kavling Min (m2)': intensitasData?.['Luas Kavling Min (m2)'] || null,
-      'Lantai Bangunan Maks. - Arteri': (intensitasData as any)?.['Lantai Bangunan Maks. - Arteri'] || null,
-      'Lantai Bangunan Maks. - Kolektor': intensitasData?.['Lantai Bangunan Maks. - Kolektor'] || null,
-      'Lantai Bangunan Maks. - Lokal': intensitasData?.['Lantai Bangunan Maks. - Lokal'] || null,
-      'Tinggi Bangunan Maks. (m) - Arteri': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Arteri'] || null,
-      'Tinggi Bangunan Maks. (m) - Kolektor': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Kolektor'] || null,
-      'Tinggi Bangunan Maks. (m) - Lokal': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Lokal'] || null,
-      'Jarak Bebas Samping Min. (m)': intensitasData?.['Jarak Bebas Samping Min. (m)'] || null,
-      'Jarak Bebas Belakang Min. (m)': intensitasData?.['Jarak Bebas Belakang Min. (m)'] || null,
-      'Tampilan Bangunan': intensitasData?.['Tampilan Bangunan'] || null,
-      'Keterangan': intensitasData?.['Keterangan'] || null,
+      // 'KTB Maks (%)': intensitasData?.['KTB Maks (%)'] || "-",
+      'Luas Kavling Min (m2)': intensitasData?.['Luas Kavling Min (m2)'] || "-",
+      'Lantai Bangunan Maks. - Arteri': (intensitasData as any)?.['Lantai Bangunan Maks. - Arteri'] || "-",
+      'Lantai Bangunan Maks. - Kolektor': intensitasData?.['Lantai Bangunan Maks. - Kolektor'] || "-",
+      'Lantai Bangunan Maks. - Lokal': intensitasData?.['Lantai Bangunan Maks. - Lokal'] || "-",
+      'Tinggi Bangunan Maks. (m) - Arteri': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Arteri'] || "-",
+      'Tinggi Bangunan Maks. (m) - Kolektor': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Kolektor'] || "-",
+      'Tinggi Bangunan Maks. (m) - Lokal': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Lokal'] || "-",
+      'Jarak Bebas Samping Min. (m)': intensitasData?.['Jarak Bebas Samping Min. (m)'] || "-",
+      'Jarak Bebas Belakang Min. (m)': intensitasData?.['Jarak Bebas Belakang Min. (m)'] || "-",
+      'Tampilan Bangunan': intensitasData?.['Tampilan Bangunan'] || "-",
+      'Keterangan': intensitasData?.['Keterangan'] || "-",
     };
     
     // Merge the original data with additional fields
@@ -651,6 +653,39 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
         </div>
       </div>
 
+      {/* Preview and Copy Buttons */}
+      <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Preview & Copy Data Ketentuan Khusus</h3>
+        <div className="flex space-x-2">
+          <button
+            onClick={() => {
+              const jsonText = generateJsonForPreview(filteredActivities);
+              setCurrentJsonPreview(jsonText);
+              setCurrentJsonCategory("Data Ketentuan Khusus");
+              setShowJsonModal(true);
+            }}
+            className="px-3 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors flex-1"
+          >
+            Preview
+          </button>
+          <button
+            onClick={() => copyJsonData(filteredActivities)}
+            className={`px-4 py-2 rounded-md transition-colors flex-1 ${
+              copySuccess
+                ? "bg-green-600 text-white"
+                : "bg-purple-600 text-white hover:bg-purple-700"
+            }`}
+          >
+            {copySuccess
+              ? "✓ Data Tersalin!"
+              : "Copy Data ke Excel"}
+          </button>
+        </div>
+        <p className="text-sm text-gray-600 mt-2">
+          Gunakan "Preview" untuk melihat format JSON dengan indentasi, dan "Copy Data ke Excel" untuk menyalin data dalam format minified.
+        </p>
+      </div>
+
       {/* Results - Table Format */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="flex justify-between items-center p-4 border-b border-gray-200">
@@ -831,7 +866,7 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
             <div className="flex justify-between items-center p-4 border-b">
-              <h3 className="text-lg font-semibold text-gray-800">Preview JSON Ketentuan Khusus</h3>
+              <h3 className="text-lg font-semibold text-gray-800">Preview JSON - {currentJsonCategory}</h3>
               <button
                 onClick={() => setShowJsonModal(false)}
                 className="text-gray-500 hover:text-gray-700 text-xl font-bold"
