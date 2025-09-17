@@ -1,1567 +1,900 @@
-import React, { useState, useMemo } from "react";
-import intensitasDataTrikora from "../data/intensitas-data-merged.json";
-import intensitasDataBsb from "../data/intensitas-data-merged-bsb.json";
-
-interface IntensitasItem {
-  Zona: string;
-  SubZona: string;
-  Jenis: string | null;
-  "KDB Maks (%)": number | null;
-  "KDH Min (%)": number | null;
-  "KLB Maks": number | null;
-  "KTB Maks (%)": number | null;
-  "Luas Kavling Min (m2)": number | null;
-  "Tinggi Bangunan Maks. (m) - Arteri"?: number | null;
-  "Tinggi Bangunan Maks. (m) - Kolektor": number | null;
-  "Tinggi Bangunan Maks. (m) - Lokal": number | null;
-  "Lantai Bangunan Maks. - Arteri"?: string | null;
-  "Lantai Bangunan Maks. - Kolektor": number | null;
-  "Lantai Bangunan Maks. - Lokal": number | null;
-  "Garis Sempadan Bangunan Min. (m) - Arteri"?: number | null;
-  "Garis Sempadan Bangunan Min. (m) - Kolektor": number | null;
-  "Garis Sempadan Bangunan Min. (m) - Lokal": number | null;
-  "Jarak Bebas Samping Min. (m)": number | null;
-  "Jarak Bebas Belakang Min. (m)": number | null;
-  "Tampilan Bangunan": string | null;
-  Keterangan: string | null;
-}
-
-interface IntensitasData {
-  data: IntensitasItem[];
-  summary: {
-    totalRows: number;
-    zonaCount: number;
-    subZonaCount: number;
-    jenisKhususCount: number;
-  };
-  groupedByZona: Record<string, IntensitasItem[]>;
-  filters: {
-    zonaList: string[];
-    subZonaList: string[];
-    jenisKhususList: string[];
-  };
-  headers: string[];
-}
-
-// Function to capitalize each word
-const capitalizeWords = (text: string): string => {
-  if (!text) return text;
-  return text
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
-};
-
-interface KepsusActivity {
-  activity: string;
-  zones: {
-    "Luas (Ha)": string;
-    Ketentuan: string;
-  };
-  metadata?: {
-    kawasanType: string;
-    kodeSWP: string;
-    kodeBlok: string;
-    tabel: string;
-  };
-}
-
-interface KepsusData {
-  activities: KepsusActivity[];
-  zones: string[];
-  regulations: Record<string, string>;
-  metadata: {
-    totalRows: number;
-    headerRowIndex: number;
-    dataStartIndex: number;
-    processedAt: string;
-    headers: string[];
-  };
-}
-
-interface KepsusFilterProps {
-  data: KepsusData;
-}
-
-export default function KepsusFilter({ data }: KepsusFilterProps) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedKawasan, setSelectedKawasan] = useState("");
-  const [selectedKodeSWP, setSelectedKodeSWP] = useState("");
-  const [selectedKodeBlok, setSelectedKodeBlok] = useState("");
-  const [selectedSubZona, setSelectedSubZona] = useState("");
-  const [selectedTabel, setSelectedTabel] = useState("");
-  const [sortBy, setSortBy] = useState<"name" | "area">("name");
-  const [showWithoutRegulations, setShowWithoutRegulations] = useState(true);
-
-  // State for JSON preview and copy functionality
-  const [showJsonModal, setShowJsonModal] = useState(false);
-  const [currentJsonPreview, setCurrentJsonPreview] = useState("");
-  const [copySuccess, setCopySuccess] = useState(false);
-
-  // Get unique values for filtering
-  const kawasanTypes = useMemo(() => {
-    const types = new Set<string>();
-    data.activities.forEach((activity) => {
-      if (activity.metadata?.kawasanType) {
-        types.add(activity.metadata.kawasanType);
-      }
-    });
-    return Array.from(types).sort();
-  }, [data.activities]);
-
-  const kodeSWPList = useMemo(() => {
-    const codes = new Set<string>();
-    data.activities.forEach((activity) => {
-      if (activity.metadata?.kodeSWP) {
-        codes.add(activity.metadata.kodeSWP);
-      }
-    });
-    return Array.from(codes).sort();
-  }, [data.activities]);
-
-  const kodeBlokList = useMemo(() => {
-    const codes = new Set<string>();
-    data.activities.forEach((activity) => {
-      if (activity.metadata?.kodeBlok && activity.metadata.kodeBlok.trim()) {
-        codes.add(activity.metadata.kodeBlok);
-      }
-    });
-    return Array.from(codes).sort();
-  }, [data.activities]);
-
-  const subZonaList = useMemo(() => {
-    const zones = new Set<string>();
-    data.activities.forEach((activity) => {
-      if (activity.activity) {
-        zones.add(activity.activity);
-      }
-    });
-    return Array.from(zones).sort();
-  }, [data.activities]);
-
-  const tabelList = useMemo(() => {
-    const tables = new Set<string>();
-    data.activities.forEach((activity) => {
-      if (activity.metadata?.tabel) {
-        tables.add(activity.metadata.tabel);
-      }
-    });
-    return Array.from(tables).sort();
-  }, [data.activities]);
-
-  // Filter and sort activities
-  const filteredActivities = useMemo(() => {
-    let filtered = data.activities.filter((activity) => {
-      // Search filter
-      const matchesSearch =
-        activity.activity.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (activity.zones["Ketentuan"] &&
-          activity.zones["Ketentuan"]
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())) ||
-        (activity.metadata?.kodeSWP &&
-          activity.metadata.kodeSWP
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())) ||
-        (activity.metadata?.kodeBlok &&
-          activity.metadata.kodeBlok
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())) ||
-        (activity.metadata?.kawasanType &&
-          activity.metadata.kawasanType
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()));
-
-      // Kawasan filter
-      const matchesKawasan =
-        !selectedKawasan || activity.metadata?.kawasanType === selectedKawasan;
-
-      // Kode SWP filter
-      const matchesKodeSWP =
-        !selectedKodeSWP || activity.metadata?.kodeSWP === selectedKodeSWP;
-
-      // Kode Blok filter
-      const matchesKodeBlok =
-        !selectedKodeBlok || activity.metadata?.kodeBlok === selectedKodeBlok;
-
-      // Sub Zona filter
-      const matchesSubZona =
-        !selectedSubZona || activity.activity === selectedSubZona;
-
-      // Tabel filter
-      const matchesTabel =
-        !selectedTabel || activity.metadata?.tabel === selectedTabel;
-
-      // Regulations filter
-      const hasRegulations =
-        activity.zones["Ketentuan"] &&
-        activity.zones["Ketentuan"].trim().length > 0;
-      const matchesRegulationFilter = showWithoutRegulations || hasRegulations;
-
-      return (
-        matchesSearch &&
-        matchesKawasan &&
-        matchesKodeSWP &&
-        matchesKodeBlok &&
-        matchesSubZona &&
-        matchesTabel &&
-        matchesRegulationFilter
-      );
-    });
-
-    // Sort
-    filtered.sort((a, b) => {
-      if (sortBy === "name") {
-        return a.activity.localeCompare(b.activity);
-      } else {
-        const aArea = parseFloat(a.zones["Luas (Ha)"].replace(",", ".")) || 0;
-        const bArea = parseFloat(b.zones["Luas (Ha)"].replace(",", ".")) || 0;
-        return bArea - aArea; // Descending order for area
-      }
-    });
-
-    return filtered;
-  }, [
-    data.activities,
-    searchTerm,
-    selectedKawasan,
-    selectedKodeSWP,
-    selectedKodeBlok,
-    selectedSubZona,
-    selectedTabel,
-    sortBy,
-    showWithoutRegulations,
-  ]);
-
-  // Generate intensitas copy format function
-  const generateIntensitasCopyFormat = (
-    zona: string,
-    subZona?: string,
-    dataSource: "trikora" | "bsb" = "trikora"
-  ) => {
-    const intensitasData = getIntensitasData(zona, subZona);
-    if (!intensitasData) return "Tidak ada data intensitas yang tersedia.";
-
-    const filteredData = [intensitasData];
-    let result = "";
-
-    // Helper function to format values
-    const formatValue = (value: number | null) =>
-      value !== null ? value.toString() : "-";
-
-    // Check if data has persil (location-specific data)
-    const hasPersil = filteredData.some(
-      (item) =>
-        item.Jenis &&
-        item.Jenis !== "-" &&
-        item.Jenis.trim() !== "" &&
-        (item.Jenis.toLowerCase().includes("persil disebelah barat") ||
-          item.Jenis.toLowerCase().includes("persil disebelah timur"))
-    );
-
-    // Group data by location if persil exists
-    let westSideData = null;
-    let eastSideData = null;
-
-    if (hasPersil) {
-      westSideData =
-        filteredData.find(
-          (item) =>
-            item.Jenis &&
-            item.Jenis !== "-" &&
-            item.Jenis.trim() !== "" &&
-            item.Jenis.toLowerCase().includes("persil disebelah barat")
-        ) || null;
-      eastSideData =
-        filteredData.find(
-          (item) =>
-            item.Jenis &&
-            item.Jenis !== "-" &&
-            item.Jenis.trim() !== "" &&
-            item.Jenis.toLowerCase().includes("persil disebelah timur")
-        ) || null;
-    } else {
-      // Use first item for non-persil data
-      westSideData = filteredData[0] || null;
-      eastSideData = filteredData[0] || null;
-    }
-
-    // Check if there are multiple Jenis types (excluding persil and empty/null values)
-    const validJenisTypes = filteredData
-      .map((item) => item.Jenis)
-      .filter(
-        (jenis) =>
-          jenis &&
-          jenis !== "-" &&
-          jenis.trim() !== "" &&
-          !jenis.toLowerCase().includes("persil disebelah")
-      )
-      .filter((jenis, index, arr) => arr.indexOf(jenis) === index); // Remove duplicates
-
-    const hasMultipleJenis = validJenisTypes.length > 1;
-
-    // KDB (Koefisien Dasar Bangunan)
-    result += "Koefisien Dasar Bangunan (%)\n";
-    if (hasMultipleJenis) {
-      validJenisTypes.forEach((jenis, index) => {
-        const jenisData = filteredData.find((item) => item.Jenis === jenis);
-        const kdbValue =
-          jenisData && jenisData["KDB Maks (%)"] !== null
-            ? jenisData["KDB Maks (%)"]
-            : "-";
-        const letter = String.fromCharCode(97 + index); // a, b, c, etc.
-        const separator = index === validJenisTypes.length - 1 ? "." : "; dan";
-        result += `${letter}.: ${jenis} minimum ${
-          kdbValue !== "-" ? kdbValue : "-"
-        }${separator}\n`;
-      });
-    } else {
-      const kdbValue = filteredData.some(
-        (item) => item["KDB Maks (%)"] !== null
-      )
-        ? filteredData
-            .map((item) => item["KDB Maks (%)"] || "-")
-            .find((val) => val !== "-")
-        : "-";
-      result += `Maksimum: ${kdbValue !== "-" ? kdbValue + "%" : "-"}\n`;
-    }
-    result += "\n";
-
-    // KLB (Koefisien Lantai Bangunan)
-    result += "Koefisien Lantai Bangunan\n";
-    if (hasMultipleJenis) {
-      validJenisTypes.forEach((jenis, index) => {
-        const jenisData = filteredData.find((item) => item.Jenis === jenis);
-        const klbValue =
-          jenisData && jenisData["KLB Maks"] !== null
-            ? jenisData["KLB Maks"].toString().replace(".", ",")
-            : "-";
-        const letter = String.fromCharCode(97 + index); // a, b, c, etc.
-        const separator = index === validJenisTypes.length - 1 ? "." : "; dan";
-        result += `${letter}.: ${jenis} = ${
-          klbValue !== "-" ? klbValue : "-"
-        }${separator}\n`;
-      });
-    } else {
-      const klbMaksValue = filteredData.some(
-        (item) => item["KLB Maks"] !== null
-      )
-        ? filteredData
-            .map((item) => item["KLB Maks"] || "-")
-            .find((val) => val !== "-")
-        : "-";
-      result += `KLB Maksimum: ${
-        klbMaksValue !== "-" && klbMaksValue !== undefined
-          ? klbMaksValue.toString().replace(".", ",")
-          : "-"
-      }\n`;
-      result += `KLB Minimum: -\n`;
-    }
-    result += "\n";
-
-    // KDH (Koefisien Dasar Hijau)
-    result += "Koefisien Dasar Hijau (%)\n";
-    if (hasMultipleJenis) {
-      validJenisTypes.forEach((jenis, index) => {
-        const jenisData = filteredData.find((item) => item.Jenis === jenis);
-        const kdhValue =
-          jenisData && jenisData["KDH Min (%)"] !== null
-            ? jenisData["KDH Min (%)"]
-            : "-";
-        const letter = String.fromCharCode(97 + index); // a, b, c, etc.
-        const separator = index === validJenisTypes.length - 1 ? "." : "; dan";
-        result += `${letter}.: ${jenis} minimum ${
-          kdhValue !== "-" ? kdhValue : "-"
-        }${separator}\n`;
-      });
-    } else {
-      const kdhValue = filteredData.some((item) => item["KDH Min (%)"] !== null)
-        ? filteredData
-            .map((item) => item["KDH Min (%)"] || "-")
-            .find((val) => val !== "-")
-        : "-";
-      result += `Minimum: ${kdhValue}\n`;
-    }
-    result += "\n";
-
-    // Luas Kaveling
-    result += "Luas Kaveling\n";
-    const luasKavling = filteredData.some(
-      (item) => item["Luas Kavling Min (m2)"] !== null
-    )
-      ? filteredData
-          .map((item) => item["Luas Kavling Min (m2)"] || "-")
-          .join(", ")
-      : "-";
-    result += `Minimum: ${luasKavling}\n`;
-    result += "\n";
-
-    // Ketinggian Bangunan - Conditional format based on persil and multiple jenis
-    result += "Ketinggian Bangunan\n";
-
-    if (hasMultipleJenis && !hasPersil) {
-      // Grouped format for multiple jenis
-      validJenisTypes.forEach((jenis, jenisIndex) => {
-        const jenisData = filteredData.find((item) => item.Jenis === jenis);
-        result += `${jenis}:\n`;
-
-        let roadIndex = 0;
-        if (dataSource === "bsb") {
-          const tinggiArteri =
-            jenisData &&
-            jenisData["Tinggi Bangunan Maks. (m) - Arteri"] !== null
-              ? jenisData["Tinggi Bangunan Maks. (m) - Arteri"]
-              : "-";
-          const letter = String.fromCharCode(97 + roadIndex);
-          result += `    ${letter}.: Jalan Arteri = ${
-            tinggiArteri !== "-" ? tinggiArteri : "-"
-          };\n`;
-          roadIndex++;
-        }
-
-        const tinggiKolektor =
-          jenisData &&
-          jenisData["Tinggi Bangunan Maks. (m) - Kolektor"] !== null
-            ? jenisData["Tinggi Bangunan Maks. (m) - Kolektor"]
-            : "-";
-        const kolektorLetter = String.fromCharCode(97 + roadIndex);
-        result += `    ${kolektorLetter}.: Jalan Kolektor = ${
-          tinggiKolektor !== "-" ? tinggiKolektor : "-"
-        }; dan\n`;
-        roadIndex++;
-
-        const tinggiLokal =
-          jenisData && jenisData["Tinggi Bangunan Maks. (m) - Lokal"] !== null
-            ? jenisData["Tinggi Bangunan Maks. (m) - Lokal"]
-            : "-";
-        const lokalLetter = String.fromCharCode(97 + roadIndex);
-        result += `    ${lokalLetter}.: Jalan Lokal = ${
-          tinggiLokal !== "-" ? tinggiLokal : "-"
-        }.\n`;
-
-        if (jenisIndex < validJenisTypes.length - 1) {
-          result += " \n"; // Add space between jenis groups
-        }
-      });
-    } else if (hasPersil) {
-      // Format with persil
-      result += "Persil disebelah barat jalan Nasional:\n";
-      if (dataSource === "bsb") {
-        const tinggiArteriWest =
-          westSideData &&
-          westSideData["Tinggi Bangunan Maks. (m) - Arteri"] !== null
-            ? westSideData["Tinggi Bangunan Maks. (m) - Arteri"]
-            : "-";
-        result += `    a.: Jalan Arteri = ${tinggiArteriWest};\n`;
-      }
-      const tinggiKolektorWest =
-        westSideData &&
-        westSideData["Tinggi Bangunan Maks. (m) - Kolektor"] !== null
-          ? westSideData["Tinggi Bangunan Maks. (m) - Kolektor"]
-          : "-";
-      result += `    ${
-        dataSource === "bsb" ? "b" : "a"
-      }.: Jalan Kolektor = ${tinggiKolektorWest}; dan\n`;
-      const tinggiLokalWest =
-        westSideData &&
-        westSideData["Tinggi Bangunan Maks. (m) - Lokal"] !== null
-          ? westSideData["Tinggi Bangunan Maks. (m) - Lokal"]
-          : "-";
-      result += `    ${
-        dataSource === "bsb" ? "c" : "b"
-      }.: Jalan Lokal = ${tinggiLokalWest}.\n`;
-      result += "Persil disebelah timur jalan Nasional:\n";
-      if (dataSource === "bsb") {
-        const tinggiArteriEast =
-          eastSideData &&
-          eastSideData["Tinggi Bangunan Maks. (m) - Arteri"] !== null
-            ? eastSideData["Tinggi Bangunan Maks. (m) - Arteri"]
-            : "-";
-        result += `    a.: Jalan Arteri = ${tinggiArteriEast};\n`;
-      }
-      const tinggiKolektorEast =
-        eastSideData &&
-        eastSideData["Tinggi Bangunan Maks. (m) - Kolektor"] !== null
-          ? eastSideData["Tinggi Bangunan Maks. (m) - Kolektor"]
-          : "-";
-      result += `    ${
-        dataSource === "bsb" ? "b" : "a"
-      }.: Jalan Kolektor = ${tinggiKolektorEast}; dan\n`;
-      const tinggiLokalEast =
-        eastSideData &&
-        eastSideData["Tinggi Bangunan Maks. (m) - Lokal"] !== null
-          ? eastSideData["Tinggi Bangunan Maks. (m) - Lokal"]
-          : "-";
-      result += `    ${
-        dataSource === "bsb" ? "c" : "b"
-      }.: Jalan Lokal = ${tinggiLokalEast}.\n`;
-    } else {
-      // Simple format without persil
-      if (dataSource === "bsb") {
-        const tinggiArteri =
-          westSideData &&
-          westSideData["Tinggi Bangunan Maks. (m) - Arteri"] !== null
-            ? westSideData["Tinggi Bangunan Maks. (m) - Arteri"]
-            : "-";
-        result += `Maksimum Arteri: ${
-          tinggiArteri !== "-" ? tinggiArteri + " m" : "-"
-        }\n`;
-      }
-      const tinggiKolektor =
-        westSideData &&
-        westSideData["Tinggi Bangunan Maks. (m) - Kolektor"] !== null
-          ? westSideData["Tinggi Bangunan Maks. (m) - Kolektor"]
-          : "-";
-      const tinggiLokal =
-        westSideData &&
-        westSideData["Tinggi Bangunan Maks. (m) - Lokal"] !== null
-          ? westSideData["Tinggi Bangunan Maks. (m) - Lokal"]
-          : "-";
-      result += `Maksimum Kolektor: ${
-        tinggiKolektor !== "-" ? tinggiKolektor + " m" : "-"
-      }\n`;
-      result += `Maksimum Lokal: ${
-        tinggiLokal !== "-" ? tinggiLokal + " m" : "-"
-      }\n`;
-    }
-    result += "\n";
-
-    // Koefisien Tapak Basement
-    result += "Koefisien Tapak Basement\n";
-    const ktb = filteredData.some((item) => item["KTB Maks (%)"] !== null)
-      ? filteredData
-          .map((item) =>
-            item["KTB Maks (%)"] ? `${item["KTB Maks (%)"]}%` : "-"
-          )
-          .join(", ")
-      : "-";
-    result += `${ktb}\n`;
-    result += "\n";
-
-    // Garis Sempadan Bangunan - Conditional format based on persil and multiple jenis
-    result += "Garis Sempadan Bangunan\n";
-
-    if (hasMultipleJenis && !hasPersil) {
-      // Grouped format for multiple jenis
-      validJenisTypes.forEach((jenis, jenisIndex) => {
-        const jenisData = filteredData.find((item) => item.Jenis === jenis);
-        result += `${jenis}:\n`;
-
-        let roadIndex = 0;
-        if (dataSource === "bsb") {
-          const gsbArteri =
-            jenisData &&
-            jenisData["Garis Sempadan Bangunan Min. (m) - Arteri"] !== null
-              ? jenisData["Garis Sempadan Bangunan Min. (m) - Arteri"]
-              : "-";
-          const letter = String.fromCharCode(97 + roadIndex);
-          result += `    ${letter}.: Jalan Arteri = ${
-            gsbArteri !== "-" ? gsbArteri : "-"
-          };\n`;
-          roadIndex++;
-        }
-
-        const gsbKolektor =
-          jenisData &&
-          jenisData["Garis Sempadan Bangunan Min. (m) - Kolektor"] !== null
-            ? jenisData["Garis Sempadan Bangunan Min. (m) - Kolektor"]
-            : "-";
-        const kolektorLetter = String.fromCharCode(97 + roadIndex);
-        result += `    ${kolektorLetter}.: Jalan Kolektor = ${
-          gsbKolektor !== "-" ? gsbKolektor : "-"
-        }; dan\n`;
-        roadIndex++;
-
-        const gsbLokal =
-          jenisData &&
-          jenisData["Garis Sempadan Bangunan Min. (m) - Lokal"] !== null
-            ? jenisData["Garis Sempadan Bangunan Min. (m) - Lokal"]
-            : "-";
-        const lokalLetter = String.fromCharCode(97 + roadIndex);
-        result += `    ${lokalLetter}.: Jalan Lokal = ${
-          gsbLokal !== "-" ? gsbLokal : "-"
-        }.\n`;
-
-        if (jenisIndex < validJenisTypes.length - 1) {
-          result += " \n"; // Add space between jenis groups
-        }
-      });
-    } else if (hasPersil) {
-      // Format with persil
-      result += "Persil disebelah barat jalan Nasional:\n";
-      if (dataSource === "bsb") {
-        const gsbArteriWest =
-          westSideData &&
-          westSideData["Garis Sempadan Bangunan Min. (m) - Arteri"] !== null
-            ? westSideData["Garis Sempadan Bangunan Min. (m) - Arteri"]
-            : "-";
-        result += `    a.: Jalan Arteri = ${gsbArteriWest};\n`;
-      }
-      const gsbKolektorWest =
-        westSideData &&
-        westSideData["Garis Sempadan Bangunan Min. (m) - Kolektor"] !== null
-          ? westSideData["Garis Sempadan Bangunan Min. (m) - Kolektor"]
-          : "-";
-      result += `    ${
-        dataSource === "bsb" ? "b" : "a"
-      }.: Jalan Kolektor = ${gsbKolektorWest}; dan\n`;
-      const gsbLokalWest =
-        westSideData &&
-        westSideData["Garis Sempadan Bangunan Min. (m) - Lokal"] !== null
-          ? westSideData["Garis Sempadan Bangunan Min. (m) - Lokal"]
-          : "-";
-      result += `    ${
-        dataSource === "bsb" ? "c" : "b"
-      }.: Jalan Lokal = ${gsbLokalWest}.\n`;
-      result += "Persil disebelah timur jalan Nasional:\n";
-      if (dataSource === "bsb") {
-        const gsbArteriEast =
-          eastSideData &&
-          eastSideData["Garis Sempadan Bangunan Min. (m) - Arteri"] !== null
-            ? eastSideData["Garis Sempadan Bangunan Min. (m) - Arteri"]
-            : "-";
-        result += `    a.: Jalan Arteri = ${gsbArteriEast};\n`;
-      }
-      const gsbKolektorEast =
-        eastSideData &&
-        eastSideData["Garis Sempadan Bangunan Min. (m) - Kolektor"] !== null
-          ? eastSideData["Garis Sempadan Bangunan Min. (m) - Kolektor"]
-          : "-";
-      result += `    ${
-        dataSource === "bsb" ? "b" : "a"
-      }.: Jalan Kolektor = ${gsbKolektorEast}; dan\n`;
-      const gsbLokalEast =
-        eastSideData &&
-        eastSideData["Garis Sempadan Bangunan Min. (m) - Lokal"] !== null
-          ? eastSideData["Garis Sempadan Bangunan Min. (m) - Lokal"]
-          : "-";
-      result += `    ${
-        dataSource === "bsb" ? "c" : "b"
-      }.: Jalan Lokal = ${gsbLokalEast}.\n`;
-    } else {
-      // Simple format without persil
-      if (dataSource === "bsb") {
-        const gsbArteri =
-          westSideData &&
-          westSideData["Garis Sempadan Bangunan Min. (m) - Arteri"] !== null
-            ? westSideData["Garis Sempadan Bangunan Min. (m) - Arteri"]
-            : "-";
-        result += `Minimum Arteri: ${
-          gsbArteri !== "-" ? gsbArteri + " m" : "-"
-        }\n`;
-      }
-      const gsbKolektor =
-        westSideData &&
-        westSideData["Garis Sempadan Bangunan Min. (m) - Kolektor"] !== null
-          ? westSideData["Garis Sempadan Bangunan Min. (m) - Kolektor"]
-          : "-";
-      const gsbLokal =
-        westSideData &&
-        westSideData["Garis Sempadan Bangunan Min. (m) - Lokal"] !== null
-          ? westSideData["Garis Sempadan Bangunan Min. (m) - Lokal"]
-          : "-";
-      result += `Minimum Kolektor: ${
-        gsbKolektor !== "-" ? gsbKolektor + " m" : "-"
-      }\n`;
-      result += `Minimum Lokal: ${gsbLokal !== "-" ? gsbLokal + " m" : "-"}\n`;
-    }
-    result += "\n";
-
-    // Jarak Bebas Samping (JBS)
-    result += "Jarak Bebas Samping (JBS)\n";
-    if (hasMultipleJenis) {
-      validJenisTypes.forEach((jenis, index) => {
-        const jenisData = filteredData.find((item) => item.Jenis === jenis);
-        const jbsValue =
-          jenisData && jenisData["Jarak Bebas Samping Min. (m)"] !== null
-            ? jenisData["Jarak Bebas Samping Min. (m)"]
-            : "-";
-        const letter = String.fromCharCode(97 + index);
-        const separator = index === validJenisTypes.length - 1 ? "." : "; dan";
-        result += `${letter}.: ${jenis} minimum ${
-          jbsValue !== "-" ? jbsValue + " m" : "-"
-        }${separator}\n`;
-      });
-    } else {
-      const jbsValue =
-        westSideData && westSideData["Jarak Bebas Samping Min. (m)"] !== null
-          ? `${westSideData["Jarak Bebas Samping Min. (m)"]} m`
-          : "-";
-      result += `Minimum: ${jbsValue}\n`;
-    }
-    result += "\n";
-
-    // Jarak Bebas Belakang (JBB)
-    result += "Jarak Bebas Belakang (JBB)\n";
-    if (hasMultipleJenis) {
-      validJenisTypes.forEach((jenis, index) => {
-        const jenisData = filteredData.find((item) => item.Jenis === jenis);
-        const jbbValue =
-          jenisData && jenisData["Jarak Bebas Belakang Min. (m)"] !== null
-            ? jenisData["Jarak Bebas Belakang Min. (m)"]
-            : "-";
-        const letter = String.fromCharCode(97 + index);
-        const separator = index === validJenisTypes.length - 1 ? "." : "; dan";
-        result += `${letter}.: ${jenis} minimum ${
-          jbbValue !== "-" ? jbbValue + " m" : "-"
-        }${separator}\n`;
-      });
-    } else {
-      const jbbValue =
-        westSideData && westSideData["Jarak Bebas Belakang Min. (m)"] !== null
-          ? `${westSideData["Jarak Bebas Belakang Min. (m)"]} m`
-          : "-";
-      result += `Minimum: ${jbbValue}\n`;
-    }
-    result += "\n";
-
-    // Lantai Bangunan
-    result += "Lantai Bangunan\n";
-    const lantaiKolektor = filteredData.some(
-      (item) => item["Lantai Bangunan Maks. - Kolektor"] !== null
-    )
-      ? filteredData
-          .map((item) => item["Lantai Bangunan Maks. - Kolektor"] || "-")
-          .join(", ")
-      : "-";
-    const lantaiLokal = filteredData.some(
-      (item) => item["Lantai Bangunan Maks. - Lokal"] !== null
-    )
-      ? filteredData
-          .map((item) => item["Lantai Bangunan Maks. - Lokal"] || "-")
-          .join(", ")
-      : "-";
-    result += `Maksimum Kolektor: ${lantaiKolektor}\n`;
-    result += `Maksimum Lokal: ${lantaiLokal}\n`;
-    result += "\n";
-
-    // Tampilan Bangunan
-    const tampilanBangunanData = filteredData.filter(
-      (item) => item["Tampilan Bangunan"] && item["Tampilan Bangunan"] !== "-"
-    );
-    if (tampilanBangunanData.length > 0) {
-      result += "Tampilan Bangunan\n";
-      if (hasMultipleJenis) {
-        // Get unique tampilan bangunan values for each jenis
-        const jenisWithTampilan = validJenisTypes.filter((jenis) => {
-          const jenisData = filteredData.find((item) => item.Jenis === jenis);
-          return (
-            jenisData &&
-            jenisData["Tampilan Bangunan"] &&
-            jenisData["Tampilan Bangunan"] !== "-"
-          );
-        });
-
-        jenisWithTampilan.forEach((jenis) => {
-          const jenisData = filteredData.find((item) => item.Jenis === jenis);
-          if (jenisData && jenisData["Tampilan Bangunan"]) {
-            result += `${jenis}:\n`;
-            result += `${jenisData["Tampilan Bangunan"]}\n`;
-          }
-        });
-      } else {
-        const tampilanBangunan = filteredData.some(
-          (item) => item["Tampilan Bangunan"]
-        )
-          ? filteredData
-              .map((item) => item["Tampilan Bangunan"] || "-")
-              .join(", ")
-          : "-";
-        result += `${tampilanBangunan}\n`;
-      }
-      result += "\n";
-    }
-
-    // Keterangan
-    const keteranganData = filteredData.filter(
-      (item) => item["Keterangan"] && item["Keterangan"] !== "-"
-    );
-    if (keteranganData.length > 0) {
-      result += "Keterangan\n";
-      if (hasMultipleJenis) {
-        // Get unique keterangan values for each jenis
-        const jenisWithKeterangan = validJenisTypes.filter((jenis) => {
-          const jenisData = filteredData.find((item) => item.Jenis === jenis);
-          return (
-            jenisData &&
-            jenisData["Keterangan"] &&
-            jenisData["Keterangan"] !== "-"
-          );
-        });
-
-        jenisWithKeterangan.forEach((jenis) => {
-          const jenisData = filteredData.find((item) => item.Jenis === jenis);
-          if (jenisData && jenisData["Keterangan"]) {
-            result += `${jenis}:\n`;
-            result += `${jenisData["Keterangan"]}\n`;
-          }
-        });
-      } else {
-        const keterangan = filteredData.some((item) => item["Keterangan"])
-          ? filteredData.map((item) => item["Keterangan"] || "-").join(", ")
-          : "-";
-        result += `${keterangan}\n`;
-      }
-    }
-
-    return result;
-  };
-
-  // Generate copy format function
-  const generateCopyFormat = (activities: KepsusActivity[]) => {
-    const groupedByTabel = new Map<string, Map<string, KepsusActivity[]>>();
-
-    // Group activities by tabel first, then by kawasanType
-    activities.forEach((activity) => {
-      const tabel = activity.metadata?.tabel || "Tidak Diketahui";
-      const kawasanType = activity.metadata?.kawasanType || "Tidak Diketahui";
-
-      if (!groupedByTabel.has(tabel)) {
-        groupedByTabel.set(tabel, new Map());
-      }
-
-      const kawasanMap = groupedByTabel.get(tabel)!;
-      if (!kawasanMap.has(kawasanType)) {
-        kawasanMap.set(kawasanType, []);
-      }
-
-      kawasanMap.get(kawasanType)!.push(activity);
-    });
-
-    let result = "";
-
-    groupedByTabel.forEach((kawasanMap, tabel) => {
-      // Convert tabel name to title case format using capitalizeWords
-      const formatTabelName = (name: string) => {
-        let formatted = name.replace(/TABEL\s+/i, "");
-
-        // Use capitalizeWords function for consistent formatting
-        return capitalizeWords(formatted);
-      };
-
-      result += `${formatTabelName(tabel)}:\n`;
-
-      kawasanMap.forEach((kawasanActivities, kawasanType) => {
-        // Normal processing for all kawasanType
-        result += `  ${capitalizeWords(kawasanType)}:\n`;
-
-        const ketentuan = kawasanActivities[0].zones["Ketentuan"];
-        if (ketentuan) {
-          const lines = ketentuan.split(/\r?\n/).filter((line) => line.trim());
-          let letterIndex = 0;
-
-          lines.forEach((line) => {
-            const trimmedLine = line.trim();
-            if (trimmedLine) {
-              if (!trimmedLine.startsWith("(Sumber:")) {
-                const letter = String.fromCharCode(97 + letterIndex);
-
-                if (trimmedLine.match(/^\d+\./)) {
-                  const contentAfterNumber = trimmedLine.replace(
-                    /^\d+\.\s*/,
-                    ""
-                  );
-                  result += `    ${letter}.: ${contentAfterNumber}\n`;
-                } else {
-                  result += `    ${letter}.: ${trimmedLine}\n`;
-                }
-                letterIndex++;
-              }
-            }
-          });
-        }
-
-        result += "\n";
-      });
-    });
-
-    return result.trim();
-  };
-
-  // Generate JSON format for ketentuan khusus
-  // Generate JSON format for ketentuan khusus (dengan tambahan intensitas)
-  const generateJsonForCategory = (activities: KepsusActivity[]) => {
-    const result: any = {};
-    const groupedByTabel = new Map<string, Map<string, KepsusActivity[]>>();
-
-    // Group activities by tabel first, then by kawasanType
-    activities.forEach((activity) => {
-      const tabel = activity.metadata?.tabel || "Tidak Diketahui";
-      const kawasanType = activity.metadata?.kawasanType || "Tidak Diketahui";
-
-      if (!groupedByTabel.has(tabel)) {
-        groupedByTabel.set(tabel, new Map());
-      }
-
-      const kawasanMap = groupedByTabel.get(tabel)!;
-      if (!kawasanMap.has(kawasanType)) {
-        kawasanMap.set(kawasanType, []);
-      }
-
-      kawasanMap.get(kawasanType)!.push(activity);
-    });
-
-    groupedByTabel.forEach((kawasanMap, tabel) => {
-      const formatTabelName = (name: string) => {
-        let formatted = name.replace(/TABEL\s+/i, "");
-        return capitalizeWords(formatted);
-      };
-
-      const tabelName = `Ketentuan Khusus ${formatTabelName(tabel)}`;
-      result[tabelName] = {};
-
-      kawasanMap.forEach((kawasanActivities, kawasanType) => {
-        const kawasanName = capitalizeWords(kawasanType);
-        result[tabelName][kawasanName] = {};
-
-        const ketentuan = kawasanActivities[0].zones["Ketentuan"];
-        if (ketentuan) {
-          const lines = ketentuan.split(/\r?\n/).filter((line) => line.trim());
-          let letterIndex = 0;
-
-          lines.forEach((line, i) => {
-            const trimmedLine = line.trim();
-            if (trimmedLine && !trimmedLine.startsWith("(Sumber:")) {
-              const letter = String.fromCharCode(97 + letterIndex) + ".";
-
-              let content;
-              if (trimmedLine.match(/^\d+\./)) {
-                content = trimmedLine.replace(/^\d+\.\s*/, "");
-              } else {
-                content = trimmedLine;
-              }
-
-              // Add punctuation
-              if (i < lines.length - 1 && letterIndex > 0) {
-                content += ";";
-              } else if (i === lines.length - 1 && letterIndex > 0) {
-                content += ".";
-              }
-
-              result[tabelName][kawasanName][letter] = content;
-              letterIndex++;
-            }
-          });
-
-          // Add 'dan' before last item if more than one
-          const keys = Object.keys(result[tabelName][kawasanName]);
-          if (keys.length > 1) {
-            const lastKey = keys[keys.length - 1];
-            const secondLastKey = keys[keys.length - 2];
-            result[tabelName][kawasanName][secondLastKey] = result[tabelName][
-              kawasanName
-            ][secondLastKey].replace(/[;.]?$/, "; dan");
-          }
-        }
-
-        // === Tambahan data dari intensitas ===
-        const firstActivity = kawasanActivities[0];
-        const intensitasData = getIntensitasData(
-          firstActivity.metadata?.kawasanType ?? "",
-          firstActivity.activity
-        );
-      });
-    });
-
-    return { data: result };
-  };
-
-  // Normalize function for better matching
-  const normalize = (s: string) => 
-    s.toLowerCase()
-      .replace(/\s+/g, " ")
-      .replace(/[^\p{L}\p{N} ]/gu, "")      // remove punctuation
-      .replace(/\b(kawasan|zona|sub\s*zona)\b/g, "") // remove common words
-      .trim();
-
-  // Function to get intensitas data for a specific zona/subzona
-  // Perbaiki cara ambil data intensitas dengan normalisasi dan fallback
-  const getIntensitasData = (zona: string, subZona?: string) => {
-    const datasets = [
-      intensitasDataTrikora,
-      intensitasDataBsb,
-    ] as IntensitasData[];
-
-    const nz = normalize(zona || "");
-    const ns = normalize(subZona || "");
-
-    for (const dataset of datasets) {
-      const rows = dataset?.data ?? [];
-
-      // 1) exact match zona + subzona
-      if (nz && ns) {
-        const exactBoth = rows.find(it => normalize(it.Zona) === nz && normalize(it.SubZona) === ns);
-        if (exactBoth) return exactBoth;
-      }
-
-      // 2) exact match subzona saja
-      if (ns) {
-        const exactSub = rows.find(it => normalize(it.SubZona) === ns);
-        if (exactSub) return exactSub;
-      }
-
-      // 3) exact match zona saja
-      if (nz) {
-        const exactZona = rows.find(it => normalize(it.Zona) === nz);
-        if (exactZona) return exactZona;
-      }
-
-      // 4) contains (longgar) zona + subzona
-      if (nz && ns) {
-        const looseBoth = rows.find(it => normalize(it.Zona).includes(nz) && normalize(it.SubZona).includes(ns));
-        if (looseBoth) return looseBoth;
-      }
-
-      // 5) contains subzona saja
-      if (ns) {
-        const looseSub = rows.find(it => normalize(it.SubZona).includes(ns));
-        if (looseSub) return looseSub;
-      }
-    }
-    return null;
-  };
-
-  // Generate minified JSON for copy
-  const generateMinifiedJsonForCategory = (activities: KepsusActivity[]) => {
-    const jsonData = generateJsonForCategory(activities);
-
-    // Try to get intensitas data from the first activity's zona/subzona
-    let intensitasData = null;
-    if (activities.length > 0) {
-      const firstActivity = activities[0];
-      const zonaGuess = firstActivity.metadata?.kawasanType?.trim() ?? "";
-      const subGuess = firstActivity.activity?.trim() ?? "";
-      
-      // Try multiple fallback strategies
-      intensitasData =
-        getIntensitasData(zonaGuess, subGuess) ||
-        getIntensitasData(zonaGuess) ||
-        getIntensitasData("", subGuess);
-        
-      // Debug log to check what we found
-      console.log("Cari intensitas:", { zona: zonaGuess, subZona: subGuess, found: intensitasData });
-    }
-
-    // Add additional data fields from intensitas data or set to null
-    const additionalData = {
-      "KTB Maks (%)": intensitasData?.["KTB Maks (%)"] || null,
-      "Luas Kavling Min (m2)":
-        intensitasData?.["Luas Kavling Min (m2)"] || null,
-      "Lantai Bangunan Maks. - Kolektor":
-        intensitasData?.["Lantai Bangunan Maks. - Kolektor"] || null,
-      "Lantai Bangunan Maks. - Lokal":
-        intensitasData?.["Lantai Bangunan Maks. - Lokal"] || null,
-      "Jarak Bebas Samping Min. (m)":
-        intensitasData?.["Jarak Bebas Samping Min. (m)"] || null,
-      "Jarak Bebas Belakang Min. (m)":
-        intensitasData?.["Jarak Bebas Belakang Min. (m)"] || null,
-      "Tampilan Bangunan": intensitasData?.["Tampilan Bangunan"] || null,
-      Keterangan: intensitasData?.["Keterangan"] || null,
-    };
-
-    // Merge the original data with additional fields
-    const finalData = {
-      ...jsonData,
-      ...additionalData,
-    };
-
-    return JSON.stringify(finalData);
-  };
-
-  // Generate formatted JSON for preview
-  const generateJsonForPreview = (activities: KepsusActivity[]) => {
-    const jsonData = generateJsonForCategory(activities);
-
-    // Try to get intensitas data from the first activity's zona/subzona
-    let intensitasData = null;
-    if (activities.length > 0) {
-      const firstActivity = activities[0];
-      const zonaGuess = firstActivity.metadata?.kawasanType?.trim() ?? "";
-      const subGuess = firstActivity.activity?.trim() ?? "";
-      
-      // Try multiple fallback strategies
-      intensitasData =
-        getIntensitasData(zonaGuess, subGuess) ||
-        getIntensitasData(zonaGuess) ||
-        getIntensitasData("", subGuess);
-        
-      // Debug log to check what we found
-      console.log("Cari intensitas (preview):", { zona: zonaGuess, subZona: subGuess, found: intensitasData });
-    }
-
-    // Add additional data fields from intensitas data or set to null
-    const additionalData = {
-      "KTB Maks (%)": intensitasData?.["KTB Maks (%)"] || null,
-      "Luas Kavling Min (m2)":
-        intensitasData?.["Luas Kavling Min (m2)"] || null,
-      "Lantai Bangunan Maks. - Kolektor":
-        intensitasData?.["Lantai Bangunan Maks. - Kolektor"] || null,
-      "Lantai Bangunan Maks. - Lokal":
-        intensitasData?.["Lantai Bangunan Maks. - Lokal"] || null,
-      "Jarak Bebas Samping Min. (m)":
-        intensitasData?.["Jarak Bebas Samping Min. (m)"] || null,
-      "Jarak Bebas Belakang Min. (m)":
-        intensitasData?.["Jarak Bebas Belakang Min. (m)"] || null,
-      "Tampilan Bangunan": intensitasData?.["Tampilan Bangunan"] || null,
-      Keterangan: intensitasData?.["Keterangan"] || null,
-    };
-
-    // Merge the original data with additional fields
-    const finalData = {
-      ...jsonData,
-      ...additionalData,
-    };
-
-    return JSON.stringify(finalData, null, 2);
-  };
-
-  // Copy JSON function
-  const copyJsonData = async () => {
-    try {
-      const jsonText = generateMinifiedJsonForCategory(filteredActivities);
-      await navigator.clipboard.writeText(jsonText);
-      setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy JSON: ", err);
-    }
-  };
-
-  return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Filter Ketentuan Khusus Kawasan
-        </h1>
-        <p className="text-gray-600">
-          Total: {filteredActivities.length} dari {data.activities.length}{" "}
-          ketentuan khusus
-        </p>
-      </div>
-
-      {/* Filters */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-          {/* Search */}
-          {/* <div className="col-span-1 md:col-span-2 lg:col-span-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Pencarian
-            </label>
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Cari aktivitas, ketentuan, atau kode..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div> */}
-
-          {/* Tabel Filter */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Tabel
-            </label>
-            <select
-              value={selectedTabel}
-              onChange={(e) => setSelectedTabel(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Semua Tabel</option>
-              {tabelList.map((tabel) => (
-                <option key={tabel} value={tabel}>
-                  {capitalizeWords(tabel)}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Kawasan Filter */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Sub Kawasan
-            </label>
-            <select
-              value={selectedKawasan}
-              onChange={(e) => setSelectedKawasan(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Semua Kawasan</option>
-              {kawasanTypes.map((type) => (
-                <option key={type} value={type}>
-                  {capitalizeWords(type)}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Sub Zona Filter */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Nama Sub-Zona
-            </label>
-            <select
-              value={selectedSubZona}
-              onChange={(e) => setSelectedSubZona(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Semua Sub-Zona</option>
-              {subZonaList.map((zona) => (
-                <option key={zona} value={zona}>
-                  {zona}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Kode SWP Filter */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Kode SWP
-            </label>
-            <select
-              value={selectedKodeSWP}
-              onChange={(e) => setSelectedKodeSWP(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Semua Kode SWP</option>
-              {kodeSWPList.map((code) => (
-                <option key={code} value={code}>
-                  {code}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Kode Blok Filter */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Kode Blok
-            </label>
-            <select
-              value={selectedKodeBlok}
-              onChange={(e) => setSelectedKodeBlok(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Semua Kode Blok</option>
-              {kodeBlokList.map((code) => (
-                <option key={code} value={code}>
-                  {code}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Sort */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Urutkan
-            </label>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as "name" | "area")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="name">Nama</option>
-              <option value="area">Luas Area</option>
-            </select>
-          </div>
-
-          {/* Show without regulations */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Filter Ketentuan
-            </label>
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={showWithoutRegulations}
-                onChange={(e) => setShowWithoutRegulations(e.target.checked)}
-                className="mr-2"
-              />
-              <span className="text-sm text-gray-700">
-                Tampilkan tanpa ketentuan
-              </span>
-            </label>
-          </div>
-
-          {/* Clear Filters Button */}
-          <div className="flex items-end">
-            <button
-              onClick={() => {
-                setSearchTerm("");
-                setSelectedKawasan("");
-                setSelectedKodeSWP("");
-                setSelectedKodeBlok("");
-                setSelectedSubZona("");
-                setSelectedTabel("");
-                setShowWithoutRegulations(true);
-              }}
-              className="w-full px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-            >
-              Reset Filter
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Results - Table Format */}
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        {filteredActivities.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">
-              Tidak ada data yang sesuai dengan filter.
-            </p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Tabel
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Sub Kawasan
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Nama Sub-Zona
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Kode SWP
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Kode Blok
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Luas (Ha)
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Ketentuan
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredActivities.map((activity, index) => (
-                  <tr
-                    key={index}
-                    className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {capitalizeWords(
-                        activity.metadata?.tabel || "TABEL KETENTUAN KHUSUS"
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {capitalizeWords(activity.metadata?.kawasanType || "-")}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {activity.activity}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {activity.metadata?.kodeSWP || "-"}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {activity.metadata?.kodeBlok || "-"}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {activity.zones["Luas (Ha)"]}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-900 max-w-md">
-                      <div className="max-h-32 overflow-y-auto">
-                        {activity.zones["Ketentuan"] ? (
-                          <div className="space-y-1">
-                            {activity.zones["Ketentuan"]
-                              .split(/\r?\n/)
-                              .map((line, lineIndex) => (
-                                <p
-                                  key={lineIndex}
-                                  className="text-xs leading-relaxed"
-                                >
-                                  {line.trim()}
-                                </p>
-                              ))}
-                          </div>
-                        ) : (
-                          <span className="text-gray-400 italic">
-                            Tidak ada ketentuan
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-
-      {/* Copy Format Section */}
-      <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-semibold text-gray-800">
-            Format Copy Ketentuan
-          </h3>
-          <div className="flex space-x-2">
-            <button
-              onClick={() => {
-                // Check if we have selected zona/subzona for intensitas data
-                const hasIntensitasData =
-                  selectedSubZona &&
-                  getIntensitasData(selectedKawasan || "", selectedSubZona);  
-                let copyText;
-                if (hasIntensitasData) {
-                  // Use intensitas format if data is available
-                  copyText = generateIntensitasCopyFormat(
-                    selectedKawasan || "",
-                    selectedSubZona,
-                    "trikora"
-                  );
-                } else {
-                  // Use original kepsus format
-                  copyText = generateCopyFormat(filteredActivities);
-                }
-
-                navigator.clipboard
-                  .writeText(copyText)
-                  .then(() => {
-                    alert("Format ketentuan berhasil disalin ke clipboard!");
-                  })
-                  .catch(() => {
-                    alert("Gagal menyalin ke clipboard");
-                  });
-              }}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              📋 Copy Format
-            </button>
-            <button
-              onClick={() => {
-                setCurrentJsonPreview(
-                  generateJsonForPreview(filteredActivities)
-                );
-                setShowJsonModal(true);
-              }}
-              className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
-            >
-              👁️ Preview JSON
-            </button>
-            <button
-              onClick={copyJsonData}
-              className={`px-4 py-2 rounded-md focus:outline-none focus:ring-2 transition-colors ${
-                copySuccess
-                  ? "bg-green-600 text-white focus:ring-green-500"
-                  : "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500"
-              }`}
-            >
-              {copySuccess ? "✓ Tersalin!" : "📋 Copy JSON Format"}
-            </button>
-          </div>
-        </div>
-
-        <div className="bg-gray-50 p-4 rounded-lg max-h-96 overflow-y-auto">
-          <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono">
-            {(() => {
-              // Check if we have selected zona/subzona for intensitas data
-              const hasIntensitasData =
-                selectedSubZona &&
-                getIntensitasData(selectedKawasan || "", selectedSubZona);
-
-              if (hasIntensitasData) {
-                // Use intensitas format if data is available
-                return generateIntensitasCopyFormat(selectedKawasan || "", selectedSubZona, "trikora");
-              } else {
-                // Use original kepsus format
-                return generateCopyFormat(filteredActivities);
-              }
-            })()}
-          </pre>
-        </div>
-      </div>
-
-      {/* Summary */}
-      <div className="mt-8 bg-gray-100 p-4 rounded-lg">
-        <h3 className="font-semibold text-gray-800 mb-2">Ringkasan Data</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-          <div>
-            <span className="text-gray-600">Total Ketentuan:</span>
-            <span className="ml-2 font-medium">{data.activities.length}</span>
-          </div>
-          <div>
-            <span className="text-gray-600">Jenis Kawasan:</span>
-            <span className="ml-2 font-medium">{kawasanTypes.length}</span>
-          </div>
-          <div>
-            <span className="text-gray-600">Diproses:</span>
-            <span className="ml-2 font-medium">
-              {new Date(data.metadata.processedAt).toLocaleDateString("id-ID")}
-            </span>
-          </div>
-          <div>
-            <span className="text-gray-600">Total Baris:</span>
-            <span className="ml-2 font-medium">{data.metadata.totalRows}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* JSON Preview Modal */}
-      {showJsonModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[80vh] flex flex-col">
-            <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Preview JSON Ketentuan Khusus
-              </h3>
-              <button
-                onClick={() => setShowJsonModal(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  ></path>
-                </svg>
-              </button>
-            </div>
-
-            <div className="p-4 flex-1 overflow-auto">
-              <div className="flex mb-4 space-x-2">
-                <button
-                  onClick={copyJsonData}
-                  className={`px-4 py-2 rounded-md transition-colors ${
-                    copySuccess
-                      ? "bg-green-600 text-white"
-                      : "bg-blue-600 text-white hover:bg-blue-700"
-                  }`}
-                >
-                  {copySuccess ? "✓ Tersalin!" : "Copy Minified JSON"}
-                </button>
-                <div className="text-sm text-gray-600 flex items-center">
-                  <span className="ml-2">
-                    Format yang disalin adalah versi minified (tanpa spasi dan
-                    baris baru)
-                  </span>
-                </div>
-              </div>
-
-              <div className="bg-gray-50 rounded-md p-4 border overflow-auto">
-                <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono">
-                  {currentJsonPreview}
-                </pre>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
+app\data\nama kodunk dan sub zona\bsb-converted.json:
+   1560      "CB.0.0.3.0.0.0.0": {
+   1561:       "iznktg": {
+   1562:         "data": []
+   1563:       },
+   1564:       "tbtktg": {
+   1565:         "data": []
+   1566:       },
+   1567:       "bstktg": {
+   1568:         "data": []
+   1569:       },
+   1570:       "tbsktg": {
+   1571:         "data": []
+   1572:       }
+   1573      }
+
+   5605      "HPT.0.0.2.0.0.0.1": {
+   5606:       "iznktg": {
+   5607:         "data": []
+   5608:       },
+   5609:       "tbtktg": {
+   5610:         "data": []
+   5611:       },
+   5612:       "bstktg": {
+   5613:         "data": []
+   5614:       },
+   5615:       "tbsktg": {
+   5616:         "data": []
+   5617:       }
+   5618      }
+
+   5621      "HPT.0.0.4.0.0.0.1": {
+   5622:       "iznktg": {
+   5623:         "data": []
+   5624:       },
+   5625:       "tbtktg": {
+   5626:         "data": []
+   5627:       },
+   5628:       "bstktg": {
+   5629:         "data": []
+   5630:       },
+   5631:       "tbsktg": {
+   5632:         "data": []
+   5633:       }
+   5634      }
+
+   5637      "HPT.0.0.6.0.0.0.1": {
+   5638:       "iznktg": {
+   5639:         "data": []
+   5640:       },
+   5641:       "tbtktg": {
+   5642:         "data": []
+   5643:       },
+   5644:       "bstktg": {
+   5645:         "data": []
+   5646:       },
+   5647:       "tbsktg": {
+   5648:         "data": []
+   5649:       }
+   5650      }
+
+   5653      "HPT.0.0.7.0.0.0.1": {
+   5654:       "iznktg": {
+   5655:         "data": []
+   5656:       },
+   5657:       "tbtktg": {
+   5658:         "data": []
+   5659:       },
+   5660:       "bstktg": {
+   5661:         "data": []
+   5662:       },
+   5663:       "tbsktg": {
+   5664:         "data": []
+   5665:       }
+   5666      }
+
+   6732      "IK-2.0.0.5.0.0.0.0": {
+   6733:       "iznktg": {
+   6734:         "data": []
+   6735:       },
+   6736:       "tbtktg": {
+   6737:         "data": []
+   6738:       },
+   6739:       "bstktg": {
+   6740:         "data": []
+   6741:       },
+   6742:       "tbsktg": {
+   6743:         "data": []
+   6744:       }
+   6745      }
+
+  14116      "K-1.0.0.1.0.0.0.0": {
+  14117:       "iznktg": {
+  14118:         "data": []
+  14119:       },
+  14120:       "tbtktg": {
+  14121:         "data": []
+  14122:       },
+  14123:       "bstktg": {
+  14124:         "data": []
+  14125:       },
+  14126:       "tbsktg": {
+  14127:         "data": []
+  14128:       }
+  14129      }
+
+  14132      "K-1.0.0.3.0.0.0.0": {
+  14133:       "iznktg": {
+  14134:         "data": []
+  14135:       },
+  14136:       "tbtktg": {
+  14137:         "data": []
+  14138:       },
+  14139:       "bstktg": {
+  14140:         "data": []
+  14141:       },
+  14142:       "tbsktg": {
+  14143:         "data": []
+  14144:       }
+  14145      }
+
+  14148      "K-1.0.0.5.0.0.0.0": {
+  14149:       "iznktg": {
+  14150:         "data": []
+  14151:       },
+  14152:       "tbtktg": {
+  14153:         "data": []
+  14154:       },
+  14155:       "bstktg": {
+  14156:         "data": []
+  14157:       },
+  14158:       "tbsktg": {
+  14159:         "data": []
+  14160:       }
+  14161      }
+
+  14164      "K-1.1.0.0.0.0.0.0": {
+  14165:       "iznktg": {
+  14166:         "data": []
+  14167:       },
+  14168:       "tbtktg": {
+  14169:         "data": []
+  14170:       },
+  14171:       "bstktg": {
+  14172:         "data": []
+  14173:       },
+  14174:       "tbsktg": {
+  14175:         "data": []
+  14176:       }
+  14177      }
+
+  14180      "K-1.1.0.1.0.0.0.0": {
+  14181:       "iznktg": {
+  14182:         "data": []
+  14183:       },
+  14184:       "tbtktg": {
+  14185:         "data": []
+  14186:       },
+  14187:       "bstktg": {
+  14188:         "data": []
+  14189:       },
+  14190:       "tbsktg": {
+  14191:         "data": []
+  14192:       }
+  14193      }
+
+  14196      "K-1.1.0.3.0.0.0.0": {
+  14197:       "iznktg": {
+  14198:         "data": []
+  14199:       },
+  14200:       "tbtktg": {
+  14201:         "data": []
+  14202:       },
+  14203:       "bstktg": {
+  14204:         "data": []
+  14205:       },
+  14206:       "tbsktg": {
+  14207:         "data": []
+  14208:       }
+  14209      }
+
+  14212      "K-1.1.0.5.0.0.0.0": {
+  14213:       "iznktg": {
+  14214:         "data": []
+  14215:       },
+  14216:       "tbtktg": {
+  14217:         "data": []
+  14218:       },
+  14219:       "bstktg": {
+  14220:         "data": []
+  14221:       },
+  14222:       "tbsktg": {
+  14223:         "data": []
+  14224:       }
+  14225      }
+
+  21596      "K-2.0.0.5.0.0.0.0": {
+  21597:       "iznktg": {
+  21598:         "data": []
+  21599:       },
+  21600:       "tbtktg": {
+  21601:         "data": []
+  21602:       },
+  21603:       "bstktg": {
+  21604:         "data": []
+  21605:       },
+  21606:       "tbsktg": {
+  21607:         "data": []
+  21608:       }
+  21609      }
+
+  28980      "K-3.0.0.3.0.0.0.0": {
+  28981:       "iznktg": {
+  28982:         "data": []
+  28983:       },
+  28984:       "tbtktg": {
+  28985:         "data": []
+  28986:       },
+  28987:       "bstktg": {
+  28988:         "data": []
+  28989:       },
+  28990:       "tbsktg": {
+  28991:         "data": []
+  28992:       }
+  28993      }
+
+  28996      "K-3.0.0.5.0.0.0.0": {
+  28997:       "iznktg": {
+  28998:         "data": []
+  28999:       },
+  29000:       "tbtktg": {
+  29001:         "data": []
+  29002:       },
+  29003:       "bstktg": {
+  29004:         "data": []
+  29005:       },
+  29006:       "tbsktg": {
+  29007:         "data": []
+  29008:       }
+  29009      }
+
+  34247      "KPI.1.0.3.0.0.0.0": {
+  34248:       "iznktg": {
+  34249:         "data": []
+  34250:       },
+  34251:       "tbtktg": {
+  34252:         "data": []
+  34253:       },
+  34254:       "bstktg": {
+  34255:         "data": []
+  34256:       },
+  34257:       "tbsktg": {
+  34258:         "data": []
+  34259:       }
+  34260      }
+
+  37193      "KT.0.0.1.0.0.0.0": {
+  37194:       "iznktg": {
+  37195:         "data": []
+  37196:       },
+  37197:       "tbtktg": {
+  37198:         "data": []
+  37199:       },
+  37200:       "bstktg": {
+  37201:         "data": []
+  37202:       },
+  37203:       "tbsktg": {
+  37204:         "data": []
+  37205:       }
+  37206      }
+
+  37209      "KT.0.0.3.0.0.0.0": {
+  37210:       "iznktg": {
+  37211:         "data": []
+  37212:       },
+  37213:       "tbtktg": {
+  37214:         "data": []
+  37215:       },
+  37216:       "bstktg": {
+  37217:         "data": []
+  37218:       },
+  37219:       "tbsktg": {
+  37220:         "data": []
+  37221:       }
+  37222      }
+
+  37225      "KT.0.0.3.1.0.0.0": {
+  37226:       "iznktg": {
+  37227:         "data": []
+  37228:       },
+  37229:       "tbtktg": {
+  37230:         "data": []
+  37231:       },
+  37232:       "bstktg": {
+  37233:         "data": []
+  37234:       },
+  37235:       "tbsktg": {
+  37236:         "data": []
+  37237:       }
+  37238      }
+
+  37241      "KT.0.0.5.0.0.0.0": {
+  37242:       "iznktg": {
+  37243:         "data": []
+  37244:       },
+  37245:       "tbtktg": {
+  37246:         "data": []
+  37247:       },
+  37248:       "bstktg": {
+  37249:         "data": []
+  37250:       },
+  37251:       "tbsktg": {
+  37252:         "data": []
+  37253:       }
+  37254      }
+
+  37257      "KT.1.0.3.1.0.0.0": {
+  37258:       "iznktg": {
+  37259:         "data": []
+  37260:       },
+  37261:       "tbtktg": {
+  37262:         "data": []
+  37263:       },
+  37264:       "bstktg": {
+  37265:         "data": []
+  37266:       },
+  37267:       "tbsktg": {
+  37268:         "data": []
+  37269:       }
+  37270      }
+
+  37273      "KT.1.0.5.1.0.0.0": {
+  37274:       "iznktg": {
+  37275:         "data": []
+  37276:       },
+  37277:       "tbtktg": {
+  37278:         "data": []
+  37279:       },
+  37280:       "bstktg": {
+  37281:         "data": []
+  37282:       },
+  37283:       "tbsktg": {
+  37284:         "data": []
+  37285:       }
+  37286      }
+
+  37933      "P-1.0.1.3.0.0.0.0": {
+  37934:       "iznktg": {
+  37935:         "data": []
+  37936:       },
+  37937:       "tbtktg": {
+  37938:         "data": []
+  37939:       },
+  37940:       "bstktg": {
+  37941:         "data": []
+  37942:       },
+  37943:       "tbsktg": {
+  37944:         "data": []
+  37945:       }
+  37946      }
+
+  37949      "P-1.0.1.5.0.0.0.0": {
+  37950:       "iznktg": {
+  37951:         "data": []
+  37952:       },
+  37953:       "tbtktg": {
+  37954:         "data": []
+  37955:       },
+  37956:       "bstktg": {
+  37957:         "data": []
+  37958:       },
+  37959:       "tbsktg": {
+  37960:         "data": []
+  37961:       }
+  37962      }
+
+  39044      "P-2.0.0.5.0.0.0.0": {
+  39045:       "iznktg": {
+  39046:         "data": []
+  39047:       },
+  39048:       "tbtktg": {
+  39049:         "data": []
+  39050:       },
+  39051:       "bstktg": {
+  39052:         "data": []
+  39053:       },
+  39054:       "tbsktg": {
+  39055:         "data": []
+  39056:       }
+  39057      }
+
+  40654      "P-3.0.0.1.0.0.0.0": {
+  40655:       "iznktg": {
+  40656:         "data": []
+  40657:       },
+  40658:       "tbtktg": {
+  40659:         "data": []
+  40660:       },
+  40661:       "bstktg": {
+  40662:         "data": []
+  40663:       },
+  40664:       "tbsktg": {
+  40665:         "data": []
+  40666:       }
+  40667      }
+
+  40670      "P-3.0.0.3.0.0.0.0": {
+  40671:       "iznktg": {
+  40672:         "data": []
+  40673:       },
+  40674:       "tbtktg": {
+  40675:         "data": []
+  40676:       },
+  40677:       "bstktg": {
+  40678:         "data": []
+  40679:       },
+  40680:       "tbsktg": {
+  40681:         "data": []
+  40682:       }
+  40683      }
+
+  40686      "P-3.0.0.5.0.0.0.0": {
+  40687:       "iznktg": {
+  40688:         "data": []
+  40689:       },
+  40690:       "tbtktg": {
+  40691:         "data": []
+  40692:       },
+  40693:       "bstktg": {
+  40694:         "data": []
+  40695:       },
+  40696:       "tbsktg": {
+  40697:         "data": []
+  40698:       }
+  40699      }
+
+  48475      "R-2.0.0.5.0.0.0.0": {
+  48476:       "iznktg": {
+  48477:         "data": []
+  48478:       },
+  48479:       "tbtktg": {
+  48480:         "data": []
+  48481:       },
+  48482:       "bstktg": {
+  48483:         "data": []
+  48484:       },
+  48485:       "tbsktg": {
+  48486:         "data": []
+  48487:       }
+  48488      }
+
+  56176      "R-3.0.0.0.0.1.0.0": {
+  56177:       "iznktg": {
+  56178:         "data": []
+  56179:       },
+  56180:       "tbtktg": {
+  56181:         "data": []
+  56182:       },
+  56183:       "bstktg": {
+  56184:         "data": []
+  56185:       },
+  56186:       "tbsktg": {
+  56187:         "data": []
+  56188:       }
+  56189      }
+
+  56192      "R-3.0.0.1.0.0.0.0": {
+  56193:       "iznktg": {
+  56194:         "data": []
+  56195:       },
+  56196:       "tbtktg": {
+  56197:         "data": []
+  56198:       },
+  56199:       "bstktg": {
+  56200:         "data": []
+  56201:       },
+  56202:       "tbsktg": {
+  56203:         "data": []
+  56204:       }
+  56205      }
+
+  56208      "R-3.0.0.1.0.1.0.0": {
+  56209:       "iznktg": {
+  56210:         "data": []
+  56211:       },
+  56212:       "tbtktg": {
+  56213:         "data": []
+  56214:       },
+  56215:       "bstktg": {
+  56216:         "data": []
+  56217:       },
+  56218:       "tbsktg": {
+  56219:         "data": []
+  56220:       }
+  56221      }
+
+  56224      "R-3.0.0.3.0.0.0.0": {
+  56225:       "iznktg": {
+  56226:         "data": []
+  56227:       },
+  56228:       "tbtktg": {
+  56229:         "data": []
+  56230:       },
+  56231:       "bstktg": {
+  56232:         "data": []
+  56233:       },
+  56234:       "tbsktg": {
+  56235:         "data": []
+  56236:       }
+  56237      }
+
+  56240      "R-3.0.0.3.0.1.0.0": {
+  56241:       "iznktg": {
+  56242:         "data": []
+  56243:       },
+  56244:       "tbtktg": {
+  56245:         "data": []
+  56246:       },
+  56247:       "bstktg": {
+  56248:         "data": []
+  56249:       },
+  56250:       "tbsktg": {
+  56251:         "data": []
+  56252:       }
+  56253      }
+
+  56256      "R-3.0.0.5.0.0.0.0": {
+  56257:       "iznktg": {
+  56258:         "data": []
+  56259:       },
+  56260:       "tbtktg": {
+  56261:         "data": []
+  56262:       },
+  56263:       "bstktg": {
+  56264:         "data": []
+  56265:       },
+  56266:       "tbsktg": {
+  56267:         "data": []
+  56268:       }
+  56269      }
+
+  56272      "R-3.0.0.5.0.1.0.0": {
+  56273:       "iznktg": {
+  56274:         "data": []
+  56275:       },
+  56276:       "tbtktg": {
+  56277:         "data": []
+  56278:       },
+  56279:       "bstktg": {
+  56280:         "data": []
+  56281:       },
+  56282:       "tbsktg": {
+  56283:         "data": []
+  56284:       }
+  56285      }
+
+  56288      "R-3.0.0.6.0.0.0.0": {
+  56289:       "iznktg": {
+  56290:         "data": []
+  56291:       },
+  56292:       "tbtktg": {
+  56293:         "data": []
+  56294:       },
+  56295:       "bstktg": {
+  56296:         "data": []
+  56297:       },
+  56298:       "tbsktg": {
+  56299:         "data": []
+  56300:       }
+  56301      }
+
+  56304      "R-3.1.0.0.0.0.0.0": {
+  56305:       "iznktg": {
+  56306:         "data": []
+  56307:       },
+  56308:       "tbtktg": {
+  56309:         "data": []
+  56310:       },
+  56311:       "bstktg": {
+  56312:         "data": []
+  56313:       },
+  56314:       "tbsktg": {
+  56315:         "data": []
+  56316:       }
+  56317      }
+
+  56320      "R-3.1.0.1.0.0.0.0": {
+  56321:       "iznktg": {
+  56322:         "data": []
+  56323:       },
+  56324:       "tbtktg": {
+  56325:         "data": []
+  56326:       },
+  56327:       "bstktg": {
+  56328:         "data": []
+  56329:       },
+  56330:       "tbsktg": {
+  56331:         "data": []
+  56332:       }
+  56333      }
+
+  56336      "R-3.1.0.3.0.0.0.0": {
+  56337:       "iznktg": {
+  56338:         "data": []
+  56339:       },
+  56340:       "tbtktg": {
+  56341:         "data": []
+  56342:       },
+  56343:       "bstktg": {
+  56344:         "data": []
+  56345:       },
+  56346:       "tbsktg": {
+  56347:         "data": []
+  56348:       }
+  56349      }
+
+  56352      "R-3.1.0.5.0.0.0.0": {
+  56353:       "iznktg": {
+  56354:         "data": []
+  56355:       },
+  56356:       "tbtktg": {
+  56357:         "data": []
+  56358:       },
+  56359:       "bstktg": {
+  56360:         "data": []
+  56361:       },
+  56362:       "tbsktg": {
+  56363:         "data": []
+  56364:       }
+  56365      }
+
+  64123      "R-4.0.0.0.0.2.0.0": {
+  64124:       "iznktg": {
+  64125:         "data": []
+  64126:       },
+  64127:       "tbtktg": {
+  64128:         "data": []
+  64129:       },
+  64130:       "bstktg": {
+  64131:         "data": []
+  64132:       },
+  64133:       "tbsktg": {
+  64134:         "data": []
+  64135:       }
+  64136      }
+
+  64139      "R-4.0.0.3.0.0.0.0": {
+  64140:       "iznktg": {
+  64141:         "data": []
+  64142:       },
+  64143:       "tbtktg": {
+  64144:         "data": []
+  64145:       },
+  64146:       "bstktg": {
+  64147:         "data": []
+  64148:       },
+  64149:       "tbsktg": {
+  64150:         "data": []
+  64151:       }
+  64152      }
+
+  64155      "R-4.0.0.5.0.0.0.0": {
+  64156:       "iznktg": {
+  64157:         "data": []
+  64158:       },
+  64159:       "tbtktg": {
+  64160:         "data": []
+  64161:       },
+  64162:       "bstktg": {
+  64163:         "data": []
+  64164:       },
+  64165:       "tbsktg": {
+  64166:         "data": []
+  64167:       }
+  64168      }
+
+  64171      "R-4.1.0.0.0.0.0.0": {
+  64172:       "iznktg": {
+  64173:         "data": []
+  64174:       },
+  64175:       "tbtktg": {
+  64176:         "data": []
+  64177:       },
+  64178:       "bstktg": {
+  64179:         "data": []
+  64180:       },
+  64181:       "tbsktg": {
+  64182:         "data": []
+  64183:       }
+  64184      }
+
+  64187      "R-4.1.0.3.0.0.0.0": {
+  64188:       "iznktg": {
+  64189:         "data": []
+  64190:       },
+  64191:       "tbtktg": {
+  64192:         "data": []
+  64193:       },
+  64194:       "bstktg": {
+  64195:         "data": []
+  64196:       },
+  64197:       "tbsktg": {
+  64198:         "data": []
+  64199:       }
+  64200      }
+
+  72731      "SPU-2.0.0.0.1.0.0.0": {
+  72732:       "iznktg": {
+  72733:         "data": []
+  72734:       },
+  72735:       "tbtktg": {
+  72736:         "data": []
+  72737:       },
+  72738:       "bstktg": {
+  72739:         "data": []
+  72740:       },
+  72741:       "tbsktg": {
+  72742:         "data": []
+  72743:       }
+  72744      }
+
+  72747      "SPU-2.0.0.3.0.0.0.0": {
+  72748:       "iznktg": {
+  72749:         "data": []
+  72750:       },
+  72751:       "tbtktg": {
+  72752:         "data": []
+  72753:       },
+  72754:       "bstktg": {
+  72755:         "data": []
+  72756:       },
+  72757:       "tbsktg": {
+  72758:         "data": []
+  72759:       }
+  72760      }
+
+  72763      "SPU-2.0.0.3.1.0.0.0": {
+  72764:       "iznktg": {
+  72765:         "data": []
+  72766:       },
+  72767:       "tbtktg": {
+  72768:         "data": []
+  72769:       },
+  72770:       "bstktg": {
+  72771:         "data": []
+  72772:       },
+  72773:       "tbsktg": {
+  72774:         "data": []
+  72775:       }
+  72776      }
+
+  72779      "SPU-2.0.0.5.0.0.0.0": {
+  72780:       "iznktg": {
+  72781:         "data": []
+  72782:       },
+  72783:       "tbtktg": {
+  72784:         "data": []
+  72785:       },
+  72786:       "bstktg": {
+  72787:         "data": []
+  72788:       },
+  72789:       "tbsktg": {
+  72790:         "data": []
+  72791:       }
+  72792      }
+
+  72795      "SPU-2.1.0.3.0.0.0.0": {
+  72796:       "iznktg": {
+  72797:         "data": []
+  72798:       },
+  72799:       "tbtktg": {
+  72800:         "data": []
+  72801:       },
+  72802:       "bstktg": {
+  72803:         "data": []
+  72804:       },
+  72805:       "tbsktg": {
+  72806:         "data": []
+  72807:       }
+  72808      }
+
+  75706      "SPU-3.0.0.0.0.2.0.0": {
+  75707:       "iznktg": {
+  75708:         "data": []
+  75709:       },
+  75710:       "tbtktg": {
+  75711:         "data": []
+  75712:       },
+  75713:       "bstktg": {
+  75714:         "data": []
+  75715:       },
+  75716:       "tbsktg": {
+  75717:         "data": []
+  75718:       }
+  75719      }
+
+  75722      "SPU-3.0.0.3.0.0.0.0": {
+  75723:       "iznktg": {
+  75724:         "data": []
+  75725:       },
+  75726:       "tbtktg": {
+  75727:         "data": []
+  75728:       },
+  75729:       "bstktg": {
+  75730:         "data": []
+  75731:       },
+  75732:       "tbsktg": {
+  75733:         "data": []
+  75734:       }
+  75735      }
+
+  75738      "SPU-3.0.0.5.0.0.0.0": {
+  75739:       "iznktg": {
+  75740:         "data": []
+  75741:       },
+  75742:       "tbtktg": {
+  75743:         "data": []
+  75744:       },
+  75745:       "bstktg": {
+  75746:         "data": []
+  75747:       },
+  75748:       "tbsktg": {
+  75749:         "data": []
+  75750:       }
+  75751      }
+
+  75754      "SPU-3.1.0.3.0.0.0.0": {
+  75755:       "iznktg": {
+  75756:         "data": []
+  75757:       },
+  75758:       "tbtktg": {
+  75759:         "data": []
+  75760:       },
+  75761:       "bstktg": {
+  75762:         "data": []
+  75763:       },
+  75764:       "tbsktg": {
+  75765:         "data": []
+  75766:       }
+  75767      }
+
+  75770      "SPU-3.1.0.5.0.0.0.0": {
+  75771:       "iznktg": {
+  75772:         "data": []
+  75773:       },
+  75774:       "tbtktg": {
+  75775:         "data": []
+  75776:       },
+  75777:       "bstktg": {
+  75778:         "data": []
+  75779:       },
+  75780:       "tbsktg": {
+  75781:         "data": []
+  75782:       }
+  75783      }
+
+  82514      "W.0.0.3.0.0.0.0": {
+  82515:       "iznktg": {
+  82516:         "data": []
+  82517:       },
+  82518:       "tbtktg": {
+  82519:         "data": []
+  82520:       },
+  82521:       "bstktg": {
+  82522:         "data": []
+  82523:       },
+  82524:       "tbsktg": {
+  82525:         "data": []
+  82526:       }
+  82527      }
+
+  82530      "W.0.0.5.0.0.0.0": {
+  82531:       "iznktg": {
+  82532:         "data": []
+  82533:       },
+  82534:       "tbtktg": {
+  82535:         "data": []
+  82536:       },
+  82537:       "bstktg": {
+  82538:         "data": []
+  82539:       },
+  82540:       "tbsktg": {
+  82541:         "data": []
+  82542:       }
+  82543      }
+
+  82546      "W.1.0.3.0.0.0.0": {
+  82547:       "iznktg": {
+  82548:         "data": []
+  82549:       },
+  82550:       "tbtktg": {
+  82551:         "data": []
+  82552:       },
+  82553:       "bstktg": {
+  82554:         "data": []
+  82555:       },
+  82556:       "tbsktg": {
+  82557:         "data": []
+  82558:       }
+  82559      }
