@@ -282,28 +282,30 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
                 content = trimmedLine;
               }
               
-              // Add semicolon to all items except the last one
-              // Add 'dan' before the last item if there's more than one item
-              if (i < lines.length - 1 && letterIndex > 0) {
-                content += ';';
-              } else if (i === lines.length - 1 && letterIndex > 0) {
-                content += '.';
-              }
+              // Clean up existing punctuation to avoid duplication
+              content = content.replace(/[;.]+$/, '').replace(/;\s*dan\s*$/, '').replace(/\s*dan\s*$/, '');
               
               result[tabelName][kawasanName][letter] = content;
               letterIndex++;
             }
           });
           
-          // Add 'dan' before the last item if there's more than one item
+          // Add proper punctuation after all items are processed
           const keys = Object.keys(result[tabelName][kawasanName]);
-          if (keys.length > 1) {
-            const lastKey = keys[keys.length - 1];
-            const secondLastKey = keys[keys.length - 2];
-            const lastContent = result[tabelName][kawasanName][lastKey];
-            const secondLastContent = result[tabelName][kawasanName][secondLastKey];
-            
-            result[tabelName][kawasanName][secondLastKey] = secondLastContent.replace(/[;.]?$/, '; dan');
+          if (keys.length > 0) {
+            keys.forEach((key, index) => {
+              const content = result[tabelName][kawasanName][key];
+              if (index === keys.length - 1) {
+                // Last item ends with period
+                result[tabelName][kawasanName][key] = content + '.';
+              } else if (index === keys.length - 2 && keys.length > 1) {
+                // Second to last item ends with "; dan"
+                result[tabelName][kawasanName][key] = content + '; dan';
+              } else {
+                // Other items end with semicolon
+                result[tabelName][kawasanName][key] = content + ';';
+              }
+            });
           }
         }
       });
@@ -405,31 +407,61 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
         getIntensitasData('', subGuess);
         
       // Debug log to check what we found
-      console.log('Cari intensitas:', { zona: zonaGuess, subZona: subGuess, found: intensitasData });
+      console.log('Cari intensitas (minified):', { zona: zonaGuess, subZona: subGuess, found: intensitasData });
     }
     
-    // Add additional data fields from intensitas data or set to "-"
-    const additionalData = {
-      'Luas Kavling Min (m2)': intensitasData?.['Luas Kavling Min (m2)'] || "-",
-      'Lantai Bangunan Maks. - Arteri': (intensitasData as any)?.['Lantai Bangunan Maks. - Arteri'] || "-",
-      'Lantai Bangunan Maks. - Kolektor': intensitasData?.['Lantai Bangunan Maks. - Kolektor'] || "-",
-      'Lantai Bangunan Maks. - Lokal': intensitasData?.['Lantai Bangunan Maks. - Lokal'] || "-",
-      'Tinggi Bangunan Maks. (m) - Arteri': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Arteri'] || "-",
-      'Tinggi Bangunan Maks. (m) - Kolektor': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Kolektor'] || "-",
-      'Tinggi Bangunan Maks. (m) - Lokal': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Lokal'] || "-",
-      'Jarak Bebas Samping Min. (m)': intensitasData?.['Jarak Bebas Samping Min. (m)'] || "-",
-      'Jarak Bebas Belakang Min. (m)': intensitasData?.['Jarak Bebas Belakang Min. (m)'] || "-",
-      'Tampilan Bangunan': intensitasData?.['Tampilan Bangunan'] || "-",
-      'Keterangan': intensitasData?.['Keterangan'] || "-",
+    // Helper function to format intensitas values
+    const formatIntensitasValue = (value: any, unit: string = '') => {
+      if (value === null || value === undefined || value === '') return 'Minimum: -';
+      if (unit) return `Minimum: ${value} ${unit}`;
+      return `Minimum: ${value}`;
+    };
+
+    // Format lantai bangunan data
+    const formatLantaiBangunan = (intensitasData: any) => {
+      if (!intensitasData) return '-';
+      
+      const arteri = intensitasData['Lantai Bangunan Maks. - Arteri'];
+      const kolektor = intensitasData['Lantai Bangunan Maks. - Kolektor'];
+      const lokal = intensitasData['Lantai Bangunan Maks. - Lokal'];
+      
+      if (!arteri && !kolektor && !lokal) return '-';
+      
+      const result: any = {};
+      const entries = [];
+      
+      if (arteri) entries.push({ key: 'a.', value: `Jalan Arteri Maksimum = ${arteri} lantai` });
+      if (kolektor) entries.push({ key: 'b.', value: `Jalan Kolektor Maksimum = ${kolektor} lantai` });
+      if (lokal) entries.push({ key: 'c.', value: `Jalan Lokal Maksimum = ${lokal} lantai` });
+      
+      entries.forEach((entry, index) => {
+        if (index === entries.length - 1) {
+          // Last item ends with period
+          result[entry.key] = `${entry.value}.`;
+        } else if (index === entries.length - 2 && entries.length > 1) {
+          // Second to last item ends with "; dan"
+          result[entry.key] = `${entry.value}; dan`;
+        } else {
+          // Other items end with semicolon
+          result[entry.key] = `${entry.value};`;
+        }
+      });
+      
+      return Object.keys(result).length > 0 ? result : '-';
     };
     
-    // Merge the original data with additional fields
-    const finalData = {
-      ...jsonData,
-      ...additionalData,
+    // Create the combined JSON structure
+    const combinedData = {
+      data: jsonData,
+      'Luas Kaveling Min. (m2)': formatIntensitasValue(intensitasData?.['Luas Kavling Min (m2)']),
+      'Jarak Bebas Samping (m)': formatIntensitasValue(intensitasData?.['Jarak Bebas Samping Min. (m)'], 'm'),
+      'Jarak Bebas Belakang (m)': formatIntensitasValue(intensitasData?.['Jarak Bebas Belakang Min. (m)'], 'm'),
+      'Tampilan Bangunan': intensitasData?.['Tampilan Bangunan'] || '-',
+      'Keterangan': intensitasData?.['Keterangan'] || '-',
+      'Lantai Bangunan Maks.': formatLantaiBangunan(intensitasData)
     };
     
-    return JSON.stringify(finalData);
+    return JSON.stringify(combinedData);
   };
 
   // Generate formatted JSON for preview
@@ -453,29 +485,58 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
       console.log('Cari intensitas (preview):', { zona: zonaGuess, subZona: subGuess, found: intensitasData });
     }
     
-    // Add additional data fields from intensitas data or set to "-"
-    const additionalData = {
-      // 'KTB Maks (%)': intensitasData?.['KTB Maks (%)'] || "-",
-      'Luas Kavling Min (m2)': intensitasData?.['Luas Kavling Min (m2)'] || "-",
-      'Lantai Bangunan Maks. - Arteri': (intensitasData as any)?.['Lantai Bangunan Maks. - Arteri'] || "-",
-      'Lantai Bangunan Maks. - Kolektor': intensitasData?.['Lantai Bangunan Maks. - Kolektor'] || "-",
-      'Lantai Bangunan Maks. - Lokal': intensitasData?.['Lantai Bangunan Maks. - Lokal'] || "-",
-      'Tinggi Bangunan Maks. (m) - Arteri': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Arteri'] || "-",
-      'Tinggi Bangunan Maks. (m) - Kolektor': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Kolektor'] || "-",
-      'Tinggi Bangunan Maks. (m) - Lokal': (intensitasData as any)?.['Tinggi Bangunan Maks. (m) - Lokal'] || "-",
-      'Jarak Bebas Samping Min. (m)': intensitasData?.['Jarak Bebas Samping Min. (m)'] || "-",
-      'Jarak Bebas Belakang Min. (m)': intensitasData?.['Jarak Bebas Belakang Min. (m)'] || "-",
-      'Tampilan Bangunan': intensitasData?.['Tampilan Bangunan'] || "-",
-      'Keterangan': intensitasData?.['Keterangan'] || "-",
+    // Helper function to format intensitas values
+    const formatIntensitasValue = (value: any, unit: string = '') => {
+      if (value === null || value === undefined || value === '') return 'Minimum: -';
+      if (unit) return `Minimum: ${value} ${unit}`;
+      return `Minimum: ${value}`;
+    };
+
+    // Format lantai bangunan data
+    const formatLantaiBangunan = (intensitasData: any) => {
+      if (!intensitasData) return '-';
+      
+      const arteri = intensitasData['Lantai Bangunan Maks. - Arteri'];
+      const kolektor = intensitasData['Lantai Bangunan Maks. - Kolektor'];
+      const lokal = intensitasData['Lantai Bangunan Maks. - Lokal'];
+      
+      if (!arteri && !kolektor && !lokal) return '-';
+      
+      const result: any = {};
+      const entries = [];
+      
+      if (arteri) entries.push({ key: 'a.', value: `Jalan Arteri Maksimum = ${arteri} ` });
+      if (kolektor) entries.push({ key: 'b.', value: `Jalan Kolektor Maksimum = ${kolektor} ` });
+      if (lokal) entries.push({ key: 'c.', value: `Jalan Lokal Maksimum = ${lokal} ` });
+      
+      entries.forEach((entry, index) => {
+        if (index === entries.length - 1) {
+          // Last item ends with period
+          result[entry.key] = `${entry.value}.`;
+        } else if (index === entries.length - 2 && entries.length > 1) {
+          // Second to last item ends with "; dan"
+          result[entry.key] = `${entry.value}; dan`;
+        } else {
+          // Other items end with semicolon
+          result[entry.key] = `${entry.value};`;
+        }
+      });
+      
+      return Object.keys(result).length > 0 ? result : '-';
     };
     
-    // Merge the original data with additional fields
-    const finalData = {
-      ...jsonData,
-      ...additionalData,
+    // Create the combined JSON structure
+    const combinedData = {
+      data: jsonData,
+      'Luas Kaveling Min. (m2)': formatIntensitasValue(intensitasData?.['Luas Kavling Min (m2)']),
+      'Jarak Bebas Samping (m)': formatIntensitasValue(intensitasData?.['Jarak Bebas Samping Min. (m)'], 'm'),
+      'Jarak Bebas Belakang (m)': formatIntensitasValue(intensitasData?.['Jarak Bebas Belakang Min. (m)'], 'm'),
+      'Tampilan Bangunan': intensitasData?.['Tampilan Bangunan'] || '-',
+      'Keterangan': intensitasData?.['Keterangan'] || '-',
+      'Lantai Bangunan Maks.': formatLantaiBangunan(intensitasData)
     };
     
-    return JSON.stringify(finalData, null, 2);
+    return JSON.stringify(combinedData, null, 2);
   };
 
   // Copy JSON data to clipboard
