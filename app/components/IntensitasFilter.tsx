@@ -153,8 +153,8 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({
     let result = "";
 
     // Helper function to format values
-    const formatValue = (value: number | null) =>
-      value !== null ? value.toString() : "-";
+    const formatValue = (value: number | null | undefined) =>
+      value !== null && value !== undefined ? value.toString() : "-";
 
     // Check if data has persil (location-specific data)
     const hasPersil = filteredData.some(
@@ -747,8 +747,8 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({
     if (filteredData.length === 0) return JSON.stringify({ data: "-" });
 
     // Helper function to format values
-    const formatValue = (value: number | null) =>
-      value !== null ? value.toString() : "-";
+    const formatValue = (value: number | null | undefined) =>
+      value !== null && value !== undefined ? value.toString() : "-";
 
     // Check if data has persil (location-specific data)
     const hasPersil = filteredData.some(
@@ -811,17 +811,17 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({
       )
       .filter((jenis, index, arr) => arr.indexOf(jenis) === index); // Remove duplicates
 
-    // Debug logging
-    console.log("DEBUG generateCopyTextJSON:", {
-      selectedZona,
-      selectedSubZona,
-      selectedJenis,
-      category,
-      filteredDataLength: filteredData.length,
-      allJenisTypes: filteredData.map((item) => item.Jenis),
-      allNonPersilJenis,
-      hasPersil,
-    });
+    // // Debug logging
+    // console.log("DEBUG generateCopyTextJSON:", {
+    //   selectedZona,
+    //   selectedSubZona,
+    //   selectedJenis,
+    //   category,
+    //   filteredDataLength: filteredData.length,
+    //   allJenisTypes: filteredData.map((item) => item.Jenis),
+    //   allNonPersilJenis,
+    //   hasPersil,
+    // });
 
     const hasMultipleJenis = allNonPersilJenis.length > 1;
 
@@ -1747,23 +1747,23 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({
 
           // Add persil data if exists
           if (hasPersil) {
-            const westArteriValue = westSideData && westSideData["Lantai Bangunan Maks. - Arteri"] !== null
+            const westArteriValue = westSideData && westSideData["Lantai Bangunan Maks. - Arteri"] !== null && westSideData["Lantai Bangunan Maks. - Arteri"] !== undefined
               ? westSideData["Lantai Bangunan Maks. - Arteri"]!.toString().replace(/\s*lantai\s*/gi, "").trim()
               : "-";
-            const westKolektorValue = westSideData && westSideData["Lantai Bangunan Maks. - Kolektor"] !== null
+            const westKolektorValue = westSideData && westSideData["Lantai Bangunan Maks. - Kolektor"] !== null && westSideData["Lantai Bangunan Maks. - Kolektor"] !== undefined
               ? westSideData["Lantai Bangunan Maks. - Kolektor"]!.toString().replace(/\s*lantai\s*/gi, "").trim()
               : "-";
-            const westLokalValue = westSideData && westSideData["Lantai Bangunan Maks. - Lokal"] !== null
+            const westLokalValue = westSideData && westSideData["Lantai Bangunan Maks. - Lokal"] !== null && westSideData["Lantai Bangunan Maks. - Lokal"] !== undefined
               ? westSideData["Lantai Bangunan Maks. - Lokal"]!.toString().replace(/\s*lantai\s*/gi, "").trim()
               : "-";
 
-            const eastArteriValue = eastSideData && eastSideData["Lantai Bangunan Maks. - Arteri"] !== null
+            const eastArteriValue = eastSideData && eastSideData["Lantai Bangunan Maks. - Arteri"] !== null && eastSideData["Lantai Bangunan Maks. - Arteri"] !== undefined
               ? eastSideData["Lantai Bangunan Maks. - Arteri"]!.toString().replace(/\s*lantai\s*/gi, "").trim()
               : "-";
-            const eastKolektorValue = eastSideData && eastSideData["Lantai Bangunan Maks. - Kolektor"] !== null
+            const eastKolektorValue = eastSideData && eastSideData["Lantai Bangunan Maks. - Kolektor"] !== null && eastSideData["Lantai Bangunan Maks. - Kolektor"] !== undefined
               ? eastSideData["Lantai Bangunan Maks. - Kolektor"]!.toString().replace(/\s*lantai\s*/gi, "").trim()
               : "-";
-            const eastLokalValue = eastSideData && eastSideData["Lantai Bangunan Maks. - Lokal"] !== null
+            const eastLokalValue = eastSideData && eastSideData["Lantai Bangunan Maks. - Lokal"] !== null && eastSideData["Lantai Bangunan Maks. - Lokal"] !== undefined
               ? eastSideData["Lantai Bangunan Maks. - Lokal"]!.toString().replace(/\s*lantai\s*/gi, "").trim()
               : "-";
 
@@ -1874,17 +1874,20 @@ const IntensitasFilter: React.FC<IntensitasFilterProps> = ({
   // Generate concatenated JSON for new categories only
   const generateNewCategoriesJson = () => {
     const newCategories = [
-      "luas",
-      "jbs",
-      "jbb",
-      "tampilan",
-      "keterangan",
-      "lantai",
+      { key: "luas", name: "Luas Kaveling Min. (m2)" },
+      { key: "jbs", name: "Jarak Bebas Samping (m)" },
+      { key: "jbb", name: "Jarak Bebas Belakang (m)" },
+      { key: "tampilan", name: "Tampilan Bangunan" },
+      { key: "keterangan", name: "Keterangan" },
+      { key: "lantai", name: "Lantai Bangunan Maks." },
     ];
-    const jsonStrings = newCategories.map((category) =>
-      generateMinifiedJsonForCategory(category)
-    );
-    return jsonStrings.join("\t");
+    
+    const arrayResult = newCategories.map((category) => {
+      const jsonObj = JSON.parse(generateJsonForCategory(category.key));
+      return { [category.name]: jsonObj.data };
+    });
+    
+    return JSON.stringify(arrayResult);
   };
 
   // Generate formatted JSON for new categories preview
