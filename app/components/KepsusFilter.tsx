@@ -311,7 +311,7 @@ export default function KepsusFilter({ data }: KepsusFilterProps) {
       });
     });
     
-    return { data: result };
+    return result;
   };
 
   // Helper function to normalize text for matching
